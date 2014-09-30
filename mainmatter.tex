@@ -18,7 +18,7 @@ ways to convert between the different systems.
 
 \section{Geographic}
 
-\subsection{WGS84 (\gps)}
+\subsection{World Geodetic System 1984 (WGS84)}
 
 To get the location of a station we use a \gps antenna. The \gps is
 often not the center of a station, but is close. The \gps returns
@@ -27,9 +27,18 @@ a latitude, longitude and altitude. The latitude and longitude are
 defined in decimal degrees, the altitude in meters. Latitude is positive towards West and longitude is positive towards North.
 
 
-\subsection{ENU}
+\subsection{Earth-Centered, Earth-Fixed (ECEF)}
 
-East North Up is used in the code to easily get distances, relative locations and angles between locations. It is defined relative to a reference position. From the location east is positive x axis, north is positive y axis and up (towards zenith) is the positive z axis. All distances are in meters.
+...
+
+
+\subsection{East, North, Up (ENU)}
+
+East North Up is used in the code to easily get distances, relative
+locations and angles between locations. It is defined relative to a
+reference position. From the location east is positive x axis, north is
+positive y axis and up (towards zenith) is the positive z axis. All
+distances are in meters.
 
 
 \subsection{Compass}
@@ -47,15 +56,30 @@ East..
 
 \subsection{Azimuth and Zenith}
 
-Azimuth, Zenith
-Radians ($-\pi$, $\pi$), (0, $\frac{\pi}{2}$)
+When a station detects a shower we try to reconstruct the direction of
+its origin. The direction of a shower is then given by an azimuth and
+zenith coordinate. These coordinates define a point on the semi-sphere
+that is the sky above the detection station. The zenith is the point
+directly above the observer. The zenith angle is the angle between the
+direction and the zenith point. The azimuth is the direction in the ...
+plane.
+
+We do not expect nor consider air showers from below the horizon, so the
+zenith angles, defined in radians, are and angle in the range (0,
+$\frac{\pi}{2}$). The azimuth is restricted to the range ($-\pi$, $\pi$).
 
 
 \subsection{Horizontal}
 
-Azimuth, Altitude
+This is a system used as intermediary for some coordinate conversions.
+It uses azimuth and altitude to define a direction. The altitude is the
+opposite of the zenith, so 0 is horizontal and $\frac{\pi}{2}$ is the
+zenith.
 
-\subsection{Equatorial}
+The azimuth definition... North?
+
+
+\subsection{Equatorial (J2000)}
 
 Right ascension, Declination, J2000
 
