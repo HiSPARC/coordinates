@@ -1,5 +1,5 @@
-Coordinate systems in the HiSPARC experiment
-============================================
+Coordinate systems in HiSPARC
+=============================
 
 A document detailing the coordinate systems and units used in the
 HiSPARC experiment. Other coordinate systems that are encountered, such
