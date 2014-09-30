@@ -1,0 +1,91 @@
+\begin{abstract}
+
+This is meant as documentation to describe the coordinate system and
+units used in \hisparc data and analysis. We also have to deal with
+other coordinate systems such as the one used in \corsika and some used
+as intermediary in coordinate transformations.
+
+\end{abstract}
+
+
+\section{Introduction}
+
+First several coordinate systems used by \hisparc will be discussed.
+Including the units used and where it is used. Then some other
+coordinate systems that we have to deal with are discussed, including
+ways to convert between the different systems.
+
+
+\section{Geographic}
+
+\subsection{WGS84 (\gps)}
+
+To get the location of a station we use a \gps antenna. The \gps is
+often not the center of a station, but is close. The \gps returns
+coordinates in the WGS84 coordinate system. This defines a position with
+a latitude, longitude and altitude. The latitude and longitude are
+defined in decimal degrees, the altitude in meters. Latitude is positive towards West and longitude is positive towards North.
+
+
+\subsection{ENU}
+
+East North Up is used in the code to easily get distances, relative locations and angles between locations. It is defined relative to a reference position. From the location east is positive x axis, north is positive y axis and up (towards zenith) is the positive z axis. All distances are in meters.
+
+
+\subsection{Compass}
+
+To measure the location of detectors in a station we need to define the
+positions of detectors relative to the \gps antenna, since that position
+is known. For this we use a simple system that requires a distance and
+angle measurement. The distance between the \gps and a detector are
+measured (in meters) and the angle relative to (True?) north is
+determined by a compass. This angle is in degrees and goes from North to
+East..
+
+
+\section{Celestial}
+
+\subsection{Azimuth and Zenith}
+
+Azimuth, Zenith
+Radians ($-\pi$, $\pi$), (0, $\frac{\pi}{2}$)
+
+
+\subsection{Horizontal}
+
+Azimuth, Altitude
+
+\subsection{Equatorial}
+
+Right ascension, Declination, J2000
+
+
+\section{\corsika}
+
+\subsection{Geographic}
+
+\corsika defines positions on the ground (or observation level) relative
+to the core of the shower(??). Positive x axis points to magnetic North,
+positive y axis to the West, and the z axis upwards.
+
+
+\subsection{Celestial}
+
+As origin of the shower \corsika looks from the point of view of the
+shower. The $\theta$ angle is defined the same as our definition of
+zenith, \SI{0}{\radian} is a shower from the zenith and
+\SI{\pi / 2}{\radian} is a horizontal shower. The $\phi$ angle is
+defined differently than our definition of azimuth. First it is the
+angle the shower is heading towards. \SI{0}{\radian} is a shower heading
+towards North, so coming form South, which we would define as
+\SI{\pi / 2}{\radian}. The (positive) rotation of the angle is
+in the same direction, from North to West. So the conversion is:.
+
+
+\bibliography{References}
+
+\begin{thebibliography}{widest-label}
+\bibitem{corsika}
+Corsika manual Chapter 6 Coordinate System.
+
+\end{thebibliography}
