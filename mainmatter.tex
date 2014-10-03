@@ -10,46 +10,79 @@ as intermediary in coordinate transformations.
 
 \section{Introduction}
 
-First several coordinate systems used by \hisparc will be discussed.
-Including the units used and where it is used. Then some other
-coordinate systems that we have to deal with are discussed, including
-ways to convert between the different systems.
+First coordinate systems used by \hisparc will be discussed. Including
+the units used and where it is used. Then other coordinate systems that
+we have to deal with are discussed, including ways to convert from those
+to our usual coordinate systems.
 
 
 \section{Geographic}
 
+Geographic coordinate systems define a point on the Earth. Multiple
+systems are important; WGS84, ECEF, ENU. Additionally a compass based
+system is used for detector locations relative to GPS antenna. These
+systems are described in the following sections.
+\figref{fig:wgs84_ecef_enu} shows the relationships between the systems.
+The conversion formula are taken from \cite{wikigeodetic}.
+
+\begin{figure}
+    \centering
+    \input{Figures/WGS84_ECEF_ENU}
+    \caption{Relationship between the WGS84 (orange), ECEF (blue) and ENU
+             (green) coordinate systems.}
+    \label{fig:wgs84_ecef_enu}
+\end{figure}
+
+
 \subsection{World Geodetic System 1984 (WGS84)}
 
-To get the location of a station we use a \gps antenna. The \gps is
-often not the center of a station, but is close. The \gps returns
+For the location of a station we use a \gps antenna. The \gps returns
 coordinates in the WGS84 coordinate system. This defines a position with
 a latitude, longitude and altitude. The latitude and longitude are
-defined in decimal degrees, the altitude in meters. Latitude is positive towards West and longitude is positive towards North.
+defined in decimal degrees, the altitude in meters. Latitude is positive
+towards West and longitude is positive towards North.
 
 
 \subsection{Earth-Centered, Earth-Fixed (ECEF)}
 
-...
+This coordinate has its origin as the center of the Earth
+(Earth-Centered), and its axes are aligned with the WGS84 system. The
+z-axis points to North. The x-axis crosses the Earth where the equator
+(\SI{0}{\degrees} latitude) intersects with the prime meridan
+(\SI{0}{\degrees} longitude).
 
 
 \subsection{East, North, Up (ENU)}
 
-East North Up is used in the code to easily get distances, relative
-locations and angles between locations. It is defined relative to a
-reference position. From the location east is positive x axis, north is
-positive y axis and up (towards zenith) is the positive z axis. All
-distances are in meters.
+East North Up is used by us to easily get distances, relative locations
+and angles between locations. It is a local coordinate system where its
+origin (reference position) can be chosen. From the reference location
+east is positive x-axis, north is positive y-axis and up (towards
+zenith) is the positive z-axis. All distances are in meters.
 
 
 \subsection{Compass}
 
-To measure the location of detectors in a station we need to define the
-positions of detectors relative to the \gps antenna, since that position
-is known. For this we use a simple system that requires a distance and
-angle measurement. The distance between the \gps and a detector are
-measured (in meters) and the angle relative to (True?) north is
-determined by a compass. This angle is in degrees and goes from North to
-East..
+The \gps antenna is often not at the center of a station, so detector
+location relative to the \gps are also needed. To measure the location
+of detectors in a station we need to define the positions of detectors
+relative to the \gps antenna, because that position is known. We use a
+simple system that requires a distance and angle measurement, see
+\figref{fig:enu_compass}. The distance (r) between the \gps and a
+detector (center of the scintillator) is measured (in meters) the angle
+($\alpha$) relative to the North Pole is determined using a compass.
+This angle is in degrees and goes from North to East. [Note about
+Magnetic/Geographic North...]. The rotation angle of the detector itself
+($\beta$) is defined and the angle of the long side of the detector
+relative to the North Pole (positive towards East).
+
+\begin{figure}
+    \centering
+    \input{Figures/ENU_compass}
+    \caption{Relationship ENU (green) and compass (purple) coordinate system
+             and how it is used to define the position of a detector.}
+    \label{fig:enu_compass}
+\end{figure}
 
 
 \section{Celestial}
@@ -87,6 +120,8 @@ In decimal hours.
 
 \section{\corsika}
 
+\cite{corsika}
+
 \subsection{Geographic}
 
 \corsika defines positions on the ground (or observation level) relative
@@ -109,7 +144,12 @@ in the same direction, from North to West. So the conversion is:.
 
 \bibliography{References}
 
-\begin{thebibliography}{widest-label}
+\begin{thebibliography}{9}
+
+\bibitem{wikigeodetic}
+Geodetic system. In Wikipedia. Retrieved August 10, 2004,
+from \url{http://en.wikipedia.org/wiki/Geodetic_system}
+
 \bibitem{corsika}
 Corsika manual Chapter 6 Coordinate System.
 
