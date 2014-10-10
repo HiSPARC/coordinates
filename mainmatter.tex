@@ -19,7 +19,7 @@ to our usual coordinate systems.
 \section{Geographic}
 
 Geographic coordinate systems define a point on the Earth. Multiple
-systems are important; WGS84, ECEF, ENU. Additionally a compass based
+systems are important; WGS84, ECEF and ENU. Additionally a compass based
 system is used for detector locations relative to GPS antenna. These
 systems are described in the following sections.
 \figref{fig:wgs84_ecef_enu} shows the relationships between the systems.
@@ -38,9 +38,10 @@ The conversion formula are taken from \cite{wikigeodetic}.
 
 For the location of a station we use a \gps antenna. The \gps returns
 coordinates in the WGS84 coordinate system. This defines a position with
-a latitude, longitude and altitude. The latitude and longitude are
-defined in decimal degrees, the altitude in meters. Latitude is positive
-towards West and longitude is positive towards North.
+a latitude, longitude and altitude. The latitude ($\phi$) and longitude
+($\lambda$) are defined in decimal degrees, the altitude in meters.
+Latitude is positive towards West and longitude is positive towards
+North.
 
 
 \subsection{Earth-Centered, Earth-Fixed (ECEF)}
@@ -48,8 +49,28 @@ towards West and longitude is positive towards North.
 This coordinate has its origin as the center of the Earth
 (Earth-Centered), and its axes are aligned with the WGS84 system. The
 z-axis points to North. The x-axis crosses the Earth where the equator
-(\SI{0}{\degrees} latitude) intersects with the prime meridan
-(\SI{0}{\degrees} longitude).
+(\SI{0}{\degree} latitude) intersects with the prime meridan
+(\SI{0}{\degree} longitude).
+
+The formulae to convert WGS84 to ECEF are:
+
+\begin{equation}
+    \begin{array}{l}
+        X = (N + altitude) \cos{\phi} \cos{\lambda} \ , \\
+        Y = (N + altitude) \cos{\phi} \sin{\lambda} \ , \\
+        Z = (\frac{b^2}{a^2} N + altitude) \sin{\phi} \ . \\
+    \end{array}
+\end{equation}
+
+Where
+\begin{equation}
+    \begin{array}{l}
+        N = \frac{a}{\sqrt{1 - e^2 \sin{\phi}^2}} \ , \\
+    \end{array}
+\end{equation}
+
+and $b$ is the semi-minor axis, $a$ the semi-major axis and $e$ the
+eccentricity of the ellipsoid.
 
 
 \subsection{East, North, Up (ENU)}
@@ -59,6 +80,26 @@ and angles between locations. It is a local coordinate system where its
 origin (reference position) can be chosen. From the reference location
 east is positive x-axis, north is positive y-axis and up (towards
 zenith) is the positive z-axis. All distances are in meters.
+
+The formulae to convert ECEF to ENU with a reference position are:
+
+\begin{equation}
+    \begin{bmatrix}
+    x \\ y \\ z
+    \end{bmatrix}
+    = 
+    \begin{bmatrix}
+                   -\sin(\lambda) &             \cos(\lambda) &         0. \\
+        -\sin(\phi) \cos(\lambda) & -\sin(\phi) \sin(\lambda) & \cos(\phi) \\
+         \cos(\phi) \cos(\lambda) &  \cos(\phi) \sin(\lambda) & \sin(\phi)
+    \end{bmatrix}
+    \begin{bmatrix}
+    X - X_r \\ Y - Y_r \\ Z - Z_r
+    \end{bmatrix}
+\end{equation}
+
+where $X_r, Y_r$ and $Z_r$ are the reference position in ECEF.
+
 
 
 \subsection{Compass}
@@ -83,6 +124,10 @@ relative to the North Pole (positive towards East).
              and how it is used to define the position of a detector.}
     \label{fig:enu_compass}
 \end{figure}
+
+The formulae to convert Compass to ENU are:
+
+...
 
 
 \section{Celestial}
@@ -120,7 +165,10 @@ In decimal hours.
 
 \section{\corsika}
 
-\cite{corsika}
+\corsika an extensive air shower simulation program which we use.
+\corsika uses a coordinate system which is slightly different from the
+ENU system that we use\cite{corsika}.
+
 
 \subsection{Geographic}
 
@@ -151,6 +199,10 @@ Geodetic system. In Wikipedia. Retrieved August 10, 2004,
 from \url{http://en.wikipedia.org/wiki/Geodetic_system}
 
 \bibitem{corsika}
-Corsika manual Chapter 6 Coordinate System.
+Extensive Air Shower Simulation with CORSIKA: A User’s Guide. D. Heck
+and T. Pierog. September 3, 2013. Chapter 6 Coordinate System.
+
+\bibitem{tikz3d}
+The tikz-3dplot Package. J. Hein. January 11, 2012.
 
 \end{thebibliography}
