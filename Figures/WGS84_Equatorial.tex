@@ -11,7 +11,6 @@
 \pgfmathsetmacro{\gmst}{-45}  % Greenwich mean sidereal time
 \pgfmathsetmacro{\lst}{\longitude+\gmst}  % local sidereal time in degrees
 
-
 %\pgfmathsetmacro{\zenith}{22}  % theta
 %\pgfmathsetmacro{\azimuth}{0}  % phi
 
@@ -23,6 +22,7 @@
     \definecolor{enu}{RGB}{0,184,0}; % green
     \definecolor{compass}{RGB}{125,10,255}; % purple
     \definecolor{equa}{RGB}{253,39,39}; % red
+    \definecolor{time}{RGB}{15,171,135}; % teal
 
     \coordinate (O) at (0,0,0);
 
@@ -32,7 +32,8 @@
     \tdplotsetthetaplanecoords{90};
     \draw[base,tdplot_rotated_coords] (O) circle (\rlen);
     \tdplotsetthetaplanecoords{\gmst};
-    \draw[base,tdplot_rotated_coords] (\rlen,0,0) arc (0:90:\rlen); % Prime Meridian
+    % Prime Meridian
+    \draw[base,tdplot_rotated_coords] (\rlen,0,0) arc (0:90:\rlen);
     \tdplotsetthetaplanecoords{\lst};
     \draw[base,dashed,tdplot_rotated_coords] (\rlen,0,0) arc (0:90:\rlen);
     \draw[base,dashed,tdplot_rotated_coords] (\clen,0,0) arc (0:90:\clen);
@@ -42,55 +43,58 @@
     \draw[base] (\clen,-.8,0)
         node[anchor=north east,rotate=-10] {Celestial Equator};
     \draw[base,->,-stealth] (O) -- (0,0,\clen + .3)
-        node[anchor=south]{Celestial North Pole};
+        node[anchor=south] {Celestial North Pole};
     \tdplotsetthetaplanecoords{90};
     \draw[base,tdplot_rotated_coords] (O) circle (\clen);
 
     % ECEF
     \tdplotsetrotatedcoords{0}{0}{\gmst};
-    \draw[ecef,->,-stealth,tdplot_rotated_coords] (O) -- (\rlen+.2,0,0) node[anchor=north]{$X$};
-    \draw[ecef,->,-stealth,tdplot_rotated_coords] (O) -- (0,\rlen+.2,0) node[anchor=west]{$Y$};
-    \draw[ecef,->,-stealth,tdplot_rotated_coords] (O) -- (0,0,\rlen+.2) node[anchor=west]{$Z$};
+    \draw[ecef,->,-stealth,tdplot_rotated_coords] (O) -- (\rlen+.2,0,0)
+        node[anchor=north] {$X$};
+    \draw[ecef,->,-stealth,tdplot_rotated_coords] (O) -- (0,\rlen+.2,0)
+        node[anchor=west] {$Y$};
+    \draw[ecef,->,-stealth,tdplot_rotated_coords] (O) -- (0,0,\rlen+.2)
+        node[anchor=west] {$Z$};
 
     % WGS84
     % longitude
     \tdplotsetrotatedcoords{0}{0}{\gmst};
-    \tdplotdrawarc[wgs84,->,-stealth,tdplot_rotated_coords]{(O)}{0.25}
-        {0}{\longitude}{anchor=north east}{$\lambda$};
+    \tdplotdrawarc[wgs84,->,-stealth,tdplot_rotated_coords]
+        {(O)}{0.25}{0}{\longitude}{anchor=north east}{$\lambda$};
     % latitude
     \tdplotsetthetaplanecoords{\lst};
-    \tdplotdrawarc[wgs84,->,-stealth,tdplot_rotated_coords]{(0,0,0)}{0.25}
-        {90}{\latitude}{anchor=south west}{$\phi$};
+    \tdplotdrawarc[wgs84,->,-stealth,tdplot_rotated_coords]
+        {(0,0,0)}{0.25}{90}{\latitude}{anchor=south west}{$\phi$};
 
     % gmst
     \tdplotsetthetaplanecoords{\lst};
-    \tdplotdrawarc[equa,->,-stealth]{(0,0,0)}{\rlen}
-        {0}{360+\gmst}{}{GMST};
+    \tdplotdrawarc[time,->,-stealth]
+        {(O)}{\rlen}{0}{360+\gmst}{anchor=south}{GMST};
+    \tdplotdrawarc[time,->,-stealth]
+        {(O)}{\clen}{\lst}{\ra}{anchor=north west}{HA};
 
     % observer
     \tdplotsetcoord{P}{\rlen}{\latitude}{\lst};
     \tdplotsetcoord{P'}{\clen}{\latitude}{\lst};
     \draw[color=black,->,-stealth] (O) -- (P);
-    \draw[base] (P) -- (P') node[anchor=south west]{Zenith};
-    \draw[dashed, color=black] (O) -- (Pxy);
-    \draw[dashed, color=black] (P) -- (Pxy);
+    \draw[base] (P) -- (P') node[anchor=south west] {Zenith};
+    \draw[dashed] (O) -- (Pxy);
+    \draw[dashed] (P) -- (Pxy);
 
     % Equatorial
     \draw[equa,->,-stealth] (O) -- (\clen + .3,0,0)
         node[anchor=north]{$\vernal$};
-    \tdplotdrawarc[equa,->,-stealth] {(O)}{\clen}
-        {\lst}{\ra}{anchor=north west}{HA};
 
     \tdplotsetcoord{S}{\clen}{\dec}{\ra};
-    \draw[color=black,->,-stealth] (O) -- (S) node[anchor=south west]{$\star$};
-    \draw[dashed, color=black] (O) -- (Sxy);
-    \draw[dashed, color=black] (S) -- (Sxy);
+    \draw[->,-stealth] (O) -- (S) node[anchor=south west] {$\star$};
+    \draw[dashed] (O) -- (Sxy);
+    \draw[dashed] (S) -- (Sxy);
+
     \tdplotsetthetaplanecoords{\ra};
     \draw[base,dashed,tdplot_rotated_coords] (\clen,0,0) arc (0:90:\clen);
-    \tdplotdrawarc[equa,->,-stealth]{(O)}{\clen}
-        {0}{\ra}{anchor=north}{$\alpha$};
-    \tdplotsetthetaplanecoords{\ra};
-    \tdplotdrawarc[equa,->,-stealth,tdplot_rotated_coords]{(0,0,0)}{\clen}
-        {90}{\dec}{anchor=west}{$\delta$};
+    \tdplotdrawarc[equa,->,-stealth,tdplot_rotated_coords]
+        {(0,0,0)}{\clen}{90}{\dec}{anchor=west}{$\delta$};
+    \tdplotdrawarc[equa,->,-stealth]
+        {(O)}{\clen}{0}{\ra}{anchor=north}{$\alpha$};
 
 \end{tikzpicture}
