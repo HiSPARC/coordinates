@@ -8,15 +8,15 @@
     \definecolor{compass}{RGB}{125,10,255}; % purple
     \definecolor{base}{RGB}{128,128,128}; % grey
 
-    % Origin
+    % coordinates
     \coordinate (O) at (0,0);
+    \coordinate (d0) at (\alphavec:\rlen);
 
     % Draw ENU axes
-    \draw[enu,->,-stealth] (O) -- (0,2) node[anchor=south] {$North$};
-    \draw[enu,->,-stealth] (O) -- (2,0) node[anchor=west] {$East$};
+    \draw[enu,->,-stealth] (O) -- (0,2) node[anchor=south] {North};
+    \draw[enu,->,-stealth] (O) -- (2,0) node[anchor=west] {East};
 
     % Draw a detectors
-    \coordinate (d0) at (\alphavec:\rlen);
     \fill[base,rotate=\betavec] (d0) ++(-.15,-.075) rectangle +(.3,.15);
 
     % Draw distance line

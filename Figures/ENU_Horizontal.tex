@@ -1,0 +1,54 @@
+\tdplotsetmaincoords{70}{-10}
+
+\pgfmathsetmacro{\rlen}{.8}
+\pgfmathsetmacro{\zenith}{90-45}  % theta
+\pgfmathsetmacro{\azimuth}{300}  % phi
+
+\begin{tikzpicture}[scale=5,thick,tdplot_main_coords]
+
+    \definecolor{base}{RGB}{128,128,128}; % grey
+    \definecolor{wgs84}{RGB}{255,153,0}; % orange
+    \definecolor{ecef}{RGB}{13,98,153}; % blue
+    \definecolor{enu}{RGB}{0,184,0}; % green
+    \definecolor{zenazi}{RGB}{200,20,200}; % pink
+    \definecolor{hori}{RGB}{200,180,20}; % gold
+
+    % coordinates
+    \coordinate (O) at (0,0,0);
+    \tdplotsetcoord{P}{\rlen}{\zenith}{\azimuth};
+
+    % base
+    \draw[base] (O) circle (\rlen);
+    \draw[base] (-\rlen*.8,-\rlen*.8,0) node[anchor=west,rotate=-10] {Horizon};
+    \tdplotsetthetaplanecoords{\azimuth};
+    \draw[base,dashed,tdplot_rotated_coords] (\rlen,0,0) arc (0:90:\rlen);
+    \draw[base,dashed,tdplot_rotated_coords] (0,0,0) -- (0,\rlen,0);
+    \draw[base,dashed] (P) -- (Pxy);
+
+    % ENU
+    \draw[enu,->,-stealth] (O) -- (1,0,0) node[anchor=west]{East};
+    \draw[enu,->,-stealth] (O) -- (0,1,0) node[anchor=south east]{North};
+
+    % Zenith Azimuth
+    \tdplotdrawarc[zenazi,->,-stealth]
+        {(O)}{0.2}{0}{\azimuth}{anchor=south east}{$\phi$};
+
+    % Horizontal
+    \tdplotdrawarc[hori,->,-stealth]
+        {(O)}{0.4}{90}{\azimuth-360}{anchor=south west}{$A$};
+
+    \tdplotsetthetaplanecoords{\azimuth};
+    % Zenith Azimuth
+    \tdplotdrawarc[zenazi,->,-stealth,tdplot_rotated_coords]
+        {(0,0,0)}{0.25}{0}{\zenith}{anchor=south west}{$\theta$};
+    % Horizontal
+    \tdplotdrawarc[hori,->,-stealth,tdplot_rotated_coords]
+        {(0,0,0)}{0.25}{90}{\zenith}{anchor=south west}{$a$};
+
+    % ENU
+    \draw[enu,->,-stealth] (O) -- (0,0,1) node[anchor=south]{Up};
+
+    % star
+    \draw[->,-stealth] (O) -- (P) node[anchor=south west] {$\star$};
+
+\end{tikzpicture}

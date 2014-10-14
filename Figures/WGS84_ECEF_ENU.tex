@@ -1,6 +1,6 @@
 \tdplotsetmaincoords{70}{95}
 
-\pgfmathsetmacro{\rvec}{.8}
+\pgfmathsetmacro{\rlen}{.8}
 \pgfmathsetmacro{\latitude}{90-45}  % phi
 \pgfmathsetmacro{\longitude}{50}  % lambda
 
@@ -12,26 +12,26 @@
     \definecolor{enu}{RGB}{0,184,0}; % green
 
     \coordinate (O) at (0,0,0);
+    \tdplotsetcoord{P}{\rlen}{\latitude}{\longitude};
 
     % base
-    \draw[base] (O) circle (\rvec);
-    \draw[base] (\rvec,-.2,0) node[anchor=north east,rotate=-10] {Equator};
+    \draw[base] (O) circle (\rlen);
+    \draw[base] (\rlen,-.2,0) node[anchor=north east,rotate=-10] {Equator};
     \tdplotsetthetaplanecoords{90};
-    \draw[base,tdplot_rotated_coords] (O) circle (\rvec);
+    \draw[base,tdplot_rotated_coords] (O) circle (\rlen);
     \tdplotsetthetaplanecoords{0};
-    \draw[base,tdplot_rotated_coords] (\rvec,0,0) arc (0:90:\rvec)
+    \draw[base,tdplot_rotated_coords] (\rlen,0,0) arc (0:90:\rlen)
         node[above right,rotate=88] {Prime Meridian};
     \tdplotsetthetaplanecoords{\longitude};
-    \draw[base,dashed,tdplot_rotated_coords] (\rvec,0,0) arc (0:90:\rvec);
+    \draw[base,dashed,tdplot_rotated_coords] (\rlen,0,0) arc (0:90:\rlen);
+    \draw[base,dashed,tdplot_rotated_coords] (0,0,0) -- (0,\rlen,0);
+    \draw[base,dashed] (P) -- (Pxy);
 
     % ECEF
     \draw[ecef,->,-stealth] (O) -- (1,0,0) node[anchor=north]{$X$};
     \draw[ecef,->,-stealth] (O) -- (0,1,0) node[anchor=west]{$Y$};
     \draw[ecef,->,-stealth] (O) -- (0,0,1) node[anchor=south]{$Z$};
-    \tdplotsetcoord{P}{\rvec}{\latitude}{\longitude};
     \draw[->,-stealth] (O) -- (P);
-    \draw[dashed] (O) -- (Pxy);
-    \draw[dashed] (P) -- (Pxy);
 
     % WGS84
     \tdplotdrawarc[wgs84,->,-stealth]
@@ -44,16 +44,16 @@
     \tdplotsetrotatedcoords{\longitude}{\latitude}{0};
     \tdplotsetrotatedcoordsorigin{(P)};
 
-%   This should be the ENU axes, but I cant find the correct rotation:
+%   This should be the ENU axes,but I cant find the correct rotation:
 %    \draw[enu,tdplot_rotated_coords,->] (0,0,0) -- (.3,0,0) node[anchor=west]{$East$};
 %    \draw[enu,tdplot_rotated_coords,->] (0,0,0) -- (0,.3,0) node[anchor=south]{$North$};
 %    \draw[enu,tdplot_rotated_coords,->] (0,0,0) -- (0,0,.4) node[anchor=south]{$Up$};
 
     \draw[enu,->,-stealth,tdplot_rotated_coords] (0,0,0) -- (-.45,0,0)
-        node[anchor=south]{$North$};
+        node[anchor=south]{North};
     \draw[enu,->,-stealth,tdplot_rotated_coords] (0,0,0) -- (0,.45,0)
-        node[anchor=west]{$East$};
+        node[anchor=west]{East};
     \draw[enu,->,-stealth,tdplot_rotated_coords] (0,0,0) -- (0,0,.45)
-        node[anchor=south]{$Up$};
+        node[anchor=south]{Up};
 
 \end{tikzpicture}

@@ -10,10 +10,13 @@ as intermediary in coordinate transformations.
 
 \section{Introduction}
 
+Since we have to works with many coordinate systems it can be hard to
+keep track of the definitions of each. This document is meant as a
+reference to easily find the relations between the different systems.
 First coordinate systems used by \hisparc will be discussed. Including
-the units used and where it is used. Then other coordinate systems that
-we have to deal with are discussed, including ways to convert from those
-to our usual coordinate systems.
+the units that are used and where it is used. Then other coordinate
+systems that we have to deal with are discussed, including ways to
+convert from those to our usual coordinate systems.
 
 
 \section{Geographic}
@@ -22,8 +25,8 @@ Geographic coordinate systems define a point on the Earth. Multiple
 systems are important; WGS84, ECEF and ENU. Additionally a compass based
 system is used for detector locations relative to GPS antenna. These
 systems are described in the following sections.
-\figref{fig:wgs84_ecef_enu} shows the relationships between the systems.
-The conversion formula are taken from \cite{wikigeodetic}.
+\figref{fig:wgs84_ecef_enu} shows the relationships between the global
+systems. The conversion formulae are taken from \cite{wikigeodetic}.
 
 \begin{figure}
     \centering
@@ -40,8 +43,12 @@ For the location of a station we use a \gps antenna. The \gps returns
 coordinates in the WGS84 coordinate system. This defines a position with
 a latitude, longitude and altitude. The latitude ($\phi$) and longitude
 ($\lambda$) are defined in decimal degrees, the altitude in meters.
-Latitude is positive towards West and longitude is positive towards
-North.
+Latitude is the angular distance between a location and the equator,
+angles towards north are positive. The longitude is the angular distance
+of a location to the Prime Meridian, angles towards east are positive.
+The altitude is the height above an ellipsoid that approximates the
+shape of the Earth, the parameters that define this ellipsoid are given
+in \eqref{eq:wgs84}.
 
 
 \subsection{Earth-Centered, Earth-Fixed (ECEF)}
@@ -56,21 +63,30 @@ The formulae to convert WGS84 to ECEF are:
 
 \begin{equation}
     \begin{array}{l}
-        X = (N + altitude) \cos{\phi} \cos{\lambda} \ , \\
-        Y = (N + altitude) \cos{\phi} \sin{\lambda} \ , \\
-        Z = (\frac{b^2}{a^2} N + altitude) \sin{\phi} \ . \\
+        X = (N + \mathrm{altitude}) \cos{\phi} \cos{\lambda} \ , \\
+        Y = (N + \mathrm{altitude}) \cos{\phi} \sin{\lambda} \ , \\
+        Z = (\frac{b^2}{a^2} N + \mathrm{altitude}) \sin{\phi} \ . \\
     \end{array}
 \end{equation}
 
-Where
+Where the ellipsoid is defined by
+
 \begin{equation}
+    \label{eq:wgs84}
     \begin{array}{l}
+        a = \SI{6378137.0}{\meter} \ , \\
+        f = \frac{1}{298.257223563} \ , \\
+        b = a (1 - f) \ , \\
+        e = \sqrt{2 f - f^2} \ , \\
         N = \frac{a}{\sqrt{1 - e^2 \sin{\phi}^2}} \ , \\
     \end{array}
 \end{equation}
 
-and $b$ is the semi-minor axis, $a$ the semi-major axis and $e$ the
-eccentricity of the ellipsoid.
+\noindent
+here $a$ is the semi-major axis, $f$ the flattening, $b$ the semi-minor
+axis and $e$ the eccentricity of the ellipsoid. $N$ is the Normal, which
+is the distance from the surface of the ellipsoid to the intersection
+between the normal of the ellipsoid and the z-axis.
 
 
 \subsection{East, North, Up (ENU)}
@@ -79,7 +95,7 @@ East North Up is used by us to easily get distances, relative locations
 and angles between locations. It is a local coordinate system where its
 origin (reference position) can be chosen. From the reference location
 east is positive x-axis, north is positive y-axis and up (towards
-zenith) is the positive z-axis. All distances are in meters.
+Zenith) is the positive z-axis. All distances are in meters.
 
 The formulae to convert ECEF to ENU with a reference position are:
 
@@ -101,7 +117,6 @@ The formulae to convert ECEF to ENU with a reference position are:
 where $X_r, Y_r$ and $Z_r$ are the reference position in ECEF.
 
 
-
 \subsection{Compass}
 
 The \gps antenna is often not at the center of a station, so detector
@@ -120,50 +135,80 @@ relative to the North Pole (positive towards East).
 \begin{figure}
     \centering
     \input{Figures/ENU_compass}
-    \caption{Relationship ENU (green) and compass (purple) coordinate system
-             and how it is used to define the position of a detector.}
+    \caption{Relationship between the ENU (green) and Compass (purple)
+             coordinate system and how it is used to define the position
+             and rotation of a detector.}
     \label{fig:enu_compass}
 \end{figure}
 
-The formulae to convert Compass to ENU are:
+The formulae to convert the location of a station in Compass coordinates
+to ENU are:
 
-...
+\begin{equation}
+    \begin{array}{l}
+        x = r * \sin{\alpha} \ , \\
+        y = r * \cos{\alpha} \ , \\
+        z = z \ . \\
+    \end{array}
+\end{equation}
 
 
 \section{Celestial}
 
+Here we describe the different coordinate systems used to define the
+direction of an air shower.
 
 \begin{figure}
     \centering
     \input{Figures/WGS84_Equatorial}
     \caption{Relationship between the WGS84 (orange), ECEF (blue),
-             Equatorial (red) and clock (teal) coordinate systems.}
+             Equatorial (red) and clock (teal) coordinate systems.
+             $\vernal$ points to the vernal equinox, the point where the
+             ecliptic and celestial equator cross in the Aries zodiac.}
     \label{fig:wgs84_equatorial}
 \end{figure}
 
 
-\subsection{Azimuth and Zenith}
+\subsection{Zenith and Azimuth}
 
 When a station detects a shower we try to reconstruct the direction of
-its origin. The direction of a shower is then given by an azimuth and
-zenith coordinate. These coordinates define a point on the semi-sphere
-that is the sky above the detection station. The zenith is the point
+its origin. The direction of a shower is then given by an zenith and
+azimuth coordinate. These coordinates define a point on the semi-sphere
+that is the sky above the detection station. The Zenith is the point
 directly above the observer. The zenith angle is the angle between the
-direction and the zenith point. The azimuth is the direction in the
-horizontal plane, it starts at East then goes to North (ENWS).
+direction and the Zenith point. The azimuth is the direction in the
+horizontal plane, it starts at East (\SI{0}{\radian}) then goes to North
+(ENWS).
 
 We do not expect nor consider air showers from below the horizon, so the
-zenith angles, defined in radians, are and angle in the range (0,
-$\frac{\pi}{2}$). The azimuth is restricted to the range ($-\pi$, $\pi$).
+zenith angles, defined in radians, are an angle in the range [0,
+$\frac{\pi}{2}$). The azimuth is restricted to the range [$-\pi$, $\pi$).
 
+\begin{figure}
+    \centering
+    \input{Figures/ENU_Horizontal}
+    \caption{Relationship between the ENU (green), Zenith Azimuth (pink)
+             and horizontal (gold) coordinate systems.}
+    \label{fig:enu_horizontal}
+\end{figure}
 
 \subsection{Horizontal}
 
 This is a system used as intermediary for some coordinate conversions.
-It uses azimuth and altitude to define a direction. The altitude is the
-opposite of the zenith, so 0 is horizontal and $\frac{\pi}{2}$ is the
-zenith. The azimuth definition also differs, it moves from North to East
-(NESW).
+It uses azimuth ($A$) and altitude ($a$) to define a direction. The
+altitude is the opposite of the zenith, so \SI{0}{\radian} is horizontal
+and \SI{\pi / 2}{\radian} is the zenith. The azimuth definition also
+differs, in Horizontal coordinates it moves from North to East (NESW).
+
+The formulae to convert the zenith ($\theta$) and azimuth ($\phi$) to
+altitude ($a$) and azimuth ($A$) are:
+
+\begin{equation}
+    \begin{array}{l}
+        a = \frac{\pi}{2} - \theta \ , \\
+        A = - (\phi + \frac{\pi}{2}) \ . \\
+    \end{array}
+\end{equation}
 
 
 \subsection{Equatorial (J2000)}
@@ -179,6 +224,14 @@ In decimal hours.
 \corsika uses a coordinate system which is slightly different from the
 ENU system that we use\cite{corsika}.
 
+\begin{figure}
+    \centering
+    \input{Figures/ENU_CORSIKA}
+    \caption{Relationship between the ENU (green), horizontal (pink)
+             and CORSIKA (brown) coordinates.}
+    \label{fig:enu_corsika}
+\end{figure}
+
 
 \subsection{Geographic}
 
@@ -186,18 +239,38 @@ ENU system that we use\cite{corsika}.
 to the core of the shower(??). Positive x axis points to magnetic North,
 positive y axis to the West, and the z axis upwards.
 
+The formulae to convert CORSIKA to ENU are:
+
+\begin{equation}
+    \begin{array}{l}
+        x_{\mathrm{ENU}} = -y_{\mathrm{CORSIKA}} \ , \\
+        y_{\mathrm{ENU}} = x_{\mathrm{CORSIKA}} \ , \\
+        z_{\mathrm{ENU}} = z_{\mathrm{CORSIKA}} \ . \\
+    \end{array}
+\end{equation}
+
 
 \subsection{Celestial}
 
-As origin of the shower \corsika looks from the point of view of the
-shower. The $\theta$ angle is defined the same as our definition of
-zenith, \SI{0}{\radian} is a shower from the zenith and
-\SI{\pi / 2}{\radian} is a horizontal shower. The $\phi$ angle is
-defined differently than our definition of azimuth. First it is the
-angle the shower is heading towards. \SI{0}{\radian} is a shower heading
-towards North, so coming form South, which we would define as
-\SI{\pi / 2}{\radian}. The (positive) rotation of the angle is
-in the same direction, from North to West. So the conversion is:.
+\corsika looks from the point of view of the shower, so not the
+direction it came form, but the direction it goes to. The $\Theta$ angle
+is defined the same as our definition of zenith ($\theta$),
+\SI{0}{\radian} is a shower from the zenith and \SI{\pi / 2}{\radian} is
+a horizontal shower. The $\Phi$ angle is defined differently than our
+definition of azimuth ($\phi$). First it is the angle the shower is heading
+towards. \SI{0}{\radian} is a shower heading towards North, so coming
+form South, which we would define as \SI{\pi / 2}{\radian}. The
+(positive) rotation of the angle is in the same direction, from North to
+West.
+
+The formulae to convert the CORSIKA direction to our azimuth and zenith are:
+
+\begin{equation}
+    \begin{array}{l}
+        \theta = \Theta \ , \\
+        \phi = \Phi - \frac{\pi}{2} \ . \\
+    \end{array}
+\end{equation}
 
 
 \bibliography{References}
@@ -207,6 +280,10 @@ in the same direction, from North to West. So the conversion is:.
 \bibitem{wikigeodetic}
 Geodetic system. In Wikipedia. Retrieved August 10, 2004,
 from \url{http://en.wikipedia.org/wiki/Geodetic_system}
+
+\bibitem{duffet-smith}
+Astronomy with your personal computer. P. Duffet-Smith.
+1990.
 
 \bibitem{corsika}
 Extensive Air Shower Simulation with CORSIKA: A User’s Guide. D. Heck

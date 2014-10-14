@@ -1,0 +1,58 @@
+\tdplotsetmaincoords{70}{-10}
+
+\pgfmathsetmacro{\rlen}{.8}
+\pgfmathsetmacro{\zenith}{90-45}  % theta
+\pgfmathsetmacro{\azimuth}{40}  % phi
+
+\begin{tikzpicture}[scale=5,thick,tdplot_main_coords]
+
+    \definecolor{base}{RGB}{128,128,128}; % grey
+    \definecolor{wgs84}{RGB}{255,153,0}; % orange
+    \definecolor{ecef}{RGB}{13,98,153}; % blue
+    \definecolor{enu}{RGB}{0,184,0}; % green
+    \definecolor{hori}{RGB}{200,20,200}; % pink
+    \definecolor{corsika}{RGB}{151,115,0}; % brown
+
+    % coordinates
+    \coordinate (O) at (0,0,0);
+    \tdplotsetcoord{P}{\rlen}{\zenith}{\azimuth};
+    \tdplotsetcoord{P'}{\rlen}{180-\zenith}{180 + \azimuth};
+
+    % base
+    \draw[base] (O) circle (\rlen);
+    \draw[base] (-\rlen*.8,-\rlen*.8,0) node[anchor=west,rotate=-10] {};
+    \tdplotsetthetaplanecoords{\azimuth};
+    \draw[base,dashed,tdplot_rotated_coords] (\rlen,0,0) arc (0:90:\rlen);
+    \draw[base,dashed] (P) -- (Pxy);
+    \draw[base,dashed] (P') -- (P'xy);
+    \draw[base,dashed,tdplot_rotated_coords] (0,-\rlen,0) -- (0,\rlen,0);
+
+    % Horizontal
+    \tdplotdrawarc[hori,->,-stealth]
+        {(O)}{0.3}{0}{\azimuth}{anchor=west}{$\phi$};
+    \tdplotsetthetaplanecoords{\azimuth};
+    \tdplotdrawarc[hori,->,-stealth,tdplot_rotated_coords]
+        {(0,0,0)}{0.2}{0}{\zenith}{anchor=south}{$\theta$};
+
+    % ENU
+    \draw[enu,->,-stealth] (O) -- (1,0,0) node[anchor=west]{East};
+    \draw[enu,->,-stealth] (O) -- (0,1,0) node[anchor=south east]{North};
+    \draw[enu,->,-stealth] (O) -- (0,0,1) node[anchor=south east]{Up};
+
+    % CORSIKA
+    \tdplotdrawarc[corsika,->,-stealth]
+        {(O)}{0.3}{90}{\azimuth+180}{anchor=south}{$\Phi$};
+    \tdplotsetthetaplanecoords{\azimuth};
+    \tdplotsetrotatedcoordsorigin{(P)};
+    \tdplotdrawarc[corsika,->,-stealth,tdplot_rotated_coords]
+        {(0,0,0)}{0.2}{180}{180+\zenith}{anchor=north}{$\Theta$};
+
+    \draw[corsika,->,dashed,-stealth] (O) -- (-1,0,0) node[anchor=east]{$y$};
+    \draw[corsika,->,dashed,-stealth] (O) -- (0,1,0) node[anchor=south west]{$x$};
+    \draw[corsika,->,dashed,-stealth] (O) -- (0,0,1) node[anchor=south west]{$z$};
+
+    % star
+    \draw[->,-stealth] (O) -- (P) node[anchor=south west] {$\star$};
+    \draw[base,->,-stealth] (O) -- (P');
+
+\end{tikzpicture}

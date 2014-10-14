@@ -37,6 +37,7 @@
     \tdplotsetthetaplanecoords{\lst};
     \draw[base,dashed,tdplot_rotated_coords] (\rlen,0,0) arc (0:90:\rlen);
     \draw[base,dashed,tdplot_rotated_coords] (\clen,0,0) arc (0:90:\clen);
+    \draw[base,dashed,tdplot_rotated_coords] (0,0,0) -- (0,\clen,0);
 
     % celestial base
     \draw[base] (O) circle (\clen);
@@ -60,11 +61,11 @@
     % longitude
     \tdplotsetrotatedcoords{0}{0}{\gmst};
     \tdplotdrawarc[wgs84,->,-stealth,tdplot_rotated_coords]
-        {(O)}{0.25}{0}{\longitude}{anchor=north east}{$\lambda$};
+        {(O)}{0.4}{0}{\longitude}{anchor=north}{$\lambda$};
     % latitude
     \tdplotsetthetaplanecoords{\lst};
     \tdplotdrawarc[wgs84,->,-stealth,tdplot_rotated_coords]
-        {(0,0,0)}{0.25}{90}{\latitude}{anchor=south west}{$\phi$};
+        {(0,0,0)}{0.4}{90}{\latitude}{anchor=west}{$\phi$};
 
     % gmst
     \tdplotsetthetaplanecoords{\lst};
@@ -78,20 +79,19 @@
     \tdplotsetcoord{P'}{\clen}{\latitude}{\lst};
     \draw[color=black,->,-stealth] (O) -- (P);
     \draw[base] (P) -- (P') node[anchor=south west] {Zenith};
-    \draw[dashed] (O) -- (Pxy);
-    \draw[dashed] (P) -- (Pxy);
+    \draw[base,dashed] (P) -- (Pxy);
 
     % Equatorial
-    \draw[equa,->,-stealth] (O) -- (\clen + .3,0,0)
+    \draw[base,->,-stealth] (O) -- (\clen + .3,0,0)
         node[anchor=north]{$\vernal$};
 
     \tdplotsetcoord{S}{\clen}{\dec}{\ra};
     \draw[->,-stealth] (O) -- (S) node[anchor=south west] {$\star$};
-    \draw[dashed] (O) -- (Sxy);
-    \draw[dashed] (S) -- (Sxy);
+    \draw[base,dashed] (S) -- (Sxy);
 
     \tdplotsetthetaplanecoords{\ra};
     \draw[base,dashed,tdplot_rotated_coords] (\clen,0,0) arc (0:90:\clen);
+    \draw[base,dashed,tdplot_rotated_coords] (0,0,0) -- (0,\clen,0);
     \tdplotdrawarc[equa,->,-stealth,tdplot_rotated_coords]
         {(0,0,0)}{\clen}{90}{\dec}{anchor=west}{$\delta$};
     \tdplotdrawarc[equa,->,-stealth]
