@@ -3,7 +3,8 @@
 This is meant as documentation to describe the coordinate system and
 units used in \hisparc data and analysis. We also have to deal with
 other coordinate systems such as the one used in \corsika and some used
-as intermediary in coordinate transformations.
+as intermediary in coordinate transformations. The conversions and
+relations between these systems are given.
 
 \end{abstract}
 
@@ -23,7 +24,7 @@ convert from those to our usual coordinate systems.
 
 Geographic coordinate systems define a point on the Earth. Multiple
 systems are important; WGS84, ECEF and ENU. Additionally a compass based
-system is used for detector locations relative to GPS antenna. These
+system is used for detector locations relative to \gps antenna. These
 systems are described in the following sections.
 \figref{fig:wgs84_ecef_enu} shows the relationships between the global
 systems. The conversion formulae are taken from \cite{wikigeodetic}.
@@ -86,15 +87,15 @@ Where the ellipsoid is defined by
 here $a$ is the semi-major axis, $f$ the flattening, $b$ the semi-minor
 axis and $e$ the eccentricity of the ellipsoid. $N$ is the Normal, which
 is the distance from the surface of the ellipsoid to the intersection
-between the normal of the ellipsoid and the z-axis.
+between the normal of the location on the ellipsoid and the z-axis.
 
 
 \subsection{East, North, Up (ENU)}
 
-East North Up is used by us to easily get distances, relative locations
+East, North, Up is used by us to easily get distances, relative locations
 and angles between locations. It is a local coordinate system where its
 origin (reference position) can be chosen. From the reference location
-east is positive x-axis, north is positive y-axis and up (towards
+east is the positive x-axis, north is the positive y-axis and up (towards
 Zenith) is the positive z-axis. All distances are in meters.
 
 The formulae to convert ECEF to ENU with a reference position are:
@@ -105,30 +106,34 @@ The formulae to convert ECEF to ENU with a reference position are:
     \end{bmatrix}
     = 
     \begin{bmatrix}
-                   -\sin(\lambda) &             \cos(\lambda) &         0. \\
-        -\sin(\phi) \cos(\lambda) & -\sin(\phi) \sin(\lambda) & \cos(\phi) \\
-         \cos(\phi) \cos(\lambda) &  \cos(\phi) \sin(\lambda) & \sin(\phi)
+                     -\sin(\lambda_r) &               \cos(\lambda_r) &           0. \\
+        -\sin(\phi_r) \cos(\lambda_r) & -\sin(\phi_r) \sin(\lambda_r) & \cos(\phi_r) \\
+         \cos(\phi_r) \cos(\lambda_r) &  \cos(\phi_r) \sin(\lambda_r) & \sin(\phi_r)
     \end{bmatrix}
     \begin{bmatrix}
     X - X_r \\ Y - Y_r \\ Z - Z_r
     \end{bmatrix}
 \end{equation}
 
-where $X_r, Y_r$ and $Z_r$ are the reference position in ECEF.
+where  $(X, Y, Z)$ and $(x, y, z)$ are the location in ECEF and ENU
+respectively. $(\phi_r, \lambda_r)$ and $(X_r, Y_r, Z_r)$ are the
+reference position in WGS84 and ECEF respectively.
 
 
 \subsection{Compass}
 
-The \gps antenna is often not at the center of a station, so detector
-location relative to the \gps are also needed. To measure the location
-of detectors in a station we need to define the positions of detectors
-relative to the \gps antenna, because that position is known. We use a
-simple system that requires a distance and angle measurement, see
-\figref{fig:enu_compass}. The distance (r) between the \gps and a
-detector (center of the scintillator) is measured (in meters) the angle
-($\alpha$) relative to the North Pole is determined using a compass.
-This angle is in degrees and goes from North to East. [Note about
-Magnetic/Geographic North...]. The rotation angle of the detector itself
+For reconstructions of events the location of the individual detectors
+are required. To measure the location of detectors in a station we need
+to define the positions of detectors relative to the \gps antenna,
+because that position is known. We use a simple system that requires a
+distance and angle measurement, see \figref{fig:enu_compass}. The
+distance (r) between the \gps and a detector (center of the
+scintillator) is measured (in meters) the angle ($\alpha$) relative to
+the North Pole is determined using a compass. This angle is in degrees
+and goes from North to East (NESW). Note that there is a difference
+between the magnetic and geographic north pole. The difference can be up
+to \SI{3}{\degrees} for some \hisparc station locations
+\cite{magneticnorth}. The rotation angle of the detector itself
 ($\beta$) is defined and the angle of the long side of the detector
 relative to the North Pole (positive towards East).
 
@@ -155,8 +160,8 @@ to ENU are:
 
 \section{Celestial}
 
-Here we describe the different coordinate systems used to define the
-direction of an air shower.
+Here we describe the different coordinate systems that are used to
+define the direction (origin) of an air shower.
 
 \begin{figure}
     \centering
@@ -200,7 +205,7 @@ altitude is the opposite of the zenith, so \SI{0}{\radian} is horizontal
 and \SI{\pi / 2}{\radian} is the zenith. The azimuth definition also
 differs, in Horizontal coordinates it moves from North to East (NESW).
 
-The formulae to convert the zenith ($\theta$) and azimuth ($\phi$) to
+The formulae to convert from zenith ($\theta$) and azimuth ($\phi$) to
 altitude ($a$) and azimuth ($A$) are:
 
 \begin{equation}
@@ -236,8 +241,9 @@ ENU system that we use\cite{corsika}.
 \subsection{Geographic}
 
 \corsika defines positions on the ground (or observation level) relative
-to the core of the shower(??). Positive x axis points to magnetic North,
-positive y axis to the West, and the z axis upwards.
+to the point where the shower axis intersects the observation level.
+Positive x axis points to magnetic North, positive y axis to the West,
+and the z axis upwards.
 
 The formulae to convert CORSIKA to ENU are:
 
@@ -278,12 +284,17 @@ The formulae to convert the CORSIKA direction to our azimuth and zenith are:
 \begin{thebibliography}{9}
 
 \bibitem{wikigeodetic}
-Geodetic system. In Wikipedia. Retrieved August 10, 2004,
-from \url{http://en.wikipedia.org/wiki/Geodetic_system}
+Geodetic system. In Wikipedia. Retrieved August 10, 2014,
+from \url{http://en.wikipedia.org/wiki/Geodetic_system}.
 
 \bibitem{duffet-smith}
 Astronomy with your personal computer. P. Duffet-Smith.
 1990.
+
+\bibitem{magneticnorth}
+Magnetic declination calculator. Natural Resources Canada.
+Retrieved October 14, 2014 from
+\url{http://www.geomag.nrcan.gc.ca/calc/mdcal-eng.php}.
 
 \bibitem{corsika}
 Extensive Air Shower Simulation with CORSIKA: A User’s Guide. D. Heck
