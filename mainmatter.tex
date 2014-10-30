@@ -132,7 +132,7 @@ scintillator) is measured (in meters) the angle ($\alpha$) relative to
 the North Pole is determined using a compass. This angle is in degrees
 and goes from North to East (NESW). Note that there is a difference
 between the magnetic and geographic north pole. The difference can be up
-to \SI{3}{\degrees} for some \hisparc station locations
+to \SI{3}{\degree} for some \hisparc station locations
 \cite{magneticnorth}. The rotation angle of the detector itself
 ($\beta$) is defined and the angle of the long side of the detector
 relative to the North Pole (positive towards East).
@@ -156,6 +156,54 @@ to ENU are:
         z = z \ . \\
     \end{array}
 \end{equation}
+
+
+\section{Time}
+
+For \hisparc detection events it is important to know precisely when
+they occur, a \gps is used to get synchronized and precise timing. This
+gives us a timestamp, but this needs to be converted to other time
+systems.
+
+
+\subsection{\gps time}
+
+From they \gps we get a timestamp which are the number of nanoseconds
+since the UNIX epoch 1 January 1970 00:00:00.000000000. The \gps
+timestamp is a continuously increasing number. This is different from
+the UTC timestamp in which certain seconds are repeated when `leap
+seconds' are added. Leap seconds are used to keep UTC close to the mean
+solar time. Currently the difference between UTC and \gps time is 16
+seconds.
+
+
+\subsection{UTC time}
+
+Similar to \gps but corrected to keep it more in sync with solar time.
+
+
+\subsection{Julian Date (JD)}
+
+Decimal number to count the number of days since 1 January 4713 B.C.
+12:00:00.
+
+Modified Julian Date to keep number shorter uses epoch 17 November 1858
+00:00:00. The difference between a Modified Julian Date and a Julian
+Date is 2400000.5 days.
+
+\begin{equation}
+    MJD = JD - 2400000.5
+\end{equation}
+
+
+\subsection{Greenwich Mean Sidereal Time (GMST)}
+
+Rotation of prime meridian relative to the vernal equinox.
+
+
+\subsection{Local Sidereal Time (LST)}
+
+Similar to GMST but take local longitude into account.
 
 
 \section{Celestial}
