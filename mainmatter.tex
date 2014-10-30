@@ -197,6 +197,7 @@ $\frac{\pi}{2}$). The azimuth is restricted to the range [$-\pi$, $\pi$).
     \label{fig:enu_horizontal}
 \end{figure}
 
+
 \subsection{Horizontal}
 
 This is a system used as intermediary for some coordinate conversions.
@@ -221,6 +222,25 @@ altitude ($a$) and azimuth ($A$) are:
 Vernal equinox, epoch.
 Right ascension, Declination, J2000
 In decimal hours.
+
+Given an observers position in WGS84, a time of observation in LST and
+horizontal coordinates pointing to the source the following formulae can
+be used to get the corresponding equatorial coordinates \cite[p.
+37]{duffet-smith}.
+
+\begin{equation}
+    \begin{array}{l}
+        \delta = \asin{(\sin{a} \sin{\phi}) + (\cos{a} \cos{\phi} \cos{A}) \ , \\
+        \mathit{HA} = \acos{\frac{\sin{a} - (\sin{\phi} \sin{\delta})}
+                                 {\cos{\phi} \cos{\delta}}} \ , \\
+        \alpha = \mathit{LST} - \mathit{HA} \ . \\
+    \end{array}
+\end{equation}
+
+Where $\phi$ the geographical latitude, $a$ the altitude, $A$ the
+azimuth, $\mathit{LST}$ the Local sidereal time, $\delta$ is the
+declination, $\alpha$ the right ascension and the intermediate variable
+$\mathit{HA}$ is the hour angle.
 
 
 \section{\corsika}
