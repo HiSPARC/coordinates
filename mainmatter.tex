@@ -27,7 +27,7 @@ systems are important; WGS84, ECEF and ENU. Additionally a compass based
 system is used for detector locations relative to \gps antenna. These
 systems are described in the following sections.
 \figref{fig:wgs84_ecef_enu} shows the relationships between the global
-systems. The conversion formulae are taken from \cite{wikigeodetic}.
+systems. The conversion formulae are taken from \cite{wikipedia:2014aa}.
 
 \begin{figure}
     \centering
@@ -106,9 +106,9 @@ The formulae to convert ECEF to ENU with a reference position are:
     \end{bmatrix}
     = 
     \begin{bmatrix}
-                     -\sin(\lambda_r) &               \cos(\lambda_r) &           0. \\
-        -\sin(\phi_r) \cos(\lambda_r) & -\sin(\phi_r) \sin(\lambda_r) & \cos(\phi_r) \\
-         \cos(\phi_r) \cos(\lambda_r) &  \cos(\phi_r) \sin(\lambda_r) & \sin(\phi_r)
+                 -\sin(\lambda_r) &               \cos(\lambda_r) &           0. \\
+    -\sin(\phi_r) \cos(\lambda_r) & -\sin(\phi_r) \sin(\lambda_r) & \cos(\phi_r) \\
+     \cos(\phi_r) \cos(\lambda_r) &  \cos(\phi_r) \sin(\lambda_r) & \sin(\phi_r)
     \end{bmatrix}
     \begin{bmatrix}
     X - X_r \\ Y - Y_r \\ Z - Z_r
@@ -133,7 +133,7 @@ the North Pole is determined using a compass. This angle is in degrees
 and goes from North to East (NESW). Note that there is a difference
 between the magnetic and geographic north pole. The difference can be up
 to \SI{3}{\degree} for some \hisparc station locations
-\cite{magneticnorth}. The rotation angle of the detector itself
+\cite{canada:2013aa}. The rotation angle of the detector itself
 ($\beta$) is defined and the angle of the long side of the detector
 relative to the North Pole (positive towards East).
 
@@ -174,7 +174,7 @@ timestamp is a continuously increasing number. This is different from
 the UTC timestamp in which certain seconds are repeated when `leap
 seconds' are added. Leap seconds are used to keep UTC close to the mean
 solar time. Currently the difference between UTC and \gps time is 16
-seconds.
+seconds \cite{usno:2012aa}.
 
 
 \subsection{UTC time}
@@ -198,13 +198,29 @@ Date is 2400000.5 days.
 
 \subsection{Greenwich Mean Sidereal Time (GMST)}
 
-Rotation of prime meridian relative to the vernal equinox.
+Rotation of the prime meridian relative to the vernal equinox, usually
+expressed in hours. In a solar day the Earth rotates more than
+\SI{360}{\degree} around its axis because it is also in orbit around the
+Sun, causing the position of the Sun relative to the Earth to change. In
+sidereal time the rotation of Earth relative to the `fixed' background
+stars is taken. A sidereal day is a full rotation of Earth around its
+axis. This is around 4 minutes shorter than a solar day.
+
+\cite{kaplan:2011aa}
 
 
 \subsection{Local Sidereal Time (LST)}
 
-Similar to GMST but take local longitude into account.
+Similar to GMST but takes observers longitude into account.
 
+To get the Local Sidereal Time the extra angle of the observers
+longitude has to be added to the GMST.
+
+\begin{equation}
+    \begin{array}{l}
+        \mathit{LST} = \mathit{GMST} + \lambda 15 \ . \\
+    \end{array}
+\end{equation}
 
 \section{Celestial}
 
@@ -274,13 +290,14 @@ In decimal hours.
 Given an observers position in WGS84, a time of observation in LST and
 horizontal coordinates pointing to the source the following formulae can
 be used to get the corresponding equatorial coordinates \cite[p.
-37]{duffet-smith}.
+37]{duffet-smith:1990aa}.
 
 \begin{equation}
     \begin{array}{l}
-        \delta = \asin{(\sin{a} \sin{\phi}) + (\cos{a} \cos{\phi} \cos{A}) \ , \\
-        \mathit{HA} = \acos{\frac{\sin{a} - (\sin{\phi} \sin{\delta})}
-                                 {\cos{\phi} \cos{\delta}}} \ , \\
+        \delta = \arcsin{((\sin{a} \sin{\phi}) +
+                          (\cos{a} \cos{\phi} \cos{A}))} \ , \\
+        \mathit{HA} = \arccos{(\frac{\sin{a} - (\sin{\phi} \sin{\delta})}
+                                    {\cos{\phi} \cos{\delta}})} \ , \\
         \alpha = \mathit{LST} - \mathit{HA} \ . \\
     \end{array}
 \end{equation}
@@ -295,7 +312,7 @@ $\mathit{HA}$ is the hour angle.
 
 \corsika an extensive air shower simulation program which we use.
 \corsika uses a coordinate system which is slightly different from the
-ENU system that we use\cite{corsika}.
+ENU system that we use \cite{heck:2013aa}.
 
 \begin{figure}
     \centering
@@ -347,28 +364,4 @@ The formulae to convert the CORSIKA direction to our azimuth and zenith are:
 \end{equation}
 
 
-\bibliography{References}
-
-\begin{thebibliography}{9}
-
-\bibitem{wikigeodetic}
-Geodetic system. In Wikipedia. Retrieved August 10, 2014,
-from \url{http://en.wikipedia.org/wiki/Geodetic_system}.
-
-\bibitem{duffet-smith}
-Astronomy with your personal computer. P. Duffet-Smith.
-1990.
-
-\bibitem{magneticnorth}
-Magnetic declination calculator. Natural Resources Canada.
-Retrieved October 14, 2014 from
-\url{http://www.geomag.nrcan.gc.ca/calc/mdcal-eng.php}.
-
-\bibitem{corsika}
-Extensive Air Shower Simulation with CORSIKA: A User’s Guide. D. Heck
-and T. Pierog. September 3, 2013. Chapter 6 Coordinate System.
-
-\bibitem{tikz3d}
-The tikz-3dplot Package. J. Hein. January 11, 2012.
-
-\end{thebibliography}
+\printbibliography
