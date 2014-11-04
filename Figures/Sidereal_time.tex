@@ -1,0 +1,66 @@
+\pgfmathsetmacro{\rsun}{.1}
+\pgfmathsetmacro{\rearth}{.2}
+\pgfmathsetmacro{\AU}{1}
+\pgfmathsetmacro{\alphavec}{20}
+\pgfmathsetmacro{\margin}{.05}
+
+\begin{tikzpicture}[scale=2,thick]
+
+    \definecolor{base}{RGB}{128,128,128}; % grey
+    \definecolor{sidereal}{RGB}{44,92,198}; % blue
+    \definecolor{solar}{RGB}{202,112,27}; % orange
+    \definecolor{earth}{RGB}{0,184,0}; % green
+
+    % coordinates
+    \coordinate (O) at (0,0);
+    \coordinate (earth_0) at (270:\AU);
+    \coordinate (earth_1) at (305:\AU);
+    \coordinate (earth_2) at (329:\AU);
+
+    % Earth
+    \draw[base,dashed] (O) circle (\AU);
+    \draw[earth] (250:\AU) node[anchor=north east] {Earth};
+    \draw[earth,fill=green] (earth_0) circle (\rearth);
+    \draw[earth,fill=green] (earth_1) circle (\rearth);
+    \draw[earth,fill=green] (earth_2) circle (\rearth);
+
+    % AU
+    \draw[base,dashed] (O) -- (earth_0);
+    \draw[base,dashed] (O) -- (earth_1);
+    \draw[base,dashed] (O) -- (earth_2);
+
+    % Sun
+    \draw[solar,fill=yellow] (O) circle (\rsun);
+    \draw[solar] (180:\rsun) node[anchor=north east] {Sun};
+
+    % Prime Meridian
+    \draw (earth_0) -- ($ (earth_0)!\rearth!(O) $);
+    \draw (earth_1) -- ++(90:\rearth);
+    \draw (earth_2) -- ($ (earth_2)!\rearth!(O) $);
+
+    % Earth orbit
+    \tdplotdrawarc[base,->,-stealth]
+        {(O)}{\AU-\margin}{283}{292}{anchor=west}{};
+    \tdplotdrawarc[sidereal,->,-stealth]
+        {(O)}{\AU+\rearth+\margin+\margin}{270}{305}
+        {anchor=north}{Sidereal day};
+    \tdplotdrawarc[solar,->,-stealth]
+        {(O)}{\AU+\rearth+\margin}{270}{330}{anchor=north west}{Solar day};
+
+    % Earth rotation
+    \tdplotdrawarc[base,->,-stealth]
+        {(earth_0)}{0.15}{100}{440}{anchor=west}{};
+
+    % Earth rotation
+    \tdplotdrawarc[base] {(O)}{0.15}{270}{305}{}{};
+    \tdplotdrawarc[base] {(earth_1)}{0.15}{90}{90+35}{}{};
+
+
+    % Stellar background
+    \draw[sidereal,->] ($ (O) + (90:\rsun+\margin) $) -- ++(90:.2)
+        node[anchor=south] {Background stars};
+    \draw[sidereal,->] ($ (earth_0) + (90:\rearth+\margin) $) -- ++(90:.2);
+    \draw[sidereal,->] ($ (earth_1) + (90:\rearth+\margin) $) -- ++(90:.2);
+    \draw[sidereal,->] ($ (earth_2) + (90:\rearth+\margin) $) -- ++(90:.2);
+
+\end{tikzpicture}

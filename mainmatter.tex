@@ -201,12 +201,31 @@ Date is 2400000.5 days.
 Rotation of the prime meridian relative to the vernal equinox, usually
 expressed in hours. In a solar day the Earth rotates more than
 \SI{360}{\degree} around its axis because it is also in orbit around the
-Sun, causing the position of the Sun relative to the Earth to change. In
-sidereal time the rotation of Earth relative to the `fixed' background
-stars is taken. A sidereal day is a full rotation of Earth around its
-axis. This is around 4 minutes shorter than a solar day.
+Sun, causing the position of the Sun relative to the Earth to change.
+The Earth orbits the Sun every 365.25 days, one day is therefore
+approximately \SI{1}{\degree}. So an extra rotation of approximately
+\SI{1}{\degree} around its axis is required to get the same part of the
+Earth to face the Sun. In sidereal time the rotation of Earth relative
+to the `fixed' background stars is taken. A sidereal day is a full
+rotation of Earth around its axis. This means around 4 minutes shorter
+than a solar day, which needs to rotate a bit further. In
+\figref{fig:sidereal_time} the difference between a solar and sidereal
+day is illustrated.
 
 \cite{kaplan:2011aa}
+
+\begin{figure}
+    \centering
+    \input{Figures/Sidereal_time}
+    \caption{This shows the orbit of Earth (green) around the Sun
+             (yellow). The black line on the Earth represents the prime
+             meridian. A full rotation of the Earth causes the prime
+             meridian to point to the same background stars, this is a
+             sidereal day. It takes longer, due to the orbit of the
+             Earth, for the prime meridian to point to the Sun again,
+             which is a solar day.}
+    \label{fig:sidereal_time}
+\end{figure}
 
 
 \subsection{Local Sidereal Time (LST)}
