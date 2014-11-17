@@ -180,6 +180,12 @@ seconds \cite{usno:2012aa}.
 \subsection{UTC time}
 
 Similar to \gps but corrected to keep it more in sync with solar time.
+When solar time and UTC time are starting to get out of sync a leap
+second is added to UTC time. This means that a second is counted twice.
+The ...[USNO?] decides when to add leap seconds. \hisparc does not use
+UTC time because seconds are repeated which makes it possible for a
+station to detect two events at the same 'time'. Moreover it interferes
+when looking for coincidences between stations.
 
 
 \subsection{Julian Date (JD)}
@@ -295,7 +301,7 @@ altitude ($a$) and azimuth ($A$) are:
 \begin{equation}
     \begin{array}{l}
         a = \frac{\pi}{2} - \theta \ , \\
-        A = - (\phi + \frac{\pi}{2}) \ . \\
+        A = \frac{\pi}{2} - \phi \ . \\
     \end{array}
 \end{equation}
 
