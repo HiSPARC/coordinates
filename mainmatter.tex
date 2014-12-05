@@ -104,7 +104,7 @@ The formulae to convert ECEF to ENU with a reference position are:
     \begin{bmatrix}
     x \\ y \\ z
     \end{bmatrix}
-    = 
+    =
     \begin{bmatrix}
                  -\sin(\lambda_r) &               \cos(\lambda_r) &           0. \\
     -\sin(\phi_r) \cos(\lambda_r) & -\sin(\phi_r) \sin(\lambda_r) & \cos(\phi_r) \\
@@ -168,30 +168,45 @@ systems.
 
 \subsection{\gps time}
 
-From they \gps we get a timestamp which are the number of nanoseconds
-since the UNIX epoch 1 January 1970 00:00:00.000000000. The \gps
-timestamp is a continuously increasing number. This is different from
-the UTC timestamp in which certain seconds are repeated when `leap
-seconds' are added. Leap seconds are used to keep UTC close to the mean
-solar time. Currently the difference between UTC and \gps time is 16
-seconds \cite{usno:2012aa}.
+\gps time started counting on 6 January 1980 00:00 UTC, i.e.
+\num{315964800} UNIX seconds after the UNIX epoch of 1 January 1970
+00:00 UTC. \gps time is a continuously increasing number. This is
+different from UTC time in which certain seconds are repeated when `leap
+seconds' are added. Currently the difference between UTC and \gps time
+is 16 seconds. From the \hisparc electronics we get a UNIX timestamp in
+\gps time. This is the number of nanoseconds that have passed since the
+UNIX epoch. The \gps timestamp is a large number and requires 64-bits to
+represent the number. For instance the \gps timestamp of 1 December 2014
+00:00:29.886222166 (\gps time) is \num{1417392029886222166}.
+\cite{usno:2012aa}.
 
 
 \subsection{UTC time}
 
-Similar to \gps but corrected to keep it more in sync with solar time.
-When solar time and UTC time are starting to get out of sync a leap
-second is added to UTC time. This means that a second is counted twice.
-The ...[USNO?] decides when to add leap seconds. \hisparc does not use
-UTC time because seconds are repeated which makes it possible for a
-station to detect two events at the same 'time'. Moreover it interferes
-when looking for coincidences between stations.
+Similar to \gps but corrected with leap seconds to keep it more in sync
+with solar time. A leap second means that a second is counted twice. The
+International Earth Rotation and Reference Systems Service (IERS)
+decides when to add leap seconds. \hisparc does not use UTC time because
+of the duplicate timestamps, which makes it possible for a station to
+detect two events at the `same time'. Moreover, it causes issues when
+looking for coincidences between stations.
 
 
 \subsection{Julian Date (JD)}
 
 Decimal number to count the number of days since 1 January 4713 B.C.
-12:00:00.
+12:00:00. Calculating this is not trivial since one has to account for
+the fact that 5 up to and including 14 October of 1582 do not exist.
+Those ten days were skipped because the Julian calendar, which was used
+before that gap, introduced to many leap years, every year divisible by
+4 was a leap year. The Gregorian calendar used afterwards compensated by
+having less leap years. Leap years still occur when years are divisible
+by 4, except when they are also divisible by 100, except when they are
+also divisible by 400. For example 1900 and 1999 are not a leap years,
+but 2000 and 2004 are.
+\cite{acf:2014aa}
+
+\subsubsection{Modified Julian Date (MJD)}
 
 Modified Julian Date to keep number shorter uses epoch 17 November 1858
 00:00:00. The difference between a Modified Julian Date and a Julian
@@ -204,19 +219,21 @@ Date is 2400000.5 days.
 
 \subsection{Greenwich Mean Sidereal Time (GMST)}
 
-Rotation of the prime meridian relative to the vernal equinox, usually
-expressed in hours. In a solar day the Earth rotates more than
-\SI{360}{\degree} around its axis because it is also in orbit around the
-Sun, causing the position of the Sun relative to the Earth to change.
-The Earth orbits the Sun every 365.25 days, one day is therefore
+GMST is the rotation of the prime meridian relative to the vernal
+equinox, usually expressed in hours. In a solar day the Earth rotates
+more than \SI{360}{\degree} around its axis because it is also in orbit
+around the Sun, causing the position of the Sun relative to the Earth to
+change. The Earth orbits the Sun every 365.25 days, one day is therefore
 approximately \SI{1}{\degree}. So an extra rotation of approximately
 \SI{1}{\degree} around its axis is required to get the same part of the
 Earth to face the Sun. In sidereal time the rotation of Earth relative
 to the `fixed' background stars is taken. A sidereal day is a full
-rotation of Earth around its axis. This means around 4 minutes shorter
-than a solar day, which needs to rotate a bit further. In
+rotation of Earth around its axis, relative to background stars. This is
+around \SI{4}{\minute} shorter than a solar day. In
 \figref{fig:sidereal_time} the difference between a solar and sidereal
 day is illustrated.
+
+
 
 \cite{kaplan:2011aa}
 
