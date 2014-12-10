@@ -1,10 +1,10 @@
 \begin{abstract}
 
-This is meant as documentation to describe the coordinate system and
-units used in \hisparc data and analysis. We also have to deal with
-other coordinate systems such as the one used in \corsika and some used
-as intermediary in coordinate transformations. The conversions and
-relations between these systems are given.
+The coordinate systems and units used in \hisparc data and analysis are
+illustrated and described. We also have to deal with other coordinate
+systems such as the one used in \corsika and some used as intermediary
+in coordinate transformations. The conversions and relations between
+these systems are given.
 
 \end{abstract}
 
@@ -23,17 +23,18 @@ convert from those to our usual coordinate systems.
 \section{Geographic}
 
 Geographic coordinate systems define a point on the Earth. Multiple
-systems are important; WGS84, ECEF and ENU. Additionally a compass based
-system is used for detector locations relative to \gps antenna. These
-systems are described in the following sections.
-\figref{fig:wgs84_ecef_enu} shows the relationships between the global
-systems. The conversion formulae are taken from \cite{wikipedia:2014aa}.
+systems are important; WGS84, ECEF and ENU. \figref{fig:wgs84_ecef_enu}
+illustrates the relationships between these systems. Additionally a
+compass based system is used for detector locations relative to \gps
+antenna. These systems are described in the following sections. The
+conversion formulae are taken from \cite{wikipedia:2014aa}.
 
 \begin{figure}
     \centering
     \input{Figures/WGS84_ECEF_ENU}
     \caption{Relationship between the WGS84 (orange), ECEF (blue) and ENU
-             (green) coordinate systems.}
+             (green) coordinate systems. The Prime meridian is the IERS
+             Reference Meridian.}
     \label{fig:wgs84_ecef_enu}
 \end{figure}
 
@@ -46,30 +47,34 @@ a latitude, longitude and altitude. The latitude ($\phi$) and longitude
 ($\lambda$) are defined in decimal degrees, the altitude in meters.
 Latitude is the angular distance between a location and the equator,
 angles towards north are positive. The longitude is the angular distance
-of a location to the Prime Meridian, angles towards east are positive.
-The altitude is the height above an ellipsoid that approximates the
-shape of the Earth, the parameters that define this ellipsoid are given
-in \eqref{eq:wgs84}.
+of a location to the IERS Reference Meridian (from now on referred to as
+the prime meridian), angles towards east are positive. The altitude is
+the height above an ellipsoid that approximates the shape of the Earth,
+the parameters that define this ellipsoid are given in \eqref{eq:wgs84}.
 
 
 \subsection{Earth-Centered, Earth-Fixed (ECEF)}
 
 This coordinate has its origin as the center of the Earth
 (Earth-Centered), and its axes are aligned with the WGS84 system. The
-z-axis points to North. The x-axis crosses the Earth where the equator
-(\SI{0}{\degree} latitude) intersects with the prime meridan
-(\SI{0}{\degree} longitude).
+z-axis points to North. The x-axis crosses the Earth surface where the
+equator (\SI{0}{\degree} latitude) intersects with the prime meridan
+(\SI{0}{\degree} longitude). The y-axis intersects the equator at
+\SI{90}{\degree} longitude. The axes rotate with the Earth
+(Earth-Fixed). A position is defined by the $X$, $Y$, and $Z$
+coordinates.
 
 The formulae to convert WGS84 to ECEF are:
 
 \begin{equation}
     \begin{array}{l}
-        X = (N + \mathrm{altitude}) \cos{\phi} \cos{\lambda} \ , \\
-        Y = (N + \mathrm{altitude}) \cos{\phi} \sin{\lambda} \ , \\
-        Z = (\frac{b^2}{a^2} N + \mathrm{altitude}) \sin{\phi} \ . \\
+        X = \left(N + \mathrm{altitude}\right) \cos{\phi} \cos{\lambda} \ , \\
+        Y = \left(N + \mathrm{altitude}\right) \cos{\phi} \sin{\lambda} \ , \\
+        Z = \left(\frac{b^2}{a^2} N + \mathrm{altitude}\right) \sin{\phi} \ . \\
     \end{array}
 \end{equation}
 
+\noindent
 Where the ellipsoid is defined by
 
 \begin{equation}
@@ -127,8 +132,8 @@ are required. To measure the location of detectors in a station we need
 to define the positions of detectors relative to the \gps antenna,
 because that position is known. We use a simple system that requires a
 distance and angle measurement, see \figref{fig:enu_compass}. The
-distance (r) between the \gps and a detector (center of the
-scintillator) is measured (in meters) the angle ($\alpha$) relative to
+distance ($r$) between the \gps and a detector (center of the
+scintillator) is measured (in meters), the angle ($\alpha$) relative to
 the North Pole is determined using a compass. This angle is in degrees
 and goes from North to East (NESW). Note that there is a difference
 between the magnetic and geographic north pole. The difference can be up
@@ -174,11 +179,11 @@ systems.
 different from UTC time in which certain seconds are repeated when `leap
 seconds' are added. Currently the difference between UTC and \gps time
 is 16 seconds. From the \hisparc electronics we get a UNIX timestamp in
-\gps time. This is the number of nanoseconds that have passed since the
-UNIX epoch. The \gps timestamp is a large number and requires 64-bits to
-represent the number. For instance the \gps timestamp of 1 December 2014
-00:00:29.886222166 (\gps time) is \num{1417392029886222166}.
-\cite{usno:2012aa}.
+\gps time. The timestamp is given in nanoseconds, i.e. the number of
+nanoseconds that have passed since the UNIX epoch. The \gps timestamp is
+a large number and requires 64-bits to represent the number. For
+instance the \gps timestamp for 1 December 2014 at 00:00:29.886222166
+(\gps time) is \num{1417392029886222166}. \cite{usno:2012aa}.
 
 
 \subsection{UTC time}
@@ -192,19 +197,43 @@ detect two events at the `same time'. Moreover, it causes issues when
 looking for coincidences between stations.
 
 
+\subsubsection{Leap seconds}
+
+Leap seconds can be introduced at the end of either 30 June or 31
+December, the leap second is represented in UTC time as 23:59:60.
+\tabref{table:leapseconds} gives a list of the recent leap seconds,
+which are important for \hisparc. Leap seconds are announced about 6
+months before they take effect.
+
+\begin{table}
+    \centering
+    \begin{tabular}{ l | c }
+        Date & Leap seconds \\
+        \hline
+        31 December, 1998 & 13 \\
+        31 December, 2005 & 14 \\
+        31 December, 2008 & 15 \\
+        30 June, 2012 & 16 \\
+        \hline
+    \end{tabular}
+   \caption{Leap seconds in effect or introduced after 2002. This is the
+            amount of seconds that \gps time is ahead of UTC time.}
+   \label{table:leapseconds}
+\end{table}
+
+
 \subsection{Julian Date (JD)}
 
-Decimal number to count the number of days since 1 January 4713 B.C.
+Decimal number counting the number of days since 1 January 4713 B.C.
 12:00:00. Calculating this is not trivial since one has to account for
-the fact that 5 up to and including 14 October of 1582 do not exist.
-Those ten days were skipped because the Julian calendar, which was used
-before that gap, introduced to many leap years, every year divisible by
-4 was a leap year. The Gregorian calendar used afterwards compensated by
-having less leap years. Leap years still occur when years are divisible
-by 4, except when they are also divisible by 100, except when they are
-also divisible by 400. For example 1900 and 1999 are not a leap years,
-but 2000 and 2004 are.
-\cite{acf:2014aa}
+the fact that the 5th up to and including the 14th of October in 1582 do
+not exist. Those ten days were skipped because the Julian calendar,
+which was used before that gap, introduced to many leap years, every
+year divisible by 4 was a leap year. The Gregorian calendar used
+afterwards compensated by having less leap years. Leap years still occur
+when years are divisible by 4, except when they are also divisible by
+100, except when they are also divisible by 400. For example 1900 and
+1999 are not a leap years, but 2000 and 2004 are. \cite{acf:2014aa}
 
 \subsubsection{Modified Julian Date (MJD)}
 
@@ -217,25 +246,21 @@ Date is 2400000.5 days.
 \end{equation}
 
 
-\subsection{Greenwich Mean Sidereal Time (GMST)}
+\subsection{Sidereal Time}
 
-GMST is the rotation of the prime meridian relative to the vernal
-equinox, usually expressed in hours. In a solar day the Earth rotates
-more than \SI{360}{\degree} around its axis because it is also in orbit
-around the Sun, causing the position of the Sun relative to the Earth to
-change. The Earth orbits the Sun every 365.25 days, one day is therefore
-approximately \SI{1}{\degree}. So an extra rotation of approximately
-\SI{1}{\degree} around its axis is required to get the same part of the
-Earth to face the Sun. In sidereal time the rotation of Earth relative
-to the `fixed' background stars is taken. A sidereal day is a full
-rotation of Earth around its axis, relative to background stars. This is
-around \SI{4}{\minute} shorter than a solar day. In
+In a solar day the Earth rotates more than \SI{360}{\degree} around its
+axis because it orbits around the Sun, causing the position of the Sun
+relative to the Earth to change. The Earth orbits the Sun every 365.25
+days, so in one day the the orbit proceeds by
+$\frac{\SI{360}{\degree}}{\SI{365.25}{\day}} \approx
+\SI{1}{\degree\per\day}$. So an extra rotation of approximately
+\SI{1}{\degree} around its axis is required to make the same part of the
+Earth face the Sun (a solar day). In sidereal time the rotation of Earth
+relative to the `fixed' background stars is taken. A sidereal day is a
+full rotation of Earth around its axis, relative to background stars.
+This is around \SI{4}{\minute} shorter than a solar day. In
 \figref{fig:sidereal_time} the difference between a solar and sidereal
 day is illustrated.
-
-
-
-\cite{kaplan:2011aa}
 
 \begin{figure}
     \centering
@@ -246,38 +271,65 @@ day is illustrated.
              meridian to point to the same background stars, this is a
              sidereal day. It takes longer, due to the orbit of the
              Earth, for the prime meridian to point to the Sun again,
-             which is a solar day.}
+             which is a solar day. Used sizes and angles are
+             illustrative, not realistic.}
     \label{fig:sidereal_time}
 \end{figure}
 
 
-\subsection{Local Sidereal Time (LST)}
+\subsubsection{Greenwich Mean Sidereal Time (GMST)}
 
-Similar to GMST but takes observers longitude into account.
-
-To get the Local Sidereal Time the extra angle of the observers
-longitude has to be added to the GMST.
+GMST is the hour angle of the vernal equinox (\secref{sec:celestial})
+with respect to the prime meridian at Greenwich, expressed in decimal
+hours \cite{kaplan:2011aa}. This is illustrated in
+\figref{fig:wgs84_gmst_lst}.
 
 \begin{equation}
-    \begin{array}{l}
-        \mathit{LST} = \mathit{GMST} + \lambda 15 \ . \\
-    \end{array}
+    GMST = 6.697374558 + 0.06570982441908 D0 + 1.00273790935 H + 0.000026 T^2
 \end{equation}
 
-\section{Celestial}
-
-Here we describe the different coordinate systems that are used to
-define the direction (origin) of an air shower.
+Here $D0$ is the number of days since the epoch J2000 (1 January, 2000
+12:00 UTC or Julian date 2451545), $H$ is the number of hours since the
+last midnight, and $T$ is the number of centuries since J2000.
 
 \begin{figure}
     \centering
-    \input{Figures/WGS84_Equatorial}
-    \caption{Relationship between the WGS84 (orange), ECEF (blue),
-             Equatorial (red) and clock (teal) coordinate systems.
-             $\vernal$ points to the vernal equinox, the point where the
-             ecliptic and celestial equator cross in the Aries zodiac.}
-    \label{fig:wgs84_equatorial}
+    \input{Figures/WGS84_GMST_LST}
+    \caption{Top-down view of Earth showing the relation between GMST
+             (teal) and LST (blue) for an observer at a longitude
+             $\lambda$ (orange). The observer and prime meridian move with
+             the rotation of the Earth, the vernal equinox does not.}
+    \label{fig:wgs84_gmst_lst}
 \end{figure}
+
+
+\subsubsection{Local Sidereal Time (LST)}
+
+Similar to GMST but takes observers longitude into account.
+
+To get the Local Sidereal Time the observers longitude has to be added
+to the GMST. This is illustrated in \figref{fig:wgs84_gmst_lst}. Since
+the longitude is given in degrees is has to be divided by 15 to get
+hours, because $\frac{\SI{360}{\degree}}{\SI{24}{\hour}} =
+\SI{15}{\degree\per\hour}$, so the equation becomes:
+
+\begin{equation}
+    \begin{array}{l}
+        \mathit{LST} = \mathit{GMST} + \frac{\lambda}{15} \ . \\
+    \end{array}
+\end{equation}
+
+
+\section{Celestial}
+\label{sec:celestial}
+
+Here we describe the different coordinate systems that are used to
+define the direction (origin) of an air shower. The Zenith and Azimuth
+and Horizontal systems rotate with the rotation of the Earth, because
+they are linked to the location of the observer. The Equatorial system
+is linked to the celestial sphere and independent from the rotation of
+Earth. To transform from Zenith and Azimuth to Equatorial the position
+of the observer and time of observation are also required.
 
 
 \subsection{Zenith and Azimuth}
@@ -289,7 +341,7 @@ that is the sky above the detection station. The Zenith is the point
 directly above the observer. The zenith angle is the angle between the
 direction and the Zenith point. The azimuth is the direction in the
 horizontal plane, it starts at East (\SI{0}{\radian}) then goes to North
-(ENWS).
+(ENWS). This is illustrated in pink in \figref{fig:enu_horizontal}.
 
 We do not expect nor consider air showers from below the horizon, so the
 zenith angles, defined in radians, are an angle in the range [0,
@@ -297,7 +349,7 @@ $\frac{\pi}{2}$). The azimuth is restricted to the range [$-\pi$, $\pi$).
 
 \begin{figure}
     \centering
-    \input{Figures/ENU_Horizontal}
+    \input{Figures/ENU_ZenAzi_Horizontal}
     \caption{Relationship between the ENU (green), Zenith Azimuth (pink)
              and horizontal (gold) coordinate systems.}
     \label{fig:enu_horizontal}
@@ -311,6 +363,7 @@ It uses azimuth ($A$) and altitude ($a$) to define a direction. The
 altitude is the opposite of the zenith, so \SI{0}{\radian} is horizontal
 and \SI{\pi / 2}{\radian} is the zenith. The azimuth definition also
 differs, in Horizontal coordinates it moves from North to East (NESW).
+This is illustrated in gold in \figref{fig:enu_horizontal}
 
 The formulae to convert from zenith ($\theta$) and azimuth ($\phi$) to
 altitude ($a$) and azimuth ($A$) are:
@@ -325,9 +378,25 @@ altitude ($a$) and azimuth ($A$) are:
 
 \subsection{Equatorial (J2000)}
 
-Vernal equinox, epoch.
-Right ascension, Declination, J2000
-In decimal hours.
+\figref{fig:celestial} shows the relation between the celestial sphere
+and Equatorial coordinates. The right ascension ($\alpha$) is the angle
+between the projection of the sky position ($\star$) on the plane of the
+Celestial equator and the vernal equinox ($\vernal$). The declination
+($\delta$) is the angle between the plane of the Celestial equator and
+the sky position. Due to precession (change of the rotational axis) the
+celestial positions slowly change over time, to compensate coordinates
+are calculated as they would have been on a specific date, the J2000
+epoch is commonly used. The equatorial coordinates are fixed to the
+celestial sphere and not influenced by the rotation of the Earth.
+
+\begin{figure}
+    \centering
+    \input{Figures/Equatorial}
+    \caption{This figures shows the relation between a position on the
+             sky (black), Equatorial coordinates (red), and the
+             Celestial sphere.}
+    \label{fig:celestial}
+\end{figure}
 
 Given an observers position in WGS84, a time of observation in LST and
 horizontal coordinates pointing to the source the following formulae can
@@ -336,10 +405,10 @@ be used to get the corresponding equatorial coordinates \cite[p.
 
 \begin{equation}
     \begin{array}{l}
-        \delta = \arcsin{((\sin{a} \sin{\phi}) +
-                          (\cos{a} \cos{\phi} \cos{A}))} \ , \\
-        \mathit{HA} = \arccos{(\frac{\sin{a} - (\sin{\phi} \sin{\delta})}
-                                    {\cos{\phi} \cos{\delta}})} \ , \\
+        \delta = \arcsin{\left((\sin{a} \sin{\phi}) +
+                               (\cos{a} \cos{\phi} \cos{A})\right)} \ , \\
+        \mathit{HA} = \arccos{\left(\frac{\sin{a} - (\sin{\phi} \sin{\delta})}
+                                         {\cos{\phi} \cos{\delta}}\right)} \ , \\
         \alpha = \mathit{LST} - \mathit{HA} \ . \\
     \end{array}
 \end{equation}
@@ -348,6 +417,17 @@ Where $\phi$ the geographical latitude, $a$ the altitude, $A$ the
 azimuth, $\mathit{LST}$ the Local sidereal time, $\delta$ is the
 declination, $\alpha$ the right ascension and the intermediate variable
 $\mathit{HA}$ is the hour angle.
+
+
+\begin{figure}
+    \centering
+    \input{Figures/WGS84_ZenAzi_LST_Equatorial}
+    \caption{Relationship between the WGS84 (orange), Zenith azimuth (pink), 
+             and clock (teal) and Equatorial (red) coordinate systems.
+             $\vernal$ points to the vernal equinox, the point where the
+             ecliptic and celestial equator cross in the Aries zodiac.}
+    \label{fig:wgs84_equatorial}
+\end{figure}
 
 
 \section{\corsika}
@@ -390,11 +470,11 @@ direction it came form, but the direction it goes to. The $\Theta$ angle
 is defined the same as our definition of zenith ($\theta$),
 \SI{0}{\radian} is a shower from the zenith and \SI{\pi / 2}{\radian} is
 a horizontal shower. The $\Phi$ angle is defined differently than our
-definition of azimuth ($\phi$). First it is the angle the shower is heading
-towards. \SI{0}{\radian} is a shower heading towards North, so coming
-form South, which we would define as \SI{\pi / 2}{\radian}. The
-(positive) rotation of the angle is in the same direction, from North to
-West.
+definition of azimuth ($\phi$). First is the angle the shower is heading
+towards and secondly a different reference is used. \SI{0}{\radian} is a
+shower heading towards North, so coming from South, which we would
+define as \SI{-\pi / 2}{\radian}. The (positive) rotation of the angle is
+in the same direction, from North to West.
 
 The formulae to convert the CORSIKA direction to our azimuth and zenith are:
 

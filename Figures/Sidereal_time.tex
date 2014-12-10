@@ -1,8 +1,12 @@
-\pgfmathsetmacro{\rsun}{.1}
-\pgfmathsetmacro{\rearth}{.2}
-\pgfmathsetmacro{\AU}{1}
-\pgfmathsetmacro{\alphavec}{20}
+\pgfmathsetmacro{\rsun}{.2}
+\pgfmathsetmacro{\rearth}{.15}
+\pgfmathsetmacro{\AU}{1.1}
 \pgfmathsetmacro{\margin}{.05}
+
+\pgfmathsetmacro{\orbit}{270}
+\pgfmathsetmacro{\siderealday}{32}
+\pgfmathsetmacro{\solarday}{50}
+\pgfmathsetmacro{\omargin}{10}
 
 \begin{tikzpicture}[scale=2,thick]
 
@@ -13,9 +17,9 @@
 
     % coordinates
     \coordinate (O) at (0,0);
-    \coordinate (earth_0) at (270:\AU);
-    \coordinate (earth_1) at (305:\AU);
-    \coordinate (earth_2) at (329:\AU);
+    \coordinate (earth_0) at (\orbit:\AU);
+    \coordinate (earth_1) at (\orbit+\siderealday:\AU);
+    \coordinate (earth_2) at (\orbit+\solarday:\AU);
 
     % Earth
     \draw[base,dashed] (O) circle (\AU);
@@ -40,20 +44,22 @@
 
     % Earth orbit
     \tdplotdrawarc[base,->,-stealth]
-        {(O)}{\AU-\margin}{283}{292}{anchor=west}{};
+        {(O)}{\AU-\margin}{\orbit+\omargin}{\orbit+\siderealday-\omargin}
+        {}{};
     \tdplotdrawarc[sidereal,->,-stealth]
-        {(O)}{\AU+\rearth+\margin+\margin}{270}{305}
+        {(O)}{\AU+\rearth+\margin+\margin}{\orbit}{\orbit+\siderealday}
         {anchor=north}{Sidereal day};
     \tdplotdrawarc[solar,->,-stealth]
-        {(O)}{\AU+\rearth+\margin}{270}{330}{anchor=north west}{Solar day};
+        {(O)}{\AU+\rearth+\margin}{\orbit}{\orbit+\solarday}
+        {anchor=north west}{Solar day};
 
     % Earth rotation
     \tdplotdrawarc[base,->,-stealth]
-        {(earth_0)}{0.15}{100}{440}{anchor=west}{};
+        {(earth_0)}{\rearth-\margin}{110}{430}{anchor=west}{};
 
     % Earth rotation
-    \tdplotdrawarc[base] {(O)}{0.15}{270}{305}{}{};
-    \tdplotdrawarc[base] {(earth_1)}{0.15}{90}{90+35}{}{};
+    \tdplotdrawarc[base] {(O)}{\rsun+\margin}{\orbit}{\orbit+\siderealday}{}{};
+    \tdplotdrawarc[base] {(earth_1)}{\rearth+\margin}{90}{90+\siderealday}{}{};
 
 
     % Stellar background

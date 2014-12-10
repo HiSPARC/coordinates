@@ -1,0 +1,46 @@
+\pgfmathsetmacro{\rlen}{1.5}
+\pgfmathsetmacro{\longitude}{80}  % lambda
+\pgfmathsetmacro{\gmst}{45}  % Greenwich mean sidereal time
+\pgfmathsetmacro{\lst}{\gmst+\longitude}  % local sidereal time in degrees
+
+\begin{tikzpicture}[scale=2,thick]
+
+    \definecolor{base}{RGB}{128,128,128}; % grey
+    \definecolor{wgs84}{RGB}{255,153,0}; % orange
+    \definecolor{side}{RGB}{13,98,153}; % blue
+    \definecolor{enu}{RGB}{0,184,0}; % green
+    \definecolor{compass}{RGB}{125,10,255}; % purple
+    \definecolor{equa}{RGB}{253,39,39}; % red
+    \definecolor{time}{RGB}{15,171,135}; % teal
+
+    \coordinate (O) at (0,0);
+
+    % base
+    \draw[base] (O) circle (\rlen); % Equator
+    \tdplotdrawarc[base,->,-stealth]
+        {(O)}{.2}{20}{340}{anchor=east}{Rotation};
+
+    % Prime Meridian
+    \draw[base] (O) -- (0:\rlen)
+        node[right] {Prime Meridian};
+
+    % WGS84
+    % longitude
+    \tdplotdrawarc[wgs84,->,-stealth]
+        {(O)}{0.5}{0}{\longitude}{anchor=north}{$\lambda$};
+
+    % gmst
+    \tdplotdrawarc[time,->,-stealth]
+        {(O)}{\rlen-.3}{-\gmst}{0}{anchor=south east}{GMST};
+    \tdplotdrawarc[side,->,-stealth]
+        {(O)}{\rlen-.2}{-\gmst}{\lst-\gmst}{anchor=east}{LST};
+
+    % observer
+    \draw[color=black,->,-stealth] (O) -- (\longitude:\rlen)
+        node[above right] {Observer};
+
+    % Equatorial
+    \draw[base,->,-stealth] (O) -- (-\gmst:\rlen+.5)
+        node[anchor=north]{$\vernal$};
+
+\end{tikzpicture}

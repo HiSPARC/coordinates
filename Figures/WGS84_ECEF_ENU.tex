@@ -25,7 +25,7 @@
     \tdplotsetthetaplanecoords{\longitude};
     \draw[base,dashed,tdplot_rotated_coords] (\rlen,0,0) arc (0:90:\rlen);
     \draw[base,dashed,tdplot_rotated_coords] (0,0,0) -- (0,\rlen,0);
-    \draw[base,dashed] (P) -- (Pxy);
+%    \draw[base,dashed] (P) -- (Pxy);
 
     % ECEF
     \draw[ecef,->,-stealth] (O) -- (1,0,0) node[anchor=north]{$X$};
@@ -48,6 +48,7 @@
 %    \draw[enu,tdplot_rotated_coords,->] (0,0,0) -- (.3,0,0) node[anchor=west]{$East$};
 %    \draw[enu,tdplot_rotated_coords,->] (0,0,0) -- (0,.3,0) node[anchor=south]{$North$};
 %    \draw[enu,tdplot_rotated_coords,->] (0,0,0) -- (0,0,.4) node[anchor=south]{$Up$};
+    \draw[base,tdplot_rotated_coords] (0,0,0) circle (.17);       
 
     \draw[enu,->,-stealth,tdplot_rotated_coords] (0,0,0) -- (-.45,0,0)
         node[anchor=south]{North};

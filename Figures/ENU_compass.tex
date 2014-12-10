@@ -16,6 +16,9 @@
     \draw[enu,->,-stealth] (O) -- (0,2) node[anchor=south] {North};
     \draw[enu,->,-stealth] (O) -- (2,0) node[anchor=west] {East};
 
+    % Draw GPS
+    \fill[base] (O) circle (.05) node[anchor=north east] {\gps};
+
     % Draw a detectors
     \fill[base,rotate=\betavec] (d0) ++(-.15,-.075) rectangle +(.3,.15);
 
