@@ -19,6 +19,10 @@ the units that are used and where it is used. Then other coordinate
 systems that we have to deal with are discussed, including ways to
 convert from those to our usual coordinate systems.
 
+Make sure that the angles are converted to the correct units for the
+cosine and sine functions when converting between coordinate systems.
+The use of radians or degrees depends on the programming language.
+
 
 \section{Geographic}
 
@@ -97,11 +101,11 @@ between the normal of the location on the ellipsoid and the z-axis.
 
 \subsection{East, North, Up (ENU)}
 
-East, North, Up is used by us to easily get distances, relative locations
-and angles between locations. It is a local coordinate system where its
-origin (reference position) can be chosen. From the reference location
-east is the positive x-axis, north is the positive y-axis and up (towards
-Zenith) is the positive z-axis. All distances are in meters.
+East, North, Up is used by us to easily get distances, relative
+locations and angles between locations. It is a local coordinate system
+in a plane tangential to the WGS84 elipsoid. From the reference location
+east is the positive x-axis, north is the positive y-axis and up
+(towards Zenith) is the positive z-axis. All distances are in meters.
 
 The formulae to convert ECEF to ENU with a reference position are:
 
@@ -127,20 +131,19 @@ reference position in WGS84 and ECEF respectively.
 
 \subsection{Compass}
 
-For reconstructions of events the location of the individual detectors
-are required. To measure the location of detectors in a station we need
-to define the positions of detectors relative to the \gps antenna,
-because that position is known. We use a simple system that requires a
-distance and angle measurement, see \figref{fig:enu_compass}. The
-distance ($r$) between the \gps and a detector (center of the
-scintillator) is measured (in meters), the angle ($\alpha$) relative to
-the North Pole is determined using a compass. This angle is in degrees
-and goes from North to East (NESW). Note that there is a difference
-between the magnetic and geographic north pole. The difference can be up
-to \SI{3}{\degree} for some \hisparc station locations
-\cite{canada:2013aa}. The rotation angle of the detector itself
-($\beta$) is defined and the angle of the long side of the detector
-relative to the North Pole (positive towards East).
+For reconstruction of events the location of the individual detectors is
+required. To measure the location of detectors in a station we need to
+define the positions of detectors relative to the \gps antenna, because
+that position is known. We use a simple system that requires a distance
+and angle measurement, see \figref{fig:enu_compass}. The distance ($r$)
+between the \gps and a detector (center of the scintillator) is measured
+(in meters), the angle ($\alpha$) relative to the North Pole is
+determined using a compass. This angle is in degrees and goes from North
+to East (NESW). Note that there is a difference between the magnetic and
+geographic north pole. The difference can be up to \SI{3}{\degree} for
+some \hisparc station locations \cite{canada:2013aa}. The rotation angle
+of the detector itself ($\beta$) is defined as the angle of the long
+side of the detector relative to the North Pole (positive towards East).
 
 \begin{figure}
     \centering
@@ -165,7 +168,7 @@ to ENU are:
 
 \section{Time}
 
-For \hisparc detection events it is important to know precisely when
+For \hisparc events it is important to know precisely when
 they occur, a \gps is used to get synchronized and precise timing. This
 gives us a timestamp, but this needs to be converted to other time
 systems.
@@ -178,12 +181,13 @@ systems.
 00:00 UTC. \gps time is a continuously increasing number. This is
 different from UTC time in which certain seconds are repeated when `leap
 seconds' are added. Currently the difference between UTC and \gps time
-is 16 seconds. From the \hisparc electronics we get a UNIX timestamp in
-\gps time. The timestamp is given in nanoseconds, i.e. the number of
-nanoseconds that have passed since the UNIX epoch. The \gps timestamp is
-a large number and requires 64-bits to represent the number. For
-instance the \gps timestamp for 1 December 2014 at 00:00:29.886222166
-(\gps time) is \num{1417392029886222166}. \cite{usno:2012aa}.
+is 16 seconds. From the \hisparc electronics we get a \gps timestamp,
+adjusted to the UNIX epoch. The timestamp is given in nanoseconds, i.e.
+the number of nanoseconds that have passed since the UNIX epoch. The
+\gps timestamp is a large number and requires 64-bits to represent the
+number. For instance the \gps timestamp for 1 December 2014 at
+00:00:29.886222166 (\gps time) is \num{1417392029886222166}.
+\cite{usno:2012aa}.
 
 
 \subsection{UTC time}
@@ -228,18 +232,23 @@ Decimal number counting the number of days since 1 January 4713 B.C.
 12:00:00. Calculating this is not trivial since one has to account for
 the fact that the 5th up to and including the 14th of October in 1582 do
 not exist. Those ten days were skipped because the Julian calendar,
-which was used before that gap, introduced to many leap years, every
+which was used before that gap, introduced too many leap years, every
 year divisible by 4 was a leap year. The Gregorian calendar used
 afterwards compensated by having less leap years. Leap years still occur
 when years are divisible by 4, except when they are also divisible by
-100, except when they are also divisible by 400. For example 1900 and
-1999 are not a leap years, but 2000 and 2004 are. \cite{acf:2014aa}
+100 (e.g. 1900), except when they are also divisible by 400 (e.g. 2000)
+\cite{acf:2014aa}. Consider these examples: 1999 is not divisible by 4
+so not a leap year, 2004 is divisible by 4 and not by 100 and is a leap
+year, 1900 is divisible by 4 and 100 but not 400 so is not a leap year,
+and 2000 is divisible by 4, 100 and 400 and is therefore a leap year.
+
 
 \subsubsection{Modified Julian Date (MJD)}
 
 Modified Julian Date to keep number shorter uses epoch 17 November 1858
 00:00:00. The difference between a Modified Julian Date and a Julian
-Date is 2400000.5 days.
+Date is 2400000.5 days. The .5 days moves the reference time from noon
+to midnight.
 
 \begin{equation}
     MJD = JD - 2400000.5
@@ -288,9 +297,10 @@ hours \cite{kaplan:2011aa}. This is illustrated in
     GMST = 6.697374558 + 0.06570982441908 D0 + 1.00273790935 H + 0.000026 T^2
 \end{equation}
 
-Here $D0$ is the number of days since the epoch J2000 (1 January, 2000
-12:00 UTC or Julian date 2451545), $H$ is the number of hours since the
-last midnight, and $T$ is the number of centuries since J2000.
+Here $D0$ is the Julian Date of the previous midnight using the J2000
+epoch (1 January, 2000 12:00 UTC or Julian date 2451545.0), $H$ is the
+number of hours since the last midnight, and $T$ is the number of
+centuries since J2000.
 
 \begin{figure}
     \centering
@@ -335,13 +345,15 @@ of the observer and time of observation are also required.
 \subsection{Zenith and Azimuth}
 
 When a station detects a shower we try to reconstruct the direction of
-its origin. The direction of a shower is then given by an zenith and
-azimuth coordinate. These coordinates define a point on the semi-sphere
-that is the sky above the detection station. The Zenith is the point
-directly above the observer. The zenith angle is the angle between the
-direction and the Zenith point. The azimuth is the direction in the
-horizontal plane, it starts at East (\SI{0}{\radian}) then goes to North
-(ENWS). This is illustrated in pink in \figref{fig:enu_horizontal}.
+its origin, i.e. the position on the sky the shower came from. This
+direction is then given by a zenith and azimuth coordinate. These
+coordinates define a point on the semi-sphere that is the sky above the
+detection station. The Zenith is the point directly above the observer.
+The zenith angle is the angle between the direction and the Zenith
+point, so straight up is \SI{0}{\radian} and the horizon \SI{\pi /
+2}{\radian}. The azimuth is the direction in the horizontal plane, it
+starts at East (\SI{0}{\radian}) then goes to North (ENWS). This is
+illustrated in pink in \figref{fig:enu_horizontal}.
 
 We do not expect nor consider air showers from below the horizon, so the
 zenith angles, defined in radians, are an angle in the range [0,
@@ -378,7 +390,7 @@ altitude ($a$) and azimuth ($A$) are:
 
 \subsection{Equatorial (J2000)}
 
-\figref{fig:celestial} shows the relation between the celestial sphere
+\figref{fig:equatorial} shows the relation between the celestial sphere
 and Equatorial coordinates. The right ascension ($\alpha$) is the angle
 between the projection of the sky position ($\star$) on the plane of the
 Celestial equator and the vernal equinox ($\vernal$). The declination
@@ -395,7 +407,7 @@ celestial sphere and not influenced by the rotation of the Earth.
     \caption{This figures shows the relation between a position on the
              sky (black), Equatorial coordinates (red), and the
              Celestial sphere.}
-    \label{fig:celestial}
+    \label{fig:equatorial}
 \end{figure}
 
 Given an observers position in WGS84, a time of observation in LST and
@@ -413,34 +425,45 @@ be used to get the corresponding equatorial coordinates \cite[p.
     \end{array}
 \end{equation}
 
+The output range of $\arccos$ is [0, $\pi$), while that of $\mathit{HA}$ is
+[0, $2\pi$). If the azimuth is positive use: $\mathit{HA} = 2 \pi -
+\mathit{HA}$.
+
 Where $\phi$ the geographical latitude, $a$ the altitude, $A$ the
 azimuth, $\mathit{LST}$ the Local sidereal time, $\delta$ is the
 declination, $\alpha$ the right ascension and the intermediate variable
-$\mathit{HA}$ is the hour angle.
+$\mathit{HA}$ is the hour angle. This is illustrated in
+\figref{fig:wgs84_zenazi_lst_equatorial}.
 
 
 \begin{figure}
     \centering
     \input{Figures/WGS84_ZenAzi_LST_Equatorial}
-    \caption{Relationship between the WGS84 (orange), Zenith azimuth (pink), 
-             and clock (teal) and Equatorial (red) coordinate systems.
-             $\vernal$ points to the vernal equinox, the point where the
-             ecliptic and celestial equator cross in the Aries zodiac.}
-    \label{fig:wgs84_equatorial}
+    \caption{Relationship between the WGS84 (orange), ENU (green),
+             Zenith azimuth (pink), and clock (teal) and Equatorial
+             (red) coordinate systems. $\vernal$ points to the vernal
+             equinox, the point where the ecliptic and celestial equator
+             cross in the Aries zodiac. WGS84 defines the position of
+             the observer, LST defines the time of observation, ENU is
+             the local coordinate system (only East is shown because it
+             is used for the azimuth), and zenith and azimuth give the
+             direction of shower origin. Combined these give the same
+             position on the sky as the equatorial coordinates.}
+    \label{fig:wgs84_zenazi_lst_equatorial}
 \end{figure}
 
 
 \section{\corsika}
 
-\corsika an extensive air shower simulation program which we use.
-\corsika uses a coordinate system which is slightly different from the
-ENU system that we use \cite{heck:2013aa}.
+\corsika is an extensive air shower simulation program which we use. It
+uses coordinate systems which are slightly different from the ones we
+employ \cite{heck:2013aa}.
 
 \begin{figure}
     \centering
     \input{Figures/ENU_CORSIKA}
-    \caption{Relationship between the ENU (green), Zenith Azimuth (pink)
-             and CORSIKA (brown) coordinates.}
+    \caption{Relationship between the ENU (green), Zenith Azimuth (pink),
+             and \corsika (brown) coordinates.}
     \label{fig:enu_corsika}
 \end{figure}
 
@@ -450,9 +473,10 @@ ENU system that we use \cite{heck:2013aa}.
 \corsika defines positions on the ground (or observation level) relative
 to the point where the shower axis intersects the observation level.
 Positive x axis points to magnetic North, positive y axis to the West,
-and the z axis upwards.
+and the z axis upwards. This is shown by the dashed brown lines in
+\figref{fig:enu_corsika}.
 
-The formulae to convert CORSIKA to ENU are:
+The formulae to convert \corsika to ENU are:
 
 \begin{equation}
     \begin{array}{l}
@@ -473,10 +497,12 @@ a horizontal shower. The $\Phi$ angle is defined differently than our
 definition of azimuth ($\phi$). First is the angle the shower is heading
 towards and secondly a different reference is used. \SI{0}{\radian} is a
 shower heading towards North, so coming from South, which we would
-define as \SI{-\pi / 2}{\radian}. The (positive) rotation of the angle is
-in the same direction, from North to West.
+define as \SI{-\pi / 2}{\radian}. The (positive) rotation of the angle
+is in the same direction, from North to West. This is shown by the brown
+arced lines in \figref{fig:enu_corsika}.
 
-The formulae to convert the CORSIKA direction to our azimuth and zenith are:
+The formulae to convert the \corsika direction to our azimuth and zenith
+are:
 
 \begin{equation}
     \begin{array}{l}
