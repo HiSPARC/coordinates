@@ -26,8 +26,8 @@ The use of radians or degrees depends on the programming language.
 
 \section{Geographic}
 
-Geographic coordinate systems define a point on the Earth. Multiple
-systems are important; WGS84, ECEF and ENU. \figref{fig:wgs84_ecef_enu}
+Geographic coordinate systems define a point on the Earth. For \hisparc
+three systems are used: WGS84, ECEF and ENU. \figref{fig:wgs84_ecef_enu}
 illustrates the relationships between these systems. Additionally a
 compass based system is used for detector locations relative to \gps
 antenna. These systems are described in the following sections. The
@@ -45,30 +45,33 @@ conversion formulae are taken from \cite{wikipedia:2014aa}.
 
 \subsection{World Geodetic System 1984 (WGS84)}
 
-For the location of a station we use a \gps antenna. The \gps returns
-coordinates in the WGS84 coordinate system. This defines a position with
-a latitude, longitude and altitude. The latitude ($\phi$) and longitude
-($\lambda$) are defined in decimal degrees, the altitude in meters.
-Latitude is the angular distance between a location and the equator,
-angles towards north are positive. The longitude is the angular distance
-of a location to the IERS Reference Meridian (from now on referred to as
-the prime meridian), angles towards east are positive. The altitude is
-the height above an ellipsoid that approximates the shape of the Earth,
-the parameters that define this ellipsoid are given in \eqref{eq:wgs84}.
+The location of a \hisparc station is determined by means of a \gps
+antenna (one antenna for each station). The \gps returns coordinates in
+the WGS84 coordinate system. This defines a position with a latitude
+($\phi$), longitude ($\lambda$) and altitude. The latitude and longitude
+are defined in decimal degrees, the altitude in meters. Latitude is the
+angular distance between a location and the equator, angles towards
+north are positive. The longitude is the angular distance of a location
+to the Reference Meridian (from now on referred to as the prime
+meridian) defined by the International Earth Rotation and Reference
+Systems Service (IERS), angles towards east are positive. The altitude
+is the height above an ellipsoid that approximates the shape of the
+Earth. The parameters which define this ellipsoid are given in
+\eqref{eq:wgs84}.
 
 
 \subsection{Earth-Centered, Earth-Fixed (ECEF)}
 
-This coordinate has its origin as the center of the Earth
+The ECEF coordinate system has its origin as the center of the Earth
 (Earth-Centered), and its axes are aligned with the WGS84 system. The
 z-axis points to North. The x-axis crosses the Earth surface where the
-equator (\SI{0}{\degree} latitude) intersects with the prime meridan
+equator (\SI{0}{\degree} latitude) intersects the prime meridan
 (\SI{0}{\degree} longitude). The y-axis intersects the equator at
 \SI{90}{\degree} longitude. The axes rotate with the Earth
 (Earth-Fixed). A position is defined by the $X$, $Y$, and $Z$
-coordinates.
+coordinates, each given in meters.
 
-The formulae to convert WGS84 to ECEF are:
+The formulae to convert WGS84 coordinates to ECEF coordinates are:
 
 \begin{equation}
     \begin{array}{l}
@@ -79,7 +82,8 @@ The formulae to convert WGS84 to ECEF are:
 \end{equation}
 
 \noindent
-Where the ellipsoid is defined by
+For the paramaters that define the ellipsoidal approximation of the
+Earth surface we have
 
 \begin{equation}
     \label{eq:wgs84}
@@ -95,19 +99,20 @@ Where the ellipsoid is defined by
 \noindent
 here $a$ is the semi-major axis, $f$ the flattening, $b$ the semi-minor
 axis and $e$ the eccentricity of the ellipsoid. $N$ is the Normal, which
-is the distance from the surface of the ellipsoid to the intersection
-between the normal of the location on the ellipsoid and the z-axis.
+is the distance from a location on the surface of the ellipsoid to the
+intersection of the normal of the location and the z-axis.
 
 
 \subsection{East, North, Up (ENU)}
 
-East, North, Up is used by us to easily get distances, relative
-locations and angles between locations. It is a local coordinate system
-in a plane tangential to the WGS84 elipsoid. From the reference location
-east is the positive x-axis, north is the positive y-axis and up
-(towards Zenith) is the positive z-axis. All distances are in meters.
+East, North, Up is often used to obtain relative locations and angles
+between locations. It is a local coordinate system in a plane tangential
+to the WGS84 elipsoid. From the reference position the positive x-axis
+(East) is in the eastern direction, the positive y-axis (North) is
+towards north, and the positive z-axis (Up) is towards the Zenith. All
+distances are in meters.
 
-The formulae to convert ECEF to ENU with a reference position are:
+The formulae to convert ECEF to ENU with a given reference position are:
 
 \begin{equation}
     \begin{bmatrix}
@@ -131,19 +136,19 @@ reference position in WGS84 and ECEF respectively.
 
 \subsection{Compass}
 
-For reconstruction of events the location of the individual detectors is
-required. To measure the location of detectors in a station we need to
-define the positions of detectors relative to the \gps antenna, because
-that position is known. We use a simple system that requires a distance
-and angle measurement, see \figref{fig:enu_compass}. The distance ($r$)
-between the \gps and a detector (center of the scintillator) is measured
-(in meters), the angle ($\alpha$) relative to the North Pole is
-determined using a compass. This angle is in degrees and goes from North
-to East (NESW). Note that there is a difference between the magnetic and
-geographic north pole. The difference can be up to \SI{3}{\degree} for
-some \hisparc station locations \cite{canada:2013aa}. The rotation angle
-of the detector itself ($\beta$) is defined as the angle of the long
-side of the detector relative to the North Pole (positive towards East).
+For reconstruction of events the precise location of the individual
+detectors in a station is required. The location of detectors are taken
+relative to the \gps antenna, because that position is known. We use a
+system that requires a distance and angle measurement, see
+\figref{fig:enu_compass}. The distance ($r$) between the \gps and a
+detector (center of the scintillator) is measured (in meters), the angle
+($\alpha$) relative to the North Pole is determined using a compass.
+This angle is in degrees and goes from North to East (NESW). Note that
+there is a difference between the magnetic and geographic north pole.
+The difference can be up to \SI{3}{\degree} for some \hisparc station
+locations \cite{canada:2013aa}. The rotation angle of the detector
+itself ($\beta$) is defined as the angle of the long side of the
+detector relative to the North Pole (positive towards East).
 
 \begin{figure}
     \centering
@@ -194,11 +199,10 @@ number. For instance the \gps timestamp for 1 December 2014 at
 
 Similar to \gps but corrected with leap seconds to keep it more in sync
 with solar time. A leap second means that a second is counted twice. The
-International Earth Rotation and Reference Systems Service (IERS)
-decides when to add leap seconds. \hisparc does not use UTC time because
-of the duplicate timestamps, which makes it possible for a station to
-detect two events at the `same time'. Moreover, it causes issues when
-looking for coincidences between stations.
+IERS decides when to add leap seconds. \hisparc does not use UTC time
+because of the duplicate timestamps, which makes it possible for a
+station to detect two events at the `same time'. Moreover, it causes
+issues when looking for coincidences between stations.
 
 
 \subsubsection{Leap seconds}
