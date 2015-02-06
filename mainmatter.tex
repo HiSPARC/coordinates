@@ -133,7 +133,7 @@ respectively. $(\phi_r, \lambda_r)$ and $(X_r, Y_r, Z_r)$ are the
 reference position in WGS84 and ECEF respectively.
 
 
-\subsection{Compass}
+\subsection{`Compass'}
 
 For reconstruction of events the precise location of the individual
 detectors in a station is required. The location of detectors are taken
@@ -141,13 +141,17 @@ relative to the \gps antenna, because that position is known. We use a
 system that requires a distance and angle measurement, see
 \figref{fig:enu_compass}. The distance ($r$) between the \gps and a
 detector (center of the scintillator) is measured (in meters), the angle
-($\alpha$) relative to the North Pole is determined using a compass.
-This angle is in degrees and goes from North to East (NESW). Note that
-there is a difference between the magnetic and geographic north pole.
-The difference can be up to \SI{3}{\degree} for some \hisparc station
-locations \cite{canada:2013aa}. The rotation angle of the detector
-itself ($\beta$) is defined as the angle of the long side of the
-detector relative to the North Pole (positive towards East).
+($\alpha$) relative to the geographic north pole (not magnetic north!)
+is determined using a compass and the magnetic declination. This angle
+is in degrees and goes from North to East (NESW). The rotation angle of
+the detector itself ($\beta$) is defined as the angle of the long side
+of the detector relative to the North Pole (positive towards East).
+
+When a compass is used the angle needs to be compensated for the
+difference between magnetic and geographic north, the difference is
+called the magnetic declination. The magnetic declination is date and
+location dependent \cite{canada:2013aa}. The magnetic declination can be
+up to \SI{3}{\degree} for some \hisparc station locations.
 
 \begin{figure}
     \centering
