@@ -184,14 +184,18 @@ systems.
 \num{315964800} UNIX seconds after the UNIX epoch of 1 January 1970
 00:00 UTC. \gps time is a continuously increasing number. This is
 different from UTC time in which certain seconds are repeated when `leap
-seconds' are added. Currently the difference between UTC and \gps time
-is 16 seconds. From the \hisparc electronics we get a \gps timestamp,
-adjusted to the UNIX epoch. The timestamp is given in nanoseconds, i.e.
-the number of nanoseconds that have passed since the UNIX epoch. The
-\gps timestamp is a large number and requires 64-bits to represent the
-number. For instance the \gps timestamp for 1 December 2014 at
-00:00:29.886222166 (\gps time) is \num{1417392029886222166}.
-\cite{usno:2012aa}.
+seconds' are added \cite{usno:2012aa}. Currently (6 February 2015) the
+difference between UTC and \gps time is 16 seconds. From the \hisparc
+electronics we get a \gps timestamp, adjusted to the UNIX epoch, i.e.
+$\mathrm{GPS} + \mathrm{UNIX(GPS=0)}$. The timestamp is given in
+nanoseconds. The \gps timestamp is a large number and requires 64-bits
+to represent the number. For instance the \gps timestamp for 1 December
+2014 at 00:00:29.886222166 (\gps time) is
+
+\begin{equation}
+    \num{1101427229886222166} + \num{315964800000000000} =
+        \num{1417392029886222166}.
+\end{equation}
 
 
 \subsection{UTC time}
@@ -400,10 +404,11 @@ between the projection of the sky position ($\star$) on the plane of the
 Celestial equator and the vernal equinox ($\vernal$). The declination
 ($\delta$) is the angle between the plane of the Celestial equator and
 the sky position. Due to precession (change of the rotational axis) the
-celestial positions slowly change over time, to compensate coordinates
-are calculated as they would have been on a specific date, the J2000
-epoch is commonly used. The equatorial coordinates are fixed to the
-celestial sphere and not influenced by the rotation of the Earth.
+celestial positions slowly change over time. To compensate for
+precession coordinates are calculated as they would have been on a
+specific date, the J2000 epoch is commonly used. The equatorial
+coordinates are fixed to the celestial sphere and not influenced by the
+rotation of the Earth.
 
 \begin{figure}
     \centering
@@ -515,7 +520,8 @@ are:
     \end{array}
 \end{equation}
 
+
 \section{Acknowledgements}
 
 We want to thank Dr. J.J.M. Steijger for his careful checking of our
-methods. 
+methods.
