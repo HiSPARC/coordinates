@@ -1,0 +1,48 @@
+\pgfmathsetmacro{\alen}{1.4}  % equatorial radius ellipse
+\pgfmathsetmacro{\blen}{1.2}  % polar radius ellipse (actual: 99.7% of a)
+\pgfmathsetmacro{\llen}{.2}  % radius of latitude arc
+\pgfmathsetmacro{\latitude}{50}  % phi
+\pgfmathsetmacro{\reverselatitude}{-180+\latitude}  % phi
+
+\begin{tikzpicture}[scale=2,thick]
+
+    \definecolor{base}{RGB}{128,128,128}; % grey
+    \definecolor{wgs84}{RGB}{255,153,0}; % orange
+    \definecolor{ecef}{RGB}{13,98,153}; % blue
+    \definecolor{enu}{RGB}{0,184,0}; % green
+    \definecolor{compass}{RGB}{125,10,255}; % purple
+    \definecolor{equa}{RGB}{253,39,39}; % red
+    \definecolor{time}{RGB}{15,171,135}; % teal
+
+    \coordinate (O) at (0,0);
+    \coordinate (D) at (\latitude:\alen\space and \blen);
+
+    % base
+    \draw[base,name path=earth] (O) circle [x radius=\alen, y radius=\blen];
+    \draw[base,name path=equator]
+        (-\alen,0) -- node[near start,anchor=north] {$a$} 
+        (\alen,0) node[anchor=west] {Equator};
+    \draw[base,name path=zaxis] (0,-\blen) --
+        node[near start,anchor=east] {$b$} (0,\blen);
+    
+    % ECEF
+    \draw[ecef,-stealth] (O) -- (0,\alen)
+        node[anchor=south] {$Z$};
+
+    % observer
+%    \draw[color=black,->,-stealth] (O) -- (\latitude:\alen);
+    \draw[enu,-stealth,name path=Up] (D) -- ++(\latitude:.3)
+        node[above] {Up};
+    \draw[enu,-stealth,name path=North] (D) -- ++(\latitude+90:.3)
+        node[above] {North};
+    \draw[color=black,stealth-,name path=Normal]
+        (D) node[right] {Observer} -- node[right] {$N$} 
+        ++(\reverselatitude:\alen);
+
+    \fill[base,name intersections={of=Normal and zaxis, by=Q}]
+        (Q) circle (.02);
+
+    \draw[wgs84,name intersections={of=Normal and equator, by=I}]
+        (I)++(\llen,0) arc (0:\latitude:\llen) node[anchor=west] {$\phi$};
+    
+\end{tikzpicture}

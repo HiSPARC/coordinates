@@ -8,19 +8,28 @@ the units that are used and where it is used. Then other coordinate
 systems that we have to deal with are discussed, including ways to
 convert from those to our usual coordinate systems.
 
+In \secref{sec:geographic} we discuss geographic coordinates to define
+the coordinates of the observer. In \secref{sec:time} we discuss
+different time keeping systems and how we can relate a time of
+observation to the rotation of the Earth w.r.t the celestial sphere. The
+systems to define a point on the celestial sphere are described in
+\secref{sec:celestial}. Finally in \secref{sec:corsika} the coordinate
+systems are used in \corsika simulations are described.
+
 Make sure that the angles are converted to the correct units for the
 cosine and sine functions when converting between coordinate systems.
 The use of radians or degrees depends on the programming language.
 
 
 \section{Geographic}
+\label{sec:geographic}
 
 Geographic coordinate systems define a point on the Earth. For \hisparc
-three systems are used: WGS84, ECEF and ENU. \figref{fig:wgs84_ecef_enu}
+two systems are used: WGS84 and ENU. \figref{fig:wgs84_ecef_enu}
 illustrates the relationships between these systems. Additionally a
-compass based system is used for detector locations relative to \gps
-antenna. These systems are described in the following sections. The
-conversion formulae are taken from \cite{wikipedia:2014aa}.
+compass based system is used to determine detector locations relative to
+the \gps antenna. These systems are described in the following sections.
+The conversion formulae are taken from \cite{wikipedia:2014aa}.
 
 \begin{figure}
     \centering
@@ -37,36 +46,36 @@ conversion formulae are taken from \cite{wikipedia:2014aa}.
 The location of a \hisparc station is determined by means of a \gps
 antenna (one antenna for each station). The \gps returns coordinates in
 the WGS84 coordinate system. This defines a position with a latitude
-($\phi$), longitude ($\lambda$) and altitude. The latitude and longitude
-are defined in decimal degrees, the altitude in meters. Latitude is the
-angular distance between a location and the equator, angles towards
-north are positive. The longitude is the angular distance of a location
-to the Reference Meridian (from now on referred to as the prime
-meridian) defined by the International Earth Rotation and Reference
-Systems Service (IERS), angles towards east are positive. The altitude
-is the height above an ellipsoid that approximates the shape of the
-Earth. The parameters which define this ellipsoid are given in
+($\phi$), longitude ($\lambda$) and altitude ($h$). The latitude and
+longitude are defined in decimal degrees, the altitude in meters.
+Latitude is the angular distance between a location and the equator,
+angles towards north are positive. The longitude is the angular distance
+of a location to the Reference Meridian (from now on referred to as the
+prime meridian) defined by the International Earth Rotation and
+Reference Systems Service (IERS), angles towards east are positive. The
+altitude is the height above an ellipsoid that approximates the shape of
+the Earth. The parameters which define this ellipsoid are given in
 \eqref{eq:wgs84}.
 
 
 \subsection{Earth-Centered, Earth-Fixed (ECEF)}
 
-The ECEF coordinate system has its origin as the center of the Earth
-(Earth-Centered), and its axes are aligned with the WGS84 system. The
-z-axis points to North. The x-axis crosses the Earth surface where the
-equator (\SI{0}{\degree} latitude) intersects the prime meridan
-(\SI{0}{\degree} longitude). The y-axis intersects the equator at
-\SI{90}{\degree} longitude. The axes rotate with the Earth
-(Earth-Fixed). A position is defined by the $X$, $Y$, and $Z$
-coordinates, each given in meters.
+The ECEF coordinate system is used as intermediate between WGS84 and
+ENU. ECEF has its origin as the center of the Earth (Earth-Centered),
+and its axes are aligned with the WGS84 system. The z-axis points to
+North. The x-axis crosses the Earth surface where the equator
+(\SI{0}{\degree} latitude) intersects the prime meridan (\SI{0}{\degree}
+longitude). The y-axis intersects the equator at \SI{90}{\degree}
+longitude. The axes rotate with the Earth (Earth-Fixed). A position is
+defined by the $X$, $Y$, and $Z$ coordinates, each given in meters.
 
 The formulae to convert WGS84 coordinates to ECEF coordinates are:
 
 \begin{equation}
     \begin{array}{l}
-        X = \left(N + \mathrm{altitude}\right) \cos{\phi} \cos{\lambda} \ , \\
-        Y = \left(N + \mathrm{altitude}\right) \cos{\phi} \sin{\lambda} \ , \\
-        Z = \left(\frac{b^2}{a^2} N + \mathrm{altitude}\right) \sin{\phi} \ . \\
+        X = \left(N + h\right) \cos{\phi} \cos{\lambda} \ , \\
+        Y = \left(N + h\right) \cos{\phi} \sin{\lambda} \ , \\
+        Z = \left(\frac{b^2}{a^2} N + h\right) \sin{\phi} \ . \\
     \end{array}
 \end{equation}
 
@@ -81,24 +90,33 @@ Earth surface we have
         f = \frac{1}{298.257223563} \ , \\
         b = a (1 - f) \ , \\
         e = \sqrt{2 f - f^2} \ , \\
-        N = \frac{a}{\sqrt{1 - e^2 \sin{\phi}^2}} \ , \\
+        N = \frac{a}{\sqrt{1 - e^2 \sin^2 \phi}} \ , \\
     \end{array}
 \end{equation}
 
 \noindent here $a$ is the semi-major axis, $f$ the flattening, $b$ the
 semi-minor axis and $e$ the eccentricity of the ellipsoid. $N$ is the
 Normal, which is the distance between a location on the ellipsoid and
-the intersection of its normal and the z-axis of the ellipsoid.
+the intersection of its normal and the z-axis of the ellipsoid. For a
+position on the equator ($\phi = 0$) $N = a$.
+
+\begin{figure}
+    \centering
+    \input{Figures/Ellipsoid}
+    \caption{Ellipsoidal approximation of Earth. Showing the definitions
+             of the semi-major axis, the semi-minor axis, and the Normal.}
+    \label{fig:ellipsoid}
+\end{figure}
 
 
 \subsection{East, North, Up (ENU)}
 
-East, North, Up is often used to obtain relative locations and angles
-between locations. It is a local coordinate system in a plane tangential
-to the WGS84 elipsoid. From the reference position the positive x-axis
-(East) is in the eastern direction, the positive y-axis (North) is
-towards north, and the positive z-axis (Up) is towards the Zenith. All
-distances are in meters.
+East, North, Up is used to obtain relative locations and angles with
+respect to a reference position. It is a local coordinate system in a
+plane tangential to the WGS84 elipsoid. From the reference position the
+positive x-axis (East) is in the eastern direction, the positive y-axis
+(North) is towards north, and the positive z-axis (Up) is towards the
+Zenith. All distances are in meters.
 
 The formulae to convert ECEF to ENU with a given reference position are:
 
@@ -125,9 +143,9 @@ reference position in WGS84 and ECEF respectively.
 \subsection{`Compass'}
 
 For reconstruction of events the precise location of the individual
-detectors in a station is required. The location of detectors are taken
-relative to the \gps antenna, because that position is known. We use a
-system that requires a distance and angle measurement, see
+detectors in each station is required. The location of detectors are
+taken relative to the \gps antenna, because that position is known. We
+use a system that requires a distance and angle measurement, see
 \figref{fig:enu_compass}. The distance ($r$) between the \gps and a
 detector (center of the scintillator) is measured (in meters), the angle
 ($\alpha$) relative to the geographic north pole (not magnetic north!)
@@ -164,11 +182,14 @@ to ENU are:
 
 
 \section{Time}
+\label{sec:time}
 
-For \hisparc events it is important to know precisely when
-they occur, a \gps is used to get synchronized and precise timing. This
-gives us a timestamp, but this needs to be converted to other time
-systems.
+For \hisparc events it is important to know precisely when they occur, a
+\gps is used to get synchronized and precise timing. This gives us a
+timestamp, but this needs to be converted to Local Sidereal Time for the
+conversion of celestial coordinates in \secref{sec:celestial}. The full
+transformation chain is as follows: GPS $\to$ UTC $\to$ JD $\to$ GMST
+$\to$ LST.
 
 
 \subsection{\gps time}
@@ -252,7 +273,7 @@ Date is 2400000.5 days. The .5 days moves the reference time from noon
 to midnight.
 
 \begin{equation}
-    MJD = JD - 2400000.5
+    \mathit{MJD} = \mathit{JD} - 2400000.5
 \end{equation}
 
 
@@ -295,7 +316,8 @@ hours \cite{kaplan:2011aa}. This is illustrated in
 \figref{fig:wgs84_gmst_lst}.
 
 \begin{equation}
-    GMST = 6.697374558 + 0.06570982441908 D0 + 1.00273790935 H + 0.000026 T^2
+    \mathit{GMST} = 6.697374558 + 0.06570982441908\ D0 + 1.00273790935\ H +
+                    0.000026\ T^2
 \end{equation}
 
 Here $D0$ is the Julian Date of the previous midnight using the J2000
@@ -320,7 +342,7 @@ Similar to GMST but takes observers longitude into account.
 
 To get the Local Sidereal Time the observers longitude has to be added
 to the GMST. This is illustrated in \figref{fig:wgs84_gmst_lst}. Since
-the longitude is given in degrees is has to be divided by 15 to get
+the longitude is given in degrees it has to be divided by 15 to get
 hours, because $\frac{\SI{360}{\degree}}{\SI{24}{\hour}} =
 \SI{15}{\degree\per\hour}$, so the equation becomes:
 
@@ -335,26 +357,30 @@ hours, because $\frac{\SI{360}{\degree}}{\SI{24}{\hour}} =
 \label{sec:celestial}
 
 Here we describe the different coordinate systems that are used to
-define the direction (origin) of an air shower. The Zenith and Azimuth
-and Horizontal systems rotate with the rotation of the Earth, because
-they are linked to the location of the observer. The Equatorial system
-is linked to the celestial sphere and independent from the rotation of
-Earth. To transform from Zenith and Azimuth to Equatorial the position
-of the observer and time of observation are also required.
+define the direction (origin) of an air shower. The zenith and azimuth
+coordinates rotate with the rotation of the Earth, because they are
+anchored to the location of the observer. The Equatorial system is
+linked to the celestial sphere and is independent from the rotation of
+Earth, the time of observation, and the location of the observer. To
+transform from zenith and azimuth to Equatorial the position of the
+observer and time of observation are required. The Horizontal coordinate
+system is used as intermediate, it also defines an azimuth coordinate,
+this is different from the azimuth coordinate in the zenith and azimuth
+system.
 
 
-\subsection{Zenith and Azimuth}
+\subsection{Zenith and azimuth coordinates}
 
 When a station detects a shower we try to reconstruct the direction of
 its origin, i.e. the position on the sky the shower came from. This
-direction is then given by a zenith and azimuth coordinate. These
-coordinates define a point on the semi-sphere that is the sky above the
-detection station. The Zenith is the point directly above the observer.
-The zenith angle is the angle between the direction and the Zenith
-point, so straight up is \SI{0}{\radian} and the horizon \SI{\pi /
-2}{\radian}. The azimuth is the direction in the horizontal plane, it
-starts at East (\SI{0}{\radian}) then goes to North (ENWS). This is
-illustrated in pink in \figref{fig:enu_horizontal}.
+direction is then given by a zenith ($\theta$) and azimuth ($\phi$)
+coordinate. These coordinates define a point on the semi-sphere that is
+the sky above the detection station. The Zenith is the point directly
+above the observer. The zenith angle is the angle between the direction
+and the Zenith point, so straight up is \SI{0}{\radian} and the horizon
+\SI{\pi / 2}{\radian}. The azimuth is the direction in the horizontal
+plane, it starts at East (\SI{0}{\radian}) then goes to North (ENWS).
+This is illustrated in pink in \figref{fig:enu_horizontal}.
 
 We do not expect nor consider air showers from below the horizon, so the
 zenith angles, defined in radians, are an angle in the range [0,
@@ -369,11 +395,11 @@ $\frac{\pi}{2}$). The azimuth is restricted to the range [$-\pi$, $\pi$).
 \end{figure}
 
 
-\subsection{Horizontal}
+\subsection{Horizontal coordinate system}
 
 This is a system used as intermediary for some coordinate conversions.
 It uses azimuth ($A$) and altitude ($a$) to define a direction. The
-altitude is the opposite of the zenith, so \SI{0}{\radian} is horizontal
+altitude is the complement of the zenith, so \SI{0}{\radian} is horizontal
 and \SI{\pi / 2}{\radian} is the zenith. The azimuth definition also
 differs, in Horizontal coordinates it moves from North to East (NESW).
 This is illustrated in gold in \figref{fig:enu_horizontal}.
@@ -393,15 +419,15 @@ altitude ($a$) and azimuth ($A$) are:
 
 \figref{fig:equatorial} shows the relation between the celestial sphere
 and Equatorial coordinates. The right ascension ($\alpha$) is the angle
-between the projection of the sky position ($\star$) on the plane of the
-Celestial equator and the vernal equinox ($\vernal$). The declination
-($\delta$) is the angle between the plane of the Celestial equator and
-the sky position. Due to precession (change of the rotational axis) the
-celestial positions slowly change over time. To compensate for
-precession coordinates are calculated as they would have been on a
-specific date, the J2000 epoch is commonly used. The equatorial
-coordinates are fixed to the celestial sphere and not influenced by the
-rotation of the Earth.
+between the projection of the position on the celestial sphere ($\star$)
+on the plane of the Celestial equator and the vernal equinox
+($\vernal$). The declination ($\delta$) is the angle between the plane
+of the Celestial equator and the sky position. Due to precession (change
+of the rotational axis) the celestial positions slowly change over time.
+To compensate for precession coordinates are calculated as they would
+have been on a specific date, the J2000 epoch is commonly used. The
+equatorial coordinates are fixed to the celestial sphere and not
+influenced by the rotation of the Earth.
 
 \begin{figure}
     \centering
@@ -412,10 +438,11 @@ rotation of the Earth.
     \label{fig:equatorial}
 \end{figure}
 
-Given an observers position in WGS84, a time of observation in LST and
-horizontal coordinates pointing to the source the following formulae can
-be used to get the corresponding equatorial coordinates \cite[p.
-37]{duffet-smith:1990aa}.
+Given an observers position in WGS84, a time of observation in LST
+(derived from the \gps timestamp and observer longitude) and horizontal
+coordinates (converted from the zenith and azimuth coordinates) pointing
+to the source the following formulae can be used to get the
+corresponding equatorial coordinates \cite[p. 37]{duffet-smith:1990aa}.
 
 \begin{equation}
     \begin{array}{l}
@@ -456,10 +483,14 @@ $\mathit{HA}$ is the hour angle. This is illustrated in
 
 
 \section{\corsika}
+\label{sec:corsika}
 
 \corsika is an extensive air shower simulation program which we use. It
 uses coordinate systems which are slightly different from the ones we
-employ \cite{heck:2013aa}.
+employ \cite{heck:2013aa}. The \sapphire framework provides a script to
+convert \corsika output to \hdf format. During this conversion the
+coordinates are transformed to the \hisparc coordinate system. The
+following sections describe these transformations.
 
 \begin{figure}
     \centering
