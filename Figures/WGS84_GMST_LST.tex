@@ -17,7 +17,7 @@
 
     % base
     \draw[base] (O) circle (\rlen); % Equator
-    \tdplotdrawarc[base,->,-stealth]
+    \tdplotdrawarc[base,-stealth]
         {(O)}{.2}{20}{340}{anchor=east}{Rotation};
 
     % Prime Meridian
@@ -26,21 +26,21 @@
 
     % WGS84
     % longitude
-    \tdplotdrawarc[wgs84,->,-stealth]
+    \tdplotdrawarc[wgs84,-stealth]
         {(O)}{0.5}{0}{\longitude}{anchor=north}{$\lambda$};
 
     % gmst
-    \tdplotdrawarc[time,->,-stealth]
+    \tdplotdrawarc[time,-stealth]
         {(O)}{\rlen-.3}{-\gmst}{0}{anchor=south east}{GMST};
-    \tdplotdrawarc[side,->,-stealth]
+    \tdplotdrawarc[side,-stealth]
         {(O)}{\rlen-.2}{-\gmst}{\lst-\gmst}{anchor=east}{LST};
 
     % observer
-    \draw[color=black,->,-stealth] (O) -- (\longitude:\rlen)
+    \draw[color=black,-stealth] (O) -- (\longitude:\rlen)
         node[above right] {Observer};
 
     % Equatorial
-    \draw[base,->,-stealth] (O) -- (-\gmst:\rlen+.5)
+    \draw[base,-stealth] (O) -- (-\gmst:\rlen+.5)
         node[anchor=north]{$\vernal$};
 
 \end{tikzpicture}

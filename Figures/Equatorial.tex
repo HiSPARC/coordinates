@@ -22,7 +22,7 @@
     % base
     \draw[base] (O) circle (\rlen);
     \draw[base] (\rlen,-.2,0);  % Equator
-    \tdplotdrawarc[time,->,-stealth]
+    \tdplotdrawarc[time,-stealth]
         {(0,0,\rlen)}{.2}{20}{340}{anchor=west}{};
 
     \tdplotsetthetaplanecoords{90};
@@ -32,24 +32,24 @@
     \draw[base] (O) circle (\clen);
     \draw[base] (\clen,-.75,0)
         node[anchor=north,rotate=-10] {Celestial Equator};
-    \draw[base,->,-stealth] (O) -- (0,0,\clen + .3)
+    \draw[base,-stealth] (O) -- (0,0,\clen + .3)
         node[anchor=south] {Celestial North Pole};
     \tdplotsetthetaplanecoords{90};
     \draw[base,tdplot_rotated_coords] (O) circle (\clen);
 
     % Equatorial
-    \draw[base,->,-stealth] (O) -- (\clen + .3,0,0)
+    \draw[base,-stealth] (O) -- (\clen + .3,0,0)
         node[anchor=north]{$\vernal$};
 
     \tdplotsetcoord{S}{\clen}{\dec}{\ra};
-    \draw[->,-stealth] (O) -- (S) node[anchor=south west] {$\star$};
+    \draw[-stealth] (O) -- (S) node[anchor=south west] {$\star$};
 
     \tdplotsetthetaplanecoords{\ra};
     \draw[base,dashed,tdplot_rotated_coords] (\clen,0,0) arc (0:90:\clen);
     \draw[base,dashed,tdplot_rotated_coords] (0,0,0) -- (0,\clen,0);
-    \tdplotdrawarc[equa,->,-stealth,tdplot_rotated_coords]
+    \tdplotdrawarc[equa,-stealth,tdplot_rotated_coords]
         {(0,0,0)}{\clen}{90}{\dec}{anchor=west}{$\delta$};
-    \tdplotdrawarc[equa,->,-stealth]
+    \tdplotdrawarc[equa,-stealth]
         {(O)}{\clen}{0}{\ra}{anchor=north}{$\alpha$};
 
 \end{tikzpicture}

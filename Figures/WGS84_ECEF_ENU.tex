@@ -28,16 +28,16 @@
 %    \draw[base,dashed] (P) -- (Pxy);
 
     % ECEF
-    \draw[ecef,->,-stealth] (O) -- (1,0,0) node[anchor=north]{$X$};
-    \draw[ecef,->,-stealth] (O) -- (0,1,0) node[anchor=west]{$Y$};
-    \draw[ecef,->,-stealth] (O) -- (0,0,1) node[anchor=south]{$Z$};
-    \draw[->,-stealth] (O) -- (P);
+    \draw[ecef,-stealth] (O) -- (1,0,0) node[anchor=north]{$X$};
+    \draw[ecef,-stealth] (O) -- (0,1,0) node[anchor=west]{$Y$};
+    \draw[ecef,-stealth] (O) -- (0,0,1) node[anchor=south]{$Z$};
+    \draw[-stealth] (O) -- (P);
 
     % WGS84
-    \tdplotdrawarc[wgs84,->,-stealth]
+    \tdplotdrawarc[wgs84,-stealth]
         {(O)}{0.25}{0}{\longitude}{anchor=north}{$\lambda$};
     \tdplotsetthetaplanecoords{\longitude};
-    \tdplotdrawarc[wgs84,->,-stealth,tdplot_rotated_coords]
+    \tdplotdrawarc[wgs84,-stealth,tdplot_rotated_coords]
         {(0,0,0)}{0.25}{90}{\latitude}{anchor=south west}{$\phi$};
 
     % ENU
@@ -50,11 +50,11 @@
 %    \draw[enu,tdplot_rotated_coords,->] (0,0,0) -- (0,0,.4) node[anchor=south]{$Up$};
     \draw[base,tdplot_rotated_coords] (0,0,0) circle (.17);       
 
-    \draw[enu,->,-stealth,tdplot_rotated_coords] (0,0,0) -- (-.45,0,0)
+    \draw[enu,-stealth,tdplot_rotated_coords] (0,0,0) -- (-.45,0,0)
         node[anchor=south]{North};
-    \draw[enu,->,-stealth,tdplot_rotated_coords] (0,0,0) -- (0,.45,0)
+    \draw[enu,-stealth,tdplot_rotated_coords] (0,0,0) -- (0,.45,0)
         node[anchor=west]{East};
-    \draw[enu,->,-stealth,tdplot_rotated_coords] (0,0,0) -- (0,0,.45)
+    \draw[enu,-stealth,tdplot_rotated_coords] (0,0,0) -- (0,0,.45)
         node[anchor=south]{Up};
 
 \end{tikzpicture}

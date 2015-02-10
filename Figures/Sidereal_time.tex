@@ -43,18 +43,18 @@
     \draw (earth_2) -- ($ (earth_2)!\rearth!(O) $);
 
     % Earth orbit
-    \tdplotdrawarc[base,->,-stealth]
+    \tdplotdrawarc[base,-stealth]
         {(O)}{\AU-\margin}{\orbit+\omargin}{\orbit+\siderealday-\omargin}
         {}{};
-    \tdplotdrawarc[sidereal,->,-stealth]
+    \tdplotdrawarc[sidereal,-stealth]
         {(O)}{\AU+\rearth+\margin+\margin}{\orbit}{\orbit+\siderealday}
         {anchor=north}{Sidereal day};
-    \tdplotdrawarc[solar,->,-stealth]
+    \tdplotdrawarc[solar,-stealth]
         {(O)}{\AU+\rearth+\margin}{\orbit}{\orbit+\solarday}
         {anchor=north west}{Solar day};
 
     % Earth rotation
-    \tdplotdrawarc[base,->,-stealth]
+    \tdplotdrawarc[base,-stealth]
         {(earth_0)}{\rearth-\margin}{110}{430}{anchor=west}{};
 
     % Earth rotation
