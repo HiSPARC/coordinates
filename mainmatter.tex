@@ -273,6 +273,23 @@ so not a leap year, 2004 is divisible by 4 and not by 100 and is a leap
 year, 1900 is divisible by 4 and 100 but not 400 so is not a leap year,
 and 2000 is divisible by 4, 100 and 400 and is therefore a leap year.
 
+The following conversion is valid for dates after 15 October 1582. The
+brackets $\floor{\ }$ indicate that the decimal part of the value should
+be discarded. The $\mathit{month}$ starts at 1 for January and
+$\mathit{hour}$ is the decimal number of hours.
+
+\begin{equation}
+    \begin{array}{l}
+        a = \floor{\frac{14 - \mathit{month}}{12}} \ , \\
+        A = \floor{\frac{\mathit{year - a}}{100}} \ , \\
+        B = 2 - A + \floor{\frac{A}{4}} \ , \\
+        C = \floor{365.25 \mathit{year - a}} \ , \\
+        D = \floor{30.6001 (\mathit{month} + 12 a + 1)} \ , \\
+        \mathit{JD} = B + C + D + \mathit{day} +
+                      \frac{\mathit{hour}}{24} + 1720994.5 \ .
+    \end{array}
+\end{equation}
+
 
 \subsubsection{Modified Julian Date (MJD)}
 
@@ -624,7 +641,7 @@ relative arrival times and the ENU positions. In this case
     (a, A) = (\SI{1.1890}{\radian}, \SI{-1.4322}{\radian}) \ .
 \end{equation}
 
-The \gps timestamp represents the date March 29, 2012 at 10:51:21. The
+The \gps timestamp represents the date 29 March 2012 at 10:51:21. The
 corresponding UTC timestamp is \SI{1333018281}{\second}, because 15 leap
 seconds were in effect at that date. The corresponding Julian Date is
 \SI{2456015.952326}{\day}, from which we can get the GMST
