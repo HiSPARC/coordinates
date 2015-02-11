@@ -13,8 +13,10 @@ the coordinates of the observer. In \secref{sec:time} we discuss
 different time keeping systems and how we can relate a time of
 observation to the rotation of the Earth w.r.t the celestial sphere. The
 systems to define a point on the celestial sphere are described in
-\secref{sec:celestial}. Finally in \secref{sec:corsika} the coordinate
-systems are used in \corsika simulations are described.
+\secref{sec:celestial}. In \secref{sec:corsika} the coordinate systems
+which are used in \corsika simulations are described. Finally in
+\secref{sec:example} an example shows the process to go from a \hisparc
+detection to equatorial coordinates.
 
 Make sure that the angles are converted to the correct units for the
 cosine and sine functions when converting between coordinate systems.
@@ -75,7 +77,7 @@ The formulae to convert WGS84 coordinates to ECEF coordinates are:
     \begin{array}{l}
         X = \left(N + h\right) \cos{\phi} \cos{\lambda} \ , \\
         Y = \left(N + h\right) \cos{\phi} \sin{\lambda} \ , \\
-        Z = \left(\frac{b^2}{a^2} N + h\right) \sin{\phi} \ . \\
+        Z = \left(\frac{b^2}{a^2} N + h\right) \sin{\phi} \ .
     \end{array}
 \end{equation}
 
@@ -90,7 +92,7 @@ Earth surface we have
         f = \frac{1}{298.257223563} \ , \\
         b = a (1 - f) \ , \\
         e = \sqrt{2 f - f^2} \ , \\
-        N = \frac{a}{\sqrt{1 - e^2 \sin^2 \phi}} \ , \\
+        N = \frac{a}{\sqrt{1 - e^2 \sin^2 \phi}} \ ,
     \end{array}
 \end{equation}
 
@@ -135,8 +137,8 @@ The formulae to convert ECEF to ENU with a given reference position are:
     \end{bmatrix}
 \end{equation}
 
-where  $(X, Y, Z)$ and $(x, y, z)$ are the location in ECEF and ENU
-respectively. $(\phi_r, \lambda_r)$ and $(X_r, Y_r, Z_r)$ are the
+\noindent where $(X, Y, Z)$ and $(x, y, z)$ are the location in ECEF and
+ENU respectively. $(\phi_r, \lambda_r)$ and $(X_r, Y_r, Z_r)$ are the
 reference position in WGS84 and ECEF respectively.
 
 
@@ -152,7 +154,10 @@ detector (center of the scintillator) is measured (in meters), the angle
 is determined using a compass and the magnetic declination. This angle
 is in degrees and goes from North to East (NESW). The rotation angle of
 the detector itself ($\beta$) is defined as the angle of the long side
-of the detector relative to the North Pole (positive towards East).
+of the detector relative to the North Pole (positive towards East). The
+height difference ($z$) between the \gps and detectors can also be
+measured, however, this is only important if the detectors are not all
+at the same altitude or are at a very different altitude from the \gps.
 
 When a compass is used the angle needs to be compensated for the
 difference between magnetic and geographic north, the difference is
@@ -164,8 +169,11 @@ up to \SI{3}{\degree} for some \hisparc station locations.
     \centering
     \input{Figures/ENU_compass}
     \caption{Relationship between the ENU (green) and Compass (purple)
-             coordinate system and how it is used to define the position
-             and rotation of a detector.}
+             coordinate system. The detectors of station 503 are shown.
+             Its \gps is used as the origin for the ENU coordinates.
+             The blue detector is located by $(\alpha,r,\beta,z) =
+             (\SI{45}{\degree},\SI{5}{\meter},\SI{45}{\degree},
+              \SI{0}{\meter})$.}
     \label{fig:enu_compass}
 \end{figure}
 
@@ -176,7 +184,7 @@ to ENU are:
     \begin{array}{l}
         x = r * \sin{\alpha} \ , \\
         y = r * \cos{\alpha} \ , \\
-        z = z \ . \\
+        z = z \ .
     \end{array}
 \end{equation}
 
@@ -207,8 +215,9 @@ to represent the number. For instance the \gps timestamp for 1 December
 2014 at 00:00:29.886222166 (\gps time) is
 
 \begin{equation}
-    \num{1101427229886222166} + \num{315964800000000000} =
-        \num{1417392029886222166}.
+    \SI{1101427229886222166}{\nano\second} +
+        \SI{315964800000000000}{\nano\second} =
+        \SI{1417392029886222166}{\nano\second} \ .
 \end{equation}
 
 
@@ -273,7 +282,7 @@ Date is 2400000.5 days. The .5 days moves the reference time from noon
 to midnight.
 
 \begin{equation}
-    \mathit{MJD} = \mathit{JD} - 2400000.5
+    \mathit{MJD} = \mathit{JD} - 2400000.5 \ .
 \end{equation}
 
 
@@ -316,8 +325,8 @@ hours \cite{kaplan:2011aa}. This is illustrated in
 \figref{fig:wgs84_gmst_lst}.
 
 \begin{equation}
-    \mathit{GMST} = 6.697374558 + 0.06570982441908\ D0 + 1.00273790935\ H +
-                    0.000026\ T^2
+    \mathit{GMST} = 6.697374558 + 0.06570982441908\ \mathit{D0} +
+                    1.00273790935\ H + 0.000026\ T^2 \ .
 \end{equation}
 
 Here $D0$ is the Julian Date of the previous midnight using the J2000
@@ -348,7 +357,7 @@ hours, because $\frac{\SI{360}{\degree}}{\SI{24}{\hour}} =
 
 \begin{equation}
     \begin{array}{l}
-        \mathit{LST} = \mathit{GMST} + \frac{\lambda}{15} \ . \\
+        \mathit{LST} = \mathit{GMST} + \frac{\lambda}{15} \ .
     \end{array}
 \end{equation}
 
@@ -410,7 +419,7 @@ altitude ($a$) and azimuth ($A$) are:
 \begin{equation}
     \begin{array}{l}
         a = \frac{\pi}{2} - \theta \ , \\
-        A = \frac{\pi}{2} - \phi \ . \\
+        A = \frac{\pi}{2} - \phi \ .
     \end{array}
 \end{equation}
 
@@ -445,12 +454,13 @@ to the source the following formulae can be used to get the
 corresponding equatorial coordinates \cite[p. 37]{duffet-smith:1990aa}.
 
 \begin{equation}
+    \label{eq:equatorial}
     \begin{array}{l}
         \delta = \arcsin{\left((\sin{a} \sin{\phi}) +
                                (\cos{a} \cos{\phi} \cos{A})\right)} \ , \\
         \mathit{HA} = \arccos{\left(\frac{\sin{a} - (\sin{\phi} \sin{\delta})}
                                          {\cos{\phi} \cos{\delta}}\right)} \ , \\
-        \alpha = \mathit{LST} - \mathit{HA} \ . \\
+        \alpha = \mathit{LST} - \mathit{HA} \ .
     \end{array}
 \end{equation}
 
@@ -542,6 +552,92 @@ are:
         \theta = \Theta \ , \\
         \phi = \Phi - \frac{\pi}{2} \ . \\
     \end{array}
+\end{equation}
+
+
+\section{Example}
+\label{sec:example}
+
+An example will now be given for a real \hisparc event detected by
+station 503.
+
+
+\subsection{Measured}
+
+From the \gps of station 503 we know its geographical location in WGS84,
+
+\begin{equation}
+    (\phi, \lambda, h) = (\SI{4.9529440}{\degree},
+                          \SI{52.3562600}{\degree},
+                          \SI{51.4}{\meter}) \ .
+\end{equation}
+
+The location of its four detectors have been measured in compass
+coordinates (see \figref{fig:enu_compass})
+
+\begin{equation}
+    \begin{pmatrix}
+        \alpha & r & \beta & z
+    \end{pmatrix}
+        =
+    \begin{pmatrix}
+        \SI{315}{\degree} & \SI{8.97}{\meter} & \SI{135}{\degree} & \SI{0}{\meter} \\
+        \SI{315}{\degree} & \SI{3.15}{\meter} & \SI{135}{\degree} & \SI{0}{\meter} \\
+        \SI{225}{\degree} & \SI{5.09}{\meter} & \SI{225}{\degree} & \SI{0}{\meter} \\
+        \SI{45}{\degree} & \SI{4.89}{\meter} & \SI{225}{\degree} & \SI{0}{\meter} \\
+    \end{pmatrix} \ .
+\end{equation}
+                          
+An event was detected on \gps timestamp \SI{1333018296}{\second}. The
+relative arrival times in each detector are
+\SIlist{0;2.5;5;12.5}{\nano\second}.
+
+
+\subsection{Conversions}
+
+To reconstruct the direction of the shower we use \sapphire. First it
+converts the detector compass coordinates to ENU (relative to the \gps)
+
+\begin{equation}
+    \begin{pmatrix}
+        \mathit{East} & \mathit{North} & \mathit{Up}
+    \end{pmatrix}
+        =
+    \begin{pmatrix}
+        \SI{-6.34}{\meter} & \SI{6.34}{\meter} & \SI{0}{\meter} \\
+        \SI{-2.23}{\meter} & \SI{2.23}{\meter} & \SI{0}{\meter} \\
+        \SI{-3.60}{\meter} & \SI{-3.60}{\meter} & \SI{0}{\meter} \\
+        \SI{3.46}{\meter} & \SI{3.46}{\meter} & \SI{0}{\meter} \\
+    \end{pmatrix} \ .
+\end{equation}
+
+The local zenith and azimuth direction is then reconstructed using the
+relative arrival times and the ENU positions. In this case
+
+\begin{equation}
+    (\theta, \phi) = (\SI{0.3818}{\radian}, \SI{3.0030}{\radian}) \ ,
+\end{equation}
+
+\noindent which is equal to these horizontal coordinates
+
+\begin{equation}
+    (a, A) = (\SI{1.1890}{\radian}, \SI{-1.4322}{\radian}) \ .
+\end{equation}
+
+The \gps timestamp represents the date March 29, 2012 at 10:51:21. The
+corresponding UTC timestamp is \SI{1333018281}{\second}, because 15 leap
+seconds were in effect at that date. The corresponding Julian Date is
+\SI{2456015.952326}{\day}, from which we can get the GMST
+\SI{23.3387}{\hour} (or in sexagesimal notation:
+$23^\mathrm{h}20^\mathrm{m}19^\mathrm{s}$). Correcting for the longitude
+of the station we get the Local Sidereal Time \SI{2.8291}{\hour}
+($2^\mathrm{h}49^\mathrm{m}45^\mathrm{s}$).
+
+Now the equatorial coordinates can be calculated
+
+\begin{equation}
+    (\alpha, \delta) = (\SI{0.3593}{\radian}, \SI{0.1318}{\radian}) = 
+        (1^\mathrm{h}22^\mathrm{m}20^\mathrm{s}, \ang{7;33;}) \ .
 \end{equation}
 
 
