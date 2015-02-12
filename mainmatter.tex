@@ -124,16 +124,20 @@ The formulae to convert ECEF to ENU with a given reference position are:
 
 \begin{equation}
     \begin{bmatrix}
-    x \\ y \\ z
+        x \\
+        y \\
+        z
     \end{bmatrix}
     =
     \begin{bmatrix}
-                 -\sin(\lambda_r) &               \cos(\lambda_r) &           0. \\
-    -\sin(\phi_r) \cos(\lambda_r) & -\sin(\phi_r) \sin(\lambda_r) & \cos(\phi_r) \\
-     \cos(\phi_r) \cos(\lambda_r) &  \cos(\phi_r) \sin(\lambda_r) & \sin(\phi_r)
+                     -\sin(\lambda_r) &               \cos(\lambda_r) &           0. \\
+        -\sin(\phi_r) \cos(\lambda_r) & -\sin(\phi_r) \sin(\lambda_r) & \cos(\phi_r) \\
+         \cos(\phi_r) \cos(\lambda_r) &  \cos(\phi_r) \sin(\lambda_r) & \sin(\phi_r)
     \end{bmatrix}
     \begin{bmatrix}
-    X - X_r \\ Y - Y_r \\ Z - Z_r
+        X - X_r \\
+        Y - Y_r \\
+        Z - Z_r
     \end{bmatrix}
 \end{equation}
 
@@ -241,15 +245,16 @@ months before they take effect.
 
 \begin{table}
     \centering
-    \begin{tabular}{ l | c }
+    \begin{tabular}{ l c }
+        \toprule
         Date & Leap seconds \\
-        \hline
+        \midrule
         31 December, 1998 & 13 \\
         31 December, 2005 & 14 \\
         31 December, 2008 & 15 \\
         30 June, 2012 & 16 \\
         30 June, 2015 & 17 \\
-        \hline
+        \bottomrule
     \end{tabular}
    \caption{Leap seconds in effect or introduced after 2002. This is the
             amount of seconds that \gps time is ahead of UTC time.}
@@ -592,19 +597,20 @@ From the \gps of station 503 we know its geographical location in WGS84,
 The location of its four detectors have been measured in compass
 coordinates (see \figref{fig:enu_compass})
 
-\begin{equation}
-    \begin{pmatrix}
-        \alpha & r & \beta & z
-    \end{pmatrix}
-        =
-    \begin{pmatrix}
-        \SI{315}{\degree} & \SI{8.97}{\meter} & \SI{135}{\degree} & \SI{0}{\meter} \\
-        \SI{315}{\degree} & \SI{3.15}{\meter} & \SI{135}{\degree} & \SI{0}{\meter} \\
-        \SI{225}{\degree} & \SI{5.09}{\meter} & \SI{225}{\degree} & \SI{0}{\meter} \\
-        \SI{45}{\degree} & \SI{4.89}{\meter} & \SI{225}{\degree} & \SI{0}{\meter} \\
-    \end{pmatrix} \ .
-\end{equation}
-                          
+\begin{center}
+    \begin{tabular}{ l c c c c }
+        \toprule
+        Detector & $\alpha$ [\si{\degree}] & $r$ [\si{\meter}] &
+        $\beta$ [\si{\degree}] & $z$ [\si{\meter}] \\
+        \midrule
+        1 & 315 & 8.97 & 135 & 0 \\
+        2 & 315 & 3.15 & 135 & 0 \\
+        3 & 225 & 5.09 & 225 & 0 \\
+        4 &  45 & 4.89 & 225 & 0 \\
+        \bottomrule
+    \end{tabular}
+\end{center}
+                        
 An event was detected on \gps timestamp \SI{1333018296}{\second}. The
 relative arrival times in each detector are
 \SIlist{0;2.5;5;12.5}{\nano\second}.
@@ -615,46 +621,65 @@ relative arrival times in each detector are
 To reconstruct the direction of the shower we use \sapphire. First it
 converts the detector compass coordinates to ENU (relative to the \gps)
 
-\begin{equation}
-    \begin{pmatrix}
-        \mathit{East} & \mathit{North} & \mathit{Up}
-    \end{pmatrix}
-        =
-    \begin{pmatrix}
-        \SI{-6.34}{\meter} & \SI{6.34}{\meter} & \SI{0}{\meter} \\
-        \SI{-2.23}{\meter} & \SI{2.23}{\meter} & \SI{0}{\meter} \\
-        \SI{-3.60}{\meter} & \SI{-3.60}{\meter} & \SI{0}{\meter} \\
-        \SI{3.46}{\meter} & \SI{3.46}{\meter} & \SI{0}{\meter} \\
-    \end{pmatrix} \ .
-\end{equation}
+
+\begin{center}
+    \begin{tabular}{ l c c c }
+        \toprule
+        Detector & $x$ [\si{\meter}] & $y$ [\si{\meter}] & $z$ [\si{\meter}] \\
+        \midrule
+        1 & -6.34 &  6.34 & 0 \\
+        2 & -2.23 &  2.23 & 0 \\
+        3 & -3.60 & -3.60 & 0 \\
+        4 &  3.46 &  3.46 & 0 \\
+        \bottomrule
+    \end{tabular}
+\end{center}
 
 The local zenith and azimuth direction is then reconstructed using the
 relative arrival times and the ENU positions. In this case
 
 \begin{equation}
-    (\theta, \phi) = (\SI{0.3818}{\radian}, \SI{3.0030}{\radian}) \ ,
+    \begin{array}{l}
+        \theta = \SI{0.3818}{\radian} \, \\
+        \phi = \SI{3.0030}{\radian} \ ,
+    \end{array}
 \end{equation}
 
 \noindent which is equal to these horizontal coordinates
 
 \begin{equation}
-    (a, A) = (\SI{1.1890}{\radian}, \SI{-1.4322}{\radian}) \ .
+    \begin{array}{l}
+        a = \SI{1.1890}{\radian} \ , \\
+        A = \SI{-1.4322}{\radian} \ .
+    \end{array}
 \end{equation}
 
-The \gps timestamp represents the date 29 March 2012 at 10:51:21. The
-corresponding UTC timestamp is \SI{1333018281}{\second}, because 15 leap
-seconds were in effect at that date. The corresponding Julian Date is
-\SI{2456015.952326}{\day}, from which we can get the GMST
-\SI{23.3387}{\hour} (or in sexagesimal notation:
-$23^\mathrm{h}20^\mathrm{m}19^\mathrm{s}$). Correcting for the longitude
-of the station we get the Local Sidereal Time \SI{2.8291}{\hour}
-($2^\mathrm{h}49^\mathrm{m}45^\mathrm{s}$).
+The \gps timestamp represents the date 29 March 2012 at 10:51:21. On
+that date 15 leap seconds were in effect. The corresponding UTC
+timestamp, Julian Date, and GMST are
+
+\begin{equation}
+    \begin{array}{l}
+        \mathit{UTC} = \SI{1333018281}{\second} \ , \\
+        \mathit{JD} = \SI{2456015.952326}{\day} \ , \\
+        \mathit{GMST} = \SI{23.3387}{\hour} = 23^\mathrm{h}20^\mathrm{m}19^\mathrm{s} \ . \\
+    \end{array}
+\end{equation}
+
+Using the longitude of the station the Local Sidereal Time can be
+calculated from the GMST
+
+\begin{equation}
+    \mathit{LST} = \SI{2.8291}{\hour} = 2^\mathrm{h}49^\mathrm{m}45^\mathrm{s} \ .
+\end{equation}
 
 Now the equatorial coordinates can be calculated
 
 \begin{equation}
-    (\alpha, \delta) = (\SI{0.3593}{\radian}, \SI{0.1318}{\radian}) = 
-        (1^\mathrm{h}22^\mathrm{m}20^\mathrm{s}, \ang{7;33;}) \ .
+    \begin{array}{l}
+        \alpha = \SI{0.3593}{\radian} = 1^\mathrm{h}22^\mathrm{m}20^\mathrm{s} \ , \\
+        \delta = \SI{0.1318}{\radian} = \ang{7;33;} \ .
+    \end{array}
 \end{equation}
 
 
