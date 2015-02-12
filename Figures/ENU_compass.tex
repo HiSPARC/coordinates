@@ -33,18 +33,17 @@
     % Draw distance line
     \draw[compass,-stealth] (O) -- node[below right] {$r$} (d3);
 
-
-    % Draw North from detector
-    \draw[-stealth] (d3) -- +(0,.75);
-    % Draw detector angle
-    \draw[-stealth] (d3) -- +(90-45:.65);
-
     % Draw alpha line
     \draw[compass,-stealth] (0,.5) arc (90:90-45:.5);
     \draw[compass] (70:.6) node {$\alpha$};
 
+    % Draw North from detector
+    \draw[-stealth] (d0) -- +(0,.5) node[anchor=south] {N};
+    % Draw detector angle
+    \draw[-stealth] (d0) -- +(90-135:.5);
+
     % Draw beta line
-    \draw[compass,-stealth] (d3) ++(0,.4) arc (90:90-45:.4);
-    \draw[compass] (d3) ++(90-22:.43) node[anchor=south] {$\beta$};
+    \draw[compass,-stealth] (d0) ++(0,.3) arc (90:90-135:.3);
+    \draw[compass] (d0) ++(90-60:.33) node[anchor=south] {$\beta$};
 
 \end{tikzpicture}
