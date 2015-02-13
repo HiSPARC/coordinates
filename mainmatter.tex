@@ -197,26 +197,26 @@ to ENU are:
 \label{sec:time}
 
 For \hisparc events it is important to know precisely when they occur, a
-\gps is used to get synchronized and precise timing. This gives us a
-timestamp, but this needs to be converted to Local Sidereal Time for the
-conversion of celestial coordinates in \secref{sec:celestial}. The full
-transformation chain is as follows: GPS $\to$ UTC $\to$ JD $\to$ GMST
-$\to$ LST.
+\gps is used to get synchronized and precise timing. It gives us a
+unique timestamp, this needs to be converted to Local Sidereal Time for
+the conversion of celestial coordinates in \secref{sec:celestial}. The
+full transformation chain is as follows: GPS $\to$ UTC $\to$ JD $\to$
+GMST $\to$ LST.
 
 
 \subsection{\gps time}
 
-\gps time started counting on 6 January 1980 00:00 UTC, i.e.
-\num{315964800} UNIX seconds after the UNIX epoch of 1 January 1970
-00:00 UTC. \gps time is a continuously increasing number. This is
-different from UTC time in which certain seconds are repeated when `leap
-seconds' are added \cite{usno:2012aa}. Currently (6 February 2015) the
-difference between UTC and \gps time is 16 seconds. From the \hisparc
-electronics we get a \gps timestamp, adjusted to the UNIX epoch, i.e.
-$\mathrm{GPS} + \mathrm{UNIX(GPS=0)}$. The timestamp is given in
-nanoseconds. The \gps timestamp is a large number and requires 64-bits
-to represent the number. For instance the \gps timestamp for 1 December
-2014 at 00:00:29.886222166 (\gps time) is
+\gps time started counting on 6 January 1980 00:00 UTC (Coordinated
+Universal Time), i.e. \num{315964800} UNIX seconds after the UNIX epoch
+of 1 January 1970 00:00 UTC. \gps time is a continuously increasing
+number. This is different from UTC time in which certain seconds are
+repeated when `leap seconds' are added \cite{usno:2012aa}. Currently (6
+February 2015) the difference between UTC and \gps time is 16 seconds.
+From the \hisparc electronics we get a \gps timestamp, adjusted to the
+UNIX epoch, i.e. $\mathrm{GPS} + \mathrm{UNIX(GPS=0)}$. The timestamp is
+given in nanoseconds. The \gps timestamp is therefore a large number
+which requires 64-bits to be represented digitally. For instance the
+\gps timestamp for 1 December 2014 at 00:00:29.886222166 (\gps time) is
 
 \begin{equation}
     \SI{1101427229886222166}{\nano\second} +
@@ -264,19 +264,20 @@ months before they take effect.
 
 \subsection{Julian Date (JD)}
 
-Decimal number counting the number of days since 1 January 4713 B.C.
-12:00:00. Calculating this is not trivial since one has to account for
-the fact that the 5th up to and including the 14th of October in 1582 do
-not exist. Those ten days were skipped because the Julian calendar,
-which was used before that gap, introduced too many leap years, every
-year divisible by 4 was a leap year. The Gregorian calendar used
-afterwards compensated by having less leap years. Leap years still occur
-when years are divisible by 4, except when they are also divisible by
-100 (e.g. 1900), except when they are also divisible by 400 (e.g. 2000)
-\cite{acf:2014aa}. Consider these examples: 1999 is not divisible by 4
-so not a leap year, 2004 is divisible by 4 and not by 100 and is a leap
-year, 1900 is divisible by 4 and 100 but not 400 so is not a leap year,
-and 2000 is divisible by 4, 100 and 400 and is therefore a leap year.
+JD is a decimal number counting the number of days since 1 January 4713
+B.C. 12:00:00. Calculating this is not trivial since one has to account
+for the fact that the 5th up to and including the 14th of October in
+1582 do not exist. Those ten days were skipped because the Julian
+calendar, which was used before that gap, introduced too many leap
+years, every year divisible by 4 was a leap year. The Gregorian calendar
+used afterwards compensated by having less leap years. Leap years still
+occur when years are divisible by 4, except when they are also divisible
+by 100 (e.g. 1900), except when they are also divisible by 400 (e.g.
+2000) \cite{acf:2014aa}. Consider these examples: 1999 is not divisible
+by 4 so not a leap year, 2004 is divisible by 4 and not by 100 and is a
+leap year, 1900 is divisible by 4 and 100 but not 400 so is not a leap
+year, and 2000 is divisible by 4, 100 and 400 and is therefore a leap
+year.
 
 The following conversion is valid for dates after 15 October 1582. The
 brackets $\floor{\ }$ indicate that the decimal part of the value should
@@ -310,19 +311,18 @@ to midnight.
 
 \subsection{Sidereal Time}
 
-In a solar day the Earth rotates more than \SI{360}{\degree} around its
-axis because it orbits around the Sun, causing the position of the Sun
-relative to the Earth to change. The Earth orbits the Sun every 365.25
-days, so in one day the the orbit proceeds by
-$\frac{\SI{360}{\degree}}{\SI{365.25}{\day}} \approx
+In sidereal time the rotation of Earth relative to the `fixed'
+background stars is taken. A sidereal day is a full rotation of Earth
+around its axis, relative to background stars. In a solar day the Earth
+rotates more than \SI{360}{\degree} around its axis because it orbits
+around the Sun, causing the position of the Sun relative to the Earth to
+change. The Earth orbits the Sun every 365.25 days, so in one day the
+orbit proceeds by $\frac{\SI{360}{\degree}}{\SI{365.25}{\day}} \approx
 \SI{1}{\degree\per\day}$. So an extra rotation of approximately
 \SI{1}{\degree} around its axis is required to make the same part of the
-Earth face the Sun (a solar day). In sidereal time the rotation of Earth
-relative to the `fixed' background stars is taken. A sidereal day is a
-full rotation of Earth around its axis, relative to background stars.
-This is around \SI{4}{\minute} shorter than a solar day. In
-\figref{fig:sidereal_time} the difference between a solar and sidereal
-day is illustrated.
+Earth face the Sun (a solar day). A sidereal day is therefore around
+\SI{4}{\minute} shorter than a solar day. In \figref{fig:sidereal_time}
+the difference between a solar and sidereal day is illustrated.
 
 \begin{figure}
     \centering
@@ -343,8 +343,7 @@ day is illustrated.
 
 GMST is the hour angle of the vernal equinox (\secref{sec:celestial})
 with respect to the prime meridian at Greenwich, expressed in decimal
-hours \cite{kaplan:2011aa}. This is illustrated in
-\figref{fig:wgs84_gmst_lst}.
+hours \cite{kaplan:2011aa}.
 
 \begin{equation}
     \mathit{GMST} = 6.697374558 + 0.06570982441908\ \mathit{D0} +
@@ -369,19 +368,20 @@ centuries since J2000.
 
 \subsubsection{Local Sidereal Time (LST)}
 
-Similar to GMST but takes observers longitude into account.
-
-To get the Local Sidereal Time the observers longitude has to be added
-to the GMST. This is illustrated in \figref{fig:wgs84_gmst_lst}. Since
-the longitude is given in degrees it has to be divided by 15 to get
-hours, because $\frac{\SI{360}{\degree}}{\SI{24}{\hour}} =
-\SI{15}{\degree\per\hour}$, so the equation becomes:
+Similar to GMST but takes observers longitude into account. To get the
+Local Sidereal Time the observers longitude has to be added to the GMST.
+To convert the longitude from degrees to hours it has to be divided by
+15, $\frac{\SI{360}{\degree}}{\SI{24}{\hour}} =
+\SI{15}{\degree\per\hour}$.
 
 \begin{equation}
     \begin{array}{l}
         \mathit{LST} = \mathit{GMST} + \frac{\lambda}{15} \ .
     \end{array}
 \end{equation}
+
+The relation between LST and GMST is illustrated in
+\figref{fig:wgs84_gmst_lst}.
 
 
 \section{Celestial}
@@ -413,7 +413,7 @@ and the Zenith point, so straight up is \SI{0}{\radian} and the horizon
 plane, it starts at East (\SI{0}{\radian}) then goes to North (ENWS).
 This is illustrated in pink in \figref{fig:enu_horizontal}.
 
-We do not expect nor consider air showers from below the horizon, so the
+We neither expect nor consider air showers from below the horizon, so the
 zenith angles, defined in radians, are an angle in the range [0,
 $\frac{\pi}{2}$). The azimuth is restricted to the range [$-\pi$, $\pi$).
 
@@ -429,7 +429,7 @@ $\frac{\pi}{2}$). The azimuth is restricted to the range [$-\pi$, $\pi$).
 \subsection{Horizontal coordinate system}
 
 This is a system used as intermediary for some coordinate conversions.
-It uses azimuth ($A$) and altitude ($a$) to define a direction. The
+It azimuth ($A$) and altitude ($a$) to define a direction. The
 altitude is the complement of the zenith, so \SI{0}{\radian} is horizontal
 and \SI{\pi / 2}{\radian} is the zenith. The azimuth definition also
 differs, in Horizontal coordinates it moves from North to East (NESW).
@@ -454,11 +454,11 @@ between the projection of the position on the celestial sphere ($\star$)
 on the plane of the Celestial equator and the vernal equinox
 ($\vernal$). The declination ($\delta$) is the angle between the plane
 of the Celestial equator and the sky position. Due to precession (change
-of the rotational axis) the celestial positions slowly change over time.
-To compensate for precession coordinates are calculated as they would
-have been on a specific date, the J2000 epoch is commonly used. The
-equatorial coordinates are fixed to the celestial sphere and not
-influenced by the rotation of the Earth.
+of direction of Earth's rotational axis) the celestial positions slowly
+change over time. To compensate for precession coordinates are
+calculated as they would have been on a specific date, the J2000 epoch
+is commonly used. The equatorial coordinates are fixed to the celestial
+sphere and not influenced by the rotation of the Earth.
 
 \begin{figure}
     \centering
@@ -555,19 +555,21 @@ The formulae to convert \corsika to ENU are:
 \subsection{Celestial}
 
 \corsika looks from the point of view of the shower, so not the
-direction it came form, but the direction it goes to. The $\Theta$ angle
-is defined the same as our definition of zenith ($\theta$),
+direction it came form, but the direction it goes to. The \corsika
+zenith angle ($\Theta$) is identical to the \hisparc zenith ($\theta$),
 \SI{0}{\radian} is a shower from the zenith and \SI{\pi / 2}{\radian} is
-a horizontal shower. The $\Phi$ angle is defined differently than our
-definition of azimuth ($\phi$). First is the angle the shower is heading
-towards and secondly a different reference is used. \SI{0}{\radian} is a
-shower heading towards North, so coming from South, which we would
-define as \SI{-\pi / 2}{\radian}. The (positive) rotation of the angle
-is in the same direction, from North to West. This is shown by the brown
-arced lines in \figref{fig:enu_corsika}.
+a horizontal shower. The \corsika azimuth angle ($\Phi$) differs from
+the \hisparc definition of azimuth ($\phi$). The \corsika azimuth is the
+angle the shower is heading to with respect to the North, while the
+\hisparc azimuth is the angle the shower is coming from with respect to
+the East. $\Phi = \SI{0}{\radian}$ is a shower heading towards North, so
+coming from South, which we would define as $\phi = \SI{-\pi /
+2}{\radian}$. The (positive) rotation of the angle is in the same
+direction, from North to West. This is shown by the brown arced lines in
+\figref{fig:enu_corsika}.
 
-The formulae to convert the \corsika direction to our azimuth and zenith
-are:
+The formulae to convert the \corsika direction to \hisparc zenith and
+azimuth are:
 
 \begin{equation}
     \begin{array}{l}
