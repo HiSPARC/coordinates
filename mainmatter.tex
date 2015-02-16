@@ -289,7 +289,7 @@ $\mathit{hour}$ is the decimal number of hours.
         a = \floor{\frac{14 - \mathit{month}}{12}} \ , \\
         A = \floor{\frac{\mathit{year - a}}{100}} \ , \\
         B = 2 - A + \floor{\frac{A}{4}} \ , \\
-        C = \floor{365.25 \mathit{year - a}} \ , \\
+        C = \floor{365.25 (\mathit{year} - a)} \ , \\
         D = \floor{30.6001 (\mathit{month} + 12 a + 1)} \ , \\
         \mathit{JD} = B + C + D + \mathit{day} +
                       \frac{\mathit{hour}}{24} + 1720994.5 \ .
