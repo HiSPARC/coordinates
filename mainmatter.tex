@@ -31,7 +31,7 @@ two systems are used: WGS84 and ENU. \figref{fig:wgs84_ecef_enu}
 illustrates the relationships between these systems. Additionally a
 compass based system is used to determine detector locations relative to
 the \gps antenna. These systems are described in the following sections.
-The conversion formulae are taken from \cite{wikipedia:2014aa}.
+The conversion formulae are taken from \cite[sec.~K]{usno:2014aa}.
 
 \begin{figure}
     \centering
@@ -48,7 +48,7 @@ The conversion formulae are taken from \cite{wikipedia:2014aa}.
 The location of a \hisparc station is determined by means of a \gps
 antenna (one antenna for each station). The \gps returns coordinates in
 the WGS84 coordinate system. This defines a position with a latitude
-($\phi$), longitude ($\lambda$) and altitude ($h$). The latitude and
+($\varphi$), longitude ($\lambda$) and altitude ($h$). The latitude and
 longitude are defined in decimal degrees, the altitude in meters.
 Latitude is the angular distance between a location and the equator,
 angles towards north are positive. The longitude is the angular distance
@@ -57,7 +57,7 @@ prime meridian) defined by the International Earth Rotation and
 Reference Systems Service (IERS), angles towards east are positive. The
 altitude is the height above an ellipsoid that approximates the shape of
 the Earth. The parameters which define this ellipsoid are given in
-\eqref{eq:wgs84}.
+\eqref{eq:wgs84} \cite{nga:2014aa}.
 
 
 \subsection{Earth-Centered, Earth-Fixed (ECEF)}
@@ -75,9 +75,9 @@ The formulae to convert WGS84 coordinates to ECEF coordinates are:
 
 \begin{equation}
     \begin{array}{l}
-        X = \left(N + h\right) \cos{\phi} \cos{\lambda} \ , \\
-        Y = \left(N + h\right) \cos{\phi} \sin{\lambda} \ , \\
-        Z = \left(\frac{b^2}{a^2} N + h\right) \sin{\phi} \ .
+        X = \left(N + h\right) \cos{\varphi} \cos{\lambda} \ , \\
+        Y = \left(N + h\right) \cos{\varphi} \sin{\lambda} \ , \\
+        Z = \left(\frac{b^2}{a^2} N + h\right) \sin{\varphi} \ .
     \end{array}
 \end{equation}
 
@@ -92,7 +92,7 @@ Earth surface we have
         f = \frac{1}{298.257223563} \ , \\
         b = a (1 - f) \ , \\
         e = \sqrt{2 f - f^2} \ , \\
-        N = \frac{a}{\sqrt{1 - e^2 \sin^2 \phi}} \ ,
+        N = \frac{a}{\sqrt{1 - e^2 \sin^2 \varphi}} \ ,
     \end{array}
 \end{equation}
 
@@ -100,7 +100,7 @@ Earth surface we have
 semi-minor axis and $e$ the eccentricity of the ellipsoid. $N$ is the
 Normal, which is the distance between a location on the ellipsoid and
 the intersection of its normal and the z-axis of the ellipsoid. For a
-position on the equator ($\phi = 0$) $N = a$.
+position on the equator (i.e. $\varphi = \SI{0}{\degree}$) $N = a$.
 
 \begin{figure}
     \centering
@@ -130,9 +130,9 @@ The formulae to convert ECEF to ENU with a given reference position are:
     \end{bmatrix}
     =
     \begin{bmatrix}
-                     -\sin(\lambda_r) &               \cos(\lambda_r) &           0. \\
-        -\sin(\phi_r) \cos(\lambda_r) & -\sin(\phi_r) \sin(\lambda_r) & \cos(\phi_r) \\
-         \cos(\phi_r) \cos(\lambda_r) &  \cos(\phi_r) \sin(\lambda_r) & \sin(\phi_r)
+                        -\sin(\lambda_r) &                  \cos(\lambda_r) &              0. \\
+        -\sin(\varphi_r) \cos(\lambda_r) & -\sin(\varphi_r) \sin(\lambda_r) & \cos(\varphi_r) \\
+         \cos(\varphi_r) \cos(\lambda_r) &  \cos(\varphi_r) \sin(\lambda_r) & \sin(\varphi_r)
     \end{bmatrix}
     \begin{bmatrix}
         X - X_r \\
@@ -142,7 +142,7 @@ The formulae to convert ECEF to ENU with a given reference position are:
 \end{equation}
 
 \noindent where $(X, Y, Z)$ and $(x, y, z)$ are the location in ECEF and
-ENU respectively. $(\phi_r, \lambda_r)$ and $(X_r, Y_r, Z_r)$ are the
+ENU respectively. $(\varphi_r, \lambda_r)$ and $(X_r, Y_r, Z_r)$ are the
 reference position in WGS84 and ECEF respectively.
 
 
@@ -482,10 +482,10 @@ corresponding equatorial coordinates \cite[p. 37]{duffet-smith:1990aa}.
 \begin{equation}
     \label{eq:equatorial}
     \begin{array}{l}
-        \delta = \arcsin{\left((\sin{a} \sin{\phi}) +
-                               (\cos{a} \cos{\phi} \cos{A})\right)} \ , \\
-        \mathit{HA} = \arccos{\left(\frac{\sin{a} - (\sin{\phi} \sin{\delta})}
-                                         {\cos{\phi} \cos{\delta}}\right)} \ , \\
+        \delta = \arcsin{\left((\sin{a} \sin{\varphi}) +
+                               (\cos{a} \cos{\varphi} \cos{A})\right)} \ , \\
+        \mathit{HA} = \arccos{\left(\frac{\sin{a} - (\sin{\varphi} \sin{\delta})}
+                                         {\cos{\varphi} \cos{\delta}}\right)} \ , \\
         \alpha = \mathit{LST} - \mathit{HA} \ .
     \end{array}
 \end{equation}
@@ -494,7 +494,7 @@ The output range of $\arccos$ is [0, $\pi$), while that of $\mathit{HA}$ is
 [0, $2\pi$). If the azimuth is positive use: $\mathit{HA} = 2 \pi -
 \mathit{HA}$.
 
-Where $\phi$ the geographical latitude, $a$ the altitude, $A$ the
+Where $\varphi$ the geographical latitude, $a$ the altitude, $A$ the
 azimuth, $\mathit{LST}$ the Local sidereal time, $\delta$ is the
 declination, $\alpha$ the right ascension and the intermediate variable
 $\mathit{HA}$ is the hour angle. This is illustrated in
@@ -595,9 +595,9 @@ station 503.
 From the \gps of station 503 we know its geographical location in WGS84,
 
 \begin{equation}
-    (\phi, \lambda, h) = (\SI{4.9529440}{\degree},
-                          \SI{52.3562600}{\degree},
-                          \SI{51.4}{\meter}) \ .
+    (\varphi, \lambda, h) = (\SI{52.3562600}{\degree},
+                             \SI{4.9529440}{\degree},
+                             \SI{51.4}{\meter}) \ .
 \end{equation}
 
 The location of its four detectors have been measured in compass
@@ -617,16 +617,15 @@ coordinates (see \figref{fig:enu_compass})
     \end{tabular}
 \end{center}
                         
-An event was detected on \gps timestamp \SI{1333018296}{\second}. The
-relative arrival times in each detector are
-\SIlist{0;2.5;5;12.5}{\nano\second}.
+An event was detected on \gps timestamp
+\SI{1333018296870008589}{\nano\second}. The relative arrival times in
+each detector are \SIlist{0;2.5;5;12.5}{\nano\second}.
 
 
 \subsection{Conversions}
 
 To reconstruct the direction of the shower we use \sapphire. First it
 converts the detector compass coordinates to ENU (relative to the \gps)
-
 
 \begin{center}
     \begin{tabular}{ l c c c }
@@ -666,9 +665,9 @@ timestamp, Julian Date, and GMST are
 
 \begin{equation}
     \begin{array}{l}
-        \mathit{UTC} = \SI{1333018281}{\second} \ , \\
-        \mathit{JD} = \SI{2456015.952326}{\day} \ , \\
-        \mathit{GMST} = \SI{23.3387}{\hour} = 23^\mathrm{h}20^\mathrm{m}19^\mathrm{s} \ . \\
+        \mathit{UTC} = \SI{1333018281870008589}{\nano\second} \ , \\
+        \mathit{JD} = \SI{2456015.952336}{\day} \ , \\
+        \mathit{GMST} = \SI{23.3389}{\hour} = 23^\mathrm{h}20^\mathrm{m}20^\mathrm{s} \ . \\
     \end{array}
 \end{equation}
 
@@ -676,15 +675,15 @@ Using the longitude of the station the Local Sidereal Time can be
 calculated from the GMST
 
 \begin{equation}
-    \mathit{LST} = \SI{2.8291}{\hour} = 2^\mathrm{h}49^\mathrm{m}45^\mathrm{s} \ .
+    \mathit{LST} = \SI{23.6691}{\hour} = 23^\mathrm{h}40^\mathrm{m}9^\mathrm{s} \ .
 \end{equation}
 
 Now the equatorial coordinates can be calculated
 
 \begin{equation}
     \begin{array}{l}
-        \alpha = \SI{0.3593}{\radian} = 1^\mathrm{h}22^\mathrm{m}20^\mathrm{s} \ , \\
-        \delta = \SI{0.1318}{\radian} = \ang{7;33;} \ .
+        \alpha = \SI{5.5848}{\radian} = 21^\mathrm{h}19^\mathrm{m}57^\mathrm{s} \ , \\
+        \delta = \SI{0.8730}{\radian} = \ang{50;1;} \ .
     \end{array}
 \end{equation}
 
