@@ -1,3 +1,5 @@
+\tikzsetnextfilename{externalized-enu_compass}
+
 \pgfmathsetmacro{\scale}{.2}
 \pgfmathsetmacro{\dw}{.5*\scale}
 \pgfmathsetmacro{\dh}{1*\scale}
@@ -17,8 +19,6 @@
 
     % Draw GPS
     \fill[base] (O) circle[radius=.05] node[anchor=north east] {\gps};
-
-
 
     % Draw a detectors
     \foreach \num / \col / \alphavec / \rlen / \betavec in {0/black/315/8.97/135,

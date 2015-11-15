@@ -8,14 +8,14 @@ the units that are used and where it is used. Then other coordinate
 systems that we have to deal with are discussed, including ways to
 convert from those to our usual coordinate systems.
 
-In \secref{sec:geographic} we discuss geographic coordinates to define
-the coordinates of the observer. In \secref{sec:time} we discuss
+In \cref{sec:geographic} we discuss geographic coordinates to define
+the coordinates of the observer. In \cref{sec:time} we discuss
 different time keeping systems and how we can relate a time of
 observation to the rotation of the Earth w.r.t the celestial sphere. The
 systems to define a point on the celestial sphere are described in
-\secref{sec:celestial}. In \secref{sec:corsika} the coordinate systems
+\cref{sec:celestial}. In \cref{sec:corsika} the coordinate systems
 which are used in \corsika simulations are described. Finally in
-\secref{sec:example} an example shows the process to go from a \hisparc
+\cref{sec:example} an example shows the process to go from a \hisparc
 detection to equatorial coordinates.
 
 Make sure that the angles are converted to the correct units for the
@@ -27,7 +27,7 @@ The use of radians or degrees depends on the programming language.
 \label{sec:geographic}
 
 Geographic coordinate systems define a point on the Earth. For \hisparc
-two systems are used: WGS84 and ENU. \figref{fig:wgs84_ecef_enu}
+two systems are used: WGS84 and ENU. \cref{fig:wgs84_ecef_enu}
 illustrates the relationships between these systems. Additionally a
 compass based system is used to determine detector locations relative to
 the \gps antenna. These systems are described in the following sections.
@@ -57,7 +57,7 @@ prime meridian) defined by the International Earth Rotation and
 Reference Systems Service (IERS), angles towards east are positive. The
 altitude is the height above an ellipsoid that approximates the shape of
 the Earth. The parameters which define this ellipsoid are given in
-\eqref{eq:wgs84} \cite{nga:2014aa}.
+\cref{eq:wgs84} \cite{nga:2014aa}.
 
 
 \subsection{Earth-Centered, Earth-Fixed (ECEF)}
@@ -152,7 +152,7 @@ For reconstruction of events the precise location of the individual
 detectors in each station is required. The location of detectors are
 taken relative to the \gps antenna, because that position is known. We
 use a system that requires a distance and angle measurement, see
-\figref{fig:enu_compass}. The distance ($r$) between the \gps and a
+\cref{fig:enu_compass}. The distance ($r$) between the \gps and a
 detector (center of the scintillator) is measured (in meters), the angle
 ($\alpha$) relative to the geographic north pole (not magnetic north!)
 is determined using a compass and the magnetic declination. This angle
@@ -161,7 +161,7 @@ is in degrees and goes from North to East (NESW). The height difference
 is only important if the detectors are not all at the same altitude or
 are at a very different altitude from the \gps. The rotation angle of
 the detector itself ($\beta$) is defined as the angle of the long side
-of the detector relative to the North Pole (positive towards East). 
+of the detector relative to the North Pole (positive towards East).
 
 When a compass is used the angle needs to be compensated for the
 difference between magnetic and geographic north, the difference is
@@ -177,7 +177,7 @@ up to \SI{3}{\degree} for some \hisparc station locations.
              Its \gps is used as the origin for the ENU coordinates. The
              $\alpha$ and $r$ coordinate of detector 4 (blue) and the
              $\beta$ coordinate of detector 1 (black) are illustrated.
-             The values are given in \secref{sec:example}.}
+             The values are given in \cref{sec:example}.}
     \label{fig:enu_compass}
 \end{figure}
 
@@ -199,7 +199,7 @@ to ENU are:
 For \hisparc events it is important to know precisely when they occur, a
 \gps is used to get synchronized and precise timing. It gives us a
 unique timestamp, this needs to be converted to Local Sidereal Time for
-the conversion of celestial coordinates in \secref{sec:celestial}. The
+the conversion of celestial coordinates in \cref{sec:celestial}. The
 full transformation chain is as follows: GPS $\to$ UTC $\to$ JD $\to$
 GMST $\to$ LST.
 
@@ -239,7 +239,7 @@ issues when looking for coincidences between stations.
 
 Leap seconds can be introduced at the end of either 30 June or 31
 December, the leap second is represented in UTC time as 23:59:60.
-\tabref{table:leapseconds} gives a list of the recent leap seconds,
+\cref{table:leapseconds} gives a list of the recent leap seconds,
 which are important for \hisparc. Leap seconds are announced about 6
 months before they take effect.
 
@@ -321,7 +321,7 @@ orbit proceeds by $\frac{\SI{360}{\degree}}{\SI{365.25}{\day}} \approx
 \SI{1}{\degree\per\day}$. So an extra rotation of approximately
 \SI{1}{\degree} around its axis is required to make the same part of the
 Earth face the Sun (a solar day). A sidereal day is therefore around
-\SI{4}{\minute} shorter than a solar day. In \figref{fig:sidereal_time}
+\SI{4}{\minute} shorter than a solar day. In \cref{fig:sidereal_time}
 the difference between a solar and sidereal day is illustrated.
 
 \begin{figure}
@@ -341,7 +341,7 @@ the difference between a solar and sidereal day is illustrated.
 
 \subsubsection{Greenwich Mean Sidereal Time (GMST)}
 
-GMST is the hour angle of the vernal equinox (\secref{sec:celestial})
+GMST is the hour angle of the vernal equinox (\cref{sec:celestial})
 with respect to the prime meridian at Greenwich, expressed in decimal
 hours \cite{kaplan:2011aa}.
 
@@ -381,7 +381,7 @@ To convert the longitude from degrees to hours it has to be divided by
 \end{equation}
 
 The relation between LST and GMST is illustrated in
-\figref{fig:wgs84_gmst_lst}.
+\cref{fig:wgs84_gmst_lst}.
 
 
 \section{Celestial}
@@ -411,7 +411,7 @@ above the observer. The zenith angle is the angle between the direction
 and the Zenith point, so straight up is \SI{0}{\radian} and the horizon
 \SI{\pi / 2}{\radian}. The azimuth is the direction in the horizontal
 plane, it starts at East (\SI{0}{\radian}) then goes to North (ENWS).
-This is illustrated in pink in \figref{fig:enu_horizontal}.
+This is illustrated in pink in \cref{fig:enu_zenazi}.
 
 We neither expect nor consider air showers from below the horizon, so the
 zenith angles, defined in radians, are an angle in the range [0,
@@ -419,21 +419,23 @@ $\frac{\pi}{2}$). The azimuth is restricted to the range [$-\pi$, $\pi$).
 
 \begin{figure}
     \centering
-    \input{figures/ENU_ZenAzi_Horizontal}
-    \caption{Relationship between the ENU (green), Zenith Azimuth (pink)
-             and horizontal (gold) coordinate systems.}
-    \label{fig:enu_horizontal}
+    \input{figures/ENU_ZenAzi}
+    \caption{Relationship between the ENU (green) and Zenith Azimuth (pink)
+             coordinate systems. The zenith and azimuth coordinates define
+             a point on the sky.}
+    \label{fig:enu_zenazi}
 \end{figure}
 
 
 \subsection{Horizontal coordinate system}
 
 This is a system used as intermediary for some coordinate conversions.
-It azimuth ($A$) and altitude ($a$) to define a direction. The
+It uses azimuth ($A$) and altitude ($a$) to define a direction on the sky. The
 altitude is the complement of the zenith, so \SI{0}{\radian} is horizontal
-and \SI{\pi / 2}{\radian} is the zenith. The azimuth definition also
-differs, in Horizontal coordinates it moves from North to East (NESW).
-This is illustrated in gold in \figref{fig:enu_horizontal}.
+and \SI{\pi / 2}{\radian} is the Zenith. The azimuth definitions between the
+zenith and azimuth, and Horizontal systems differ, in Horizontal
+coordinates it moves from North to East (NESW). This is illustrated in
+gold in \cref{fig:enu_zenazi_horizontal}.
 
 The formulae to convert from zenith ($\theta$) and azimuth ($\phi$) to
 altitude ($a$) and azimuth ($A$) are:
@@ -449,10 +451,18 @@ Conversions can cause values to go beyond the allowed range of values
 for angles or times. They may have to be brought back into the range
 after the conversion.
 
+\begin{figure}
+    \centering
+    \input{figures/ENU_ZenAzi_Horizontal}
+    \caption{Relationship between the ENU (green), Zenith Azimuth (pink)
+             and horizontal (gold) coordinate systems.}
+    \label{fig:enu_zenazi_horizontal}
+\end{figure}
+
 
 \subsection{Equatorial (J2000)}
 
-\figref{fig:equatorial} shows the relation between the celestial sphere
+\cref{fig:equatorial} shows the relation between the celestial sphere
 and Equatorial coordinates. The right ascension ($\alpha$) is the angle
 between the projection of the position on the celestial sphere ($\star$)
 on the plane of the Celestial equator and the vernal equinox
@@ -498,8 +508,7 @@ Where $\varphi$ the geographical latitude, $a$ the altitude, $A$ the
 azimuth, $\mathit{LST}$ the Local sidereal time, $\delta$ is the
 declination, $\alpha$ the right ascension and the intermediate variable
 $\mathit{HA}$ is the hour angle. This is illustrated in
-\figref{fig:wgs84_zenazi_lst_equatorial}.
-
+\cref{fig:wgs84_zenazi_lst_equatorial}.
 
 \begin{figure}
     \centering
@@ -530,10 +539,10 @@ following sections describe these transformations.
 
 \begin{figure}
     \centering
-    \input{figures/ENU_CORSIKA}
+    \input{figures/ENU_ZenAzi_CORSIKA}
     \caption{Relationship between the ENU (green), Zenith Azimuth (pink),
              and \corsika (brown) coordinates.}
-    \label{fig:enu_corsika}
+    \label{fig:enu_zenazi_corsika}
 \end{figure}
 
 
@@ -543,7 +552,7 @@ following sections describe these transformations.
 to the point where the shower axis intersects the observation level.
 Positive x axis points to magnetic North, positive y axis to the West,
 and the z axis upwards. This is shown by the dashed brown lines in
-\figref{fig:enu_corsika}.
+\cref{fig:enu_zenazi_corsika}.
 
 The formulae to convert \corsika to ENU are:
 
@@ -570,7 +579,7 @@ the East. $\Phi = \SI{0}{\radian}$ is a shower heading towards North, so
 coming from South, which we would define as $\phi = \SI{-\pi /
 2}{\radian}$. The (positive) rotation of the angle is in the same
 direction, from North to West. This is shown by the brown arced lines in
-\figref{fig:enu_corsika}.
+\cref{fig:enu_zenazi_corsika}.
 
 The formulae to convert the \corsika direction to \hisparc zenith and
 azimuth are:
@@ -601,7 +610,7 @@ From the \gps of station 503 we know its geographical location in WGS84,
 \end{equation}
 
 The location of its four detectors have been measured in compass
-coordinates (see \figref{fig:enu_compass})
+coordinates (see \cref{fig:enu_compass})
 
 \begin{center}
     \begin{tabular}{ l c c c c }
@@ -616,7 +625,7 @@ coordinates (see \figref{fig:enu_compass})
         \bottomrule
     \end{tabular}
 \end{center}
-                        
+
 An event was detected on \gps timestamp
 \SI{1333018296870008589}{\nano\second}. The relative arrival times in
 each detector are \SIlist{0;2.5;5;12.5}{\nano\second}.
@@ -645,7 +654,7 @@ relative arrival times and the ENU positions. In this case
 
 \begin{equation}
     \begin{array}{l}
-        \theta = \SI{0.3818}{\radian} \, \\
+        \theta = \SI{0.3818}{\radian} \ , \\
         \phi = \SI{3.0030}{\radian} \ ,
     \end{array}
 \end{equation}

@@ -1,3 +1,5 @@
+\tikzsetnextfilename{externalized-enu_zenazi_corsika}
+
 \tdplotsetmaincoords{70}{-10}
 
 \pgfmathsetmacro{\rlen}{.8}
@@ -10,7 +12,7 @@
     \definecolor{wgs84}{RGB}{255,153,0}; % orange
     \definecolor{ecef}{RGB}{13,98,153}; % blue
     \definecolor{enu}{RGB}{0,184,0}; % green
-    \definecolor{hori}{RGB}{200,20,200}; % pink
+    \definecolor{zenazi}{RGB}{200,20,200}; % pink
     \definecolor{corsika}{RGB}{151,115,0}; % brown
 
     % coordinates
@@ -27,11 +29,11 @@
     \draw[base,dashed] (P') -- (P'xy);
     \draw[base,dashed,tdplot_rotated_coords] (0,-\rlen,0) -- (0,\rlen,0);
 
-    % Horizontal
-    \tdplotdrawarc[hori,-stealth]
+    % Zenith Azimuth
+    \tdplotdrawarc[zenazi,-stealth]
         {(O)}{0.3}{0}{\azimuth}{anchor=west}{$\phi$};
     \tdplotsetthetaplanecoords{\azimuth};
-    \tdplotdrawarc[hori,-stealth,tdplot_rotated_coords]
+    \tdplotdrawarc[zenazi,-stealth,tdplot_rotated_coords]
         {(0,0,0)}{0.2}{0}{\zenith}{anchor=south}{$\theta$};
 
     % ENU

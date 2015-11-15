@@ -1,3 +1,5 @@
+\tikzsetnextfilename{externalized-ellipsoid}
+
 \pgfmathsetmacro{\alen}{1.4}  % equatorial radius ellipse
 \pgfmathsetmacro{\blen}{1.2}  % polar radius ellipse (actual: 99.7% of a)
 \pgfmathsetmacro{\llen}{.2}  % radius of latitude arc
@@ -20,11 +22,11 @@
     % base
     \draw[base,name path=earth] (O) circle [x radius=\alen, y radius=\blen];
     \draw[base,name path=equator]
-        (-\alen,0) -- node[near start,anchor=north] {$a$} 
+        (-\alen,0) -- node[near start,anchor=north] {$a$}
         (\alen,0) node[anchor=west] {Equator};
     \draw[base,name path=zaxis] (0,-\blen) --
         node[near start,anchor=east] {$b$} (0,\blen);
-    
+
     % ECEF
     \draw[ecef,-stealth] (O) -- (0,\alen)
         node[anchor=south] {$Z$};
@@ -36,7 +38,7 @@
     \draw[enu,-stealth,name path=North] (D) -- ++(\latitude+90:.3)
         node[above] {North};
     \draw[color=black,stealth-,name path=Normal]
-        (D) node[right] {Observer} -- node[right] {$N$} 
+        (D) node[right] {Observer} -- node[right] {$N$}
         ++(\reverselatitude:\alen);
 
     \fill[base,name intersections={of=Normal and zaxis, by=Q}]
@@ -44,5 +46,5 @@
 
     \draw[wgs84,name intersections={of=Normal and equator, by=I}]
         (I)++(\llen,0) arc (0:\latitude:\llen) node[anchor=west] {$\varphi$};
-    
+
 \end{tikzpicture}

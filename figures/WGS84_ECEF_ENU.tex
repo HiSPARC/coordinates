@@ -1,3 +1,5 @@
+\tikzsetnextfilename{externalized-wsg84_ecef_enu}
+
 \tdplotsetmaincoords{70}{95}
 
 \pgfmathsetmacro{\rlen}{.8}
@@ -48,7 +50,7 @@
 %    \draw[enu,tdplot_rotated_coords,->] (0,0,0) -- (.3,0,0) node[anchor=west]{$East$};
 %    \draw[enu,tdplot_rotated_coords,->] (0,0,0) -- (0,.3,0) node[anchor=south]{$North$};
 %    \draw[enu,tdplot_rotated_coords,->] (0,0,0) -- (0,0,.4) node[anchor=south]{$Up$};
-    \draw[base,tdplot_rotated_coords] (0,0,0) circle (.17);       
+    \draw[base,tdplot_rotated_coords] (0,0,0) circle (.17);
 
     \draw[enu,-stealth,tdplot_rotated_coords] (0,0,0) -- (-.45,0,0)
         node[anchor=south]{North};
