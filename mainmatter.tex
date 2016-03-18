@@ -226,12 +226,12 @@ which requires 64-bits to be represented digitally. For instance the
 
 \subsection{UTC time}
 
-Similar to \gps but corrected with leap seconds to keep it more in sync
-with solar time. A leap second means that a second is counted twice. The
-IERS decides when to add leap seconds. \hisparc does not use UTC time
-because of the duplicate timestamps, which makes it possible for a
-station to detect two events at the `same time'. Moreover, it causes
-issues when looking for coincidences between stations.
+UTC time is similar to \gps but corrected with leap seconds to keep it more in
+sync with solar time. A leap second means that a second is counted twice, one
+timestamp refers to two real seconds. The IERS decides when to add leap
+seconds. \hisparc initially used UTC time but switched to \gps time around
+2010-2011. UTC time can cause issues with duplicate timestamps. This makes it
+impossible to distinguish between two real seconds.
 
 
 \subsubsection{Leap seconds}
