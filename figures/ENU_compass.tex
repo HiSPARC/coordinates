@@ -1,8 +1,6 @@
 \tikzsetnextfilename{externalized-enu_compass}
 
-\pgfmathsetmacro{\scale}{.2}
-\pgfmathsetmacro{\dw}{.5*\scale}
-\pgfmathsetmacro{\dh}{1*\scale}
+\pgfmathsetmacro{\scale}{0.2}
 
 \begin{tikzpicture}[scale=2,thick]
 
@@ -17,12 +15,19 @@
     \fill[base] (O) circle[radius=.05] node[anchor=north east] {\gps};
 
     % Draw a detectors
-    \foreach \num / \col / \alphavec / \rlen / \betavec in {0/black/315/8.97/135,
-                                                            1/red/315/3.15/135,
-                                                            2/green/225/5.09/45,
-                                                            3/blue/45/4.89/45} {
+    \foreach \num / \col / \alphavec / \rlen / \betavec in
+            {0/black!80!white/315/8.97/135, 1/Crimson/315/3.15/135,
+             2/ForestGreen/225/5.09/45, 3/DodgerBlue/45/4.89/225} {
         \coordinate (d\num) at (90-\alphavec:\rlen*\scale);
-        \fill[color=\col,rotate=90-\betavec] (d\num) ++(-\dh/2,-\dw/2) rectangle +(\dh,\dw);
+        \begin{scope}[shift={(d\num)}, rotate=-\betavec, scale=\scale]
+            % Scintillator
+            \draw[semithick, fill=\col] (-.25, .5) rectangle (.25, -.5);
+            % Lightguide
+            \draw[semithick] (-.25, .5) -- (-.02, 1) --(.02, 1) -- (.25, .5);
+            % PMT
+            \draw[semithick, fill=black] (-.02, 1) rectangle (.02, 1.2);
+        \end{scope}
+%       \fill[color=\col,rotate=90-\betavec] (d\num) ++(-\dh/2,-\dw/2) rectangle +(\dh,\dw);
     }
 %    \fill[base,rotate=\betavec] (d0) ++(-\dh/2,-\dw/2) rectangle +(\dh,\dw);
 
