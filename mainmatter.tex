@@ -158,7 +158,8 @@ is determined using a compass and the magnetic declination. This angle
 is in degrees and goes from North to East (NESW). The height difference
 ($z$) between the \gps and detectors can also be measured, however, this
 is only important if the detectors are not all at the same altitude or
-are at a very different altitude from the \gps. The rotation angle of
+are at a very different altitude from the \gps. The value of $z$ is positive
+if the detector is higher than the \gps antenna. The rotation angle of
 the detector itself ($\beta$) is defined as the angle of the long side
 of the detector relative to the North Pole (positive towards East).
 
@@ -174,7 +175,7 @@ up to \SI{3}{\degree} for some \hisparc station locations.
     \caption{Relationship between the ENU (green) and Compass (magenta)
              coordinate system. The detectors of station 503 are shown.
              Its \gps is used as the origin for the ENU coordinates. The
-             $\alpha$ and $r$ coordinate of detector 4 (blue) and the
+             $\alpha$ and $r$ coordinate of detector 4 (blue), and the
              $\beta$ coordinate of detector 1 (black) are illustrated.
              The values are given in \cref{sec:example}.}
     \label{fig:enu_compass}
